@@ -1,0 +1,2 @@
+BASE_URL=<%= baseUrl %>
+PORT=<%= port %>

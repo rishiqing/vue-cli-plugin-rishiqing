@@ -1,0 +1,2 @@
+NODE_ENV=production
+BASE_URL=https://res-front-cdn.timetask.cn<%= baseUrl %>beta/

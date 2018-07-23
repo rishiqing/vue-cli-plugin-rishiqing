@@ -1,0 +1,11 @@
+{
+  "name": "vue-cli-plugin-rishiqing",
+  "version": "1.0.0",
+  "description": "vue-cli 3.0 plugin for rishiqing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "qinyang912",
+  "license": "MIT"
+}
