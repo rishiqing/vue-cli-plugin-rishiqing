@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
 * @Last Modified by:   qinyang
-* @Last Modified time: 2018-07-23 13:32:24
+* @Last Modified time: 2018-07-24 04:00:59
 */
 const fs = require('fs');
 
@@ -27,7 +27,10 @@ module.exports = (api, options, rootOptions) => {
       "deploy": "rishiqing-deploy --config='.rishiqing-deploy.yml'"
     },
     devDependencies: {
-      "rishiqing-deploy": "^1.0.4"
+      "rishiqing-deploy": "^1.0.4",
+      "webpack-spritesmith": "^0.5.1",
+      "sass-resources-loader": "^1.3.3",
+      "resolve-url-loader": "^2.3.0"
     }
   });
 
@@ -38,7 +41,24 @@ module.exports = (api, options, rootOptions) => {
       }
     });
   }
+
+  if (options.presetCodeList.includes('xss')) {
+    api.extendPackage({
+      dependencies: {
+        "xss": "^1.0.3"
+      }
+    });
+    api.injectImports(api.entryFile, `import '@/lib/filter/xss'`);
+  }
   
+  if (options.presetCodeList.includes('sprites')) {
+    api.extendPackage({
+      scripts: {
+        "sprites": "vue-cli-service sprites"
+      }
+    });
+  }
+
   if (options.presetCodeList.includes('constants')) {
     api.extendPackage({
       vue: {
@@ -46,6 +66,9 @@ module.exports = (api, options, rootOptions) => {
           rishiqing: {
             provide: {
               R_URL: true
+            },
+            define: {
+              __DEV__: makeJSOnlyValue(`process.env.NODE_ENV === 'development'`)
             }
           }
         }
@@ -88,6 +111,9 @@ module.exports = (api, options, rootOptions) => {
     if (files['.gitignore']) {
       files['.gitignore'] += '\n# rishiqing-deploy config file\n';
       files['.gitignore'] += '.rishiqing-deploy.yml\n';
+    }
+    if (files['public/index.html']) {
+      files['public/index.html'] = files['public/index.html'].replace(/<%= BASE_URL %>favicon\.ico/, '//res-front-cdn.timetask.cn/common/img/web-icon/icon.png');
     }
   })
 

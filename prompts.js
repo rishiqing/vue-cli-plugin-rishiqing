@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 22:15:42
 * @Last Modified by:   qinyang
-* @Last Modified time: 2018-07-23 11:11:57
+* @Last Modified time: 2018-07-24 10:41:47
 */
 const path = require('path');
 
@@ -18,12 +18,20 @@ module.exports = [
         value: 'constants'
       },
       {
+        name: 'services',
+        value: 'services'
+      },
+      {
         name: 'simditor style',
         value: 'simditor'
       },
       {
-        name: 'services',
-        value: 'services'
+        name: 'sprites',
+        value: 'sprites'
+      },
+      {
+        name: 'xss',
+        value: 'xss'
       }
     ]
   }, {
@@ -43,7 +51,7 @@ module.exports = [
     type: 'input',
     name: 'baseUrl',
     message: '项目地址前缀',
-    default: '/',
+    default: 'test',
     filter: (input) => {
       return path.join('/', input, '/');
     }
@@ -51,7 +59,7 @@ module.exports = [
     type: 'input',
     name: 'port',
     message: '项目调试端口',
-    default: '3001',
+    default: 3001,
     validate: (input) => {
       const p = Number(input);
       if (isNaN(p)) {
