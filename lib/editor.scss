@@ -1,0 +1,606 @@
+// 下面的这个font-face主要用在editor编辑框内部的，和编辑器sass代码是一体的
+$base64-inside-icon: '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';
+@font-face {
+  font-family: 'editor-inside-icon';
+  src: url(data:application/font-woff;charset=utf-8;base64,#{$base64-inside-icon}) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.simditor .simditor-body, .editor-style {
+  font-size: 14px;
+  font-family: "Microsoft YaHei", STXihei;
+  line-height: 1.57;
+  color: #666;
+  outline: none;
+  word-wrap: break-word;
+
+  [data-unselection-select] {
+    .unselection-content {
+      box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+      border: 1px solid #bababa !important;
+    }
+    &[data-img] img {
+      box-shadow: 0 2px 6px 1px rgba(0, 0, 0, 0.4);
+      cursor: zoom-in;
+    }
+    &[data-map] > span {
+      box-shadow: 0 2px 6px 1px rgba(0, 0, 0, 0.4);
+    }
+  }
+  [data-map] {
+    text-align: left !important;
+    & > span.wrap {
+      border: 1px solid #EAEAEA;
+      display: inline-block;
+      max-width: 284px;
+    }
+    .location {
+      padding-left: 10px;
+      display: block;
+    }
+  }
+  [data-img] {
+    padding: 0px !important;
+  }
+  .unselection-wrapper {
+    text-align: center;
+    &[data-attach], &[data-global-link] {
+      text-align: left;
+    }
+    .unselection-inline-wrapper {
+      display: inline-block;
+      width: 100%;
+    }
+    .unselection-content {
+      cursor: default;
+    }
+
+    [data-name] {
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: right 0.2s;
+      &:before {
+        content: attr(data-name);
+      }
+    }
+
+    .unselection-attach-operation {
+      display: none;
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      font-size: 0px;
+      transition: transform 0.2s;
+      .unselection-attach-operation-icon {
+        display: inline-block;
+        height: 100%;
+        font-size: 18px;
+        width: 28px;
+        text-align: center;
+        line-height: 45px;
+        cursor: pointer;
+        color: #575757;
+      }
+      .unselection-attach-more {
+        position: relative;
+        display: none;
+        .unselection-attach-menu {
+          display: none;
+          top: 100%;
+          position: absolute;
+          right: 0px;
+          line-height: 26px;
+          box-shadow: 0 4px 20px 0 rgba(76, 141, 205, 0.32);
+          z-index: 1;
+          width: 180px;
+          transform: translateX(50%);
+          .unselection-attach-menu-item {
+            display: block;
+            padding: 10px 20px;
+            font-size: 12px;
+            background: #fff;
+            transition: background 0.2s;
+            color: #666666;
+            font-size: 0.8125rem;
+            text-align: left;
+            &:hover {
+              background: #FEFEFE;
+            }
+            &:before {
+              content: attr(title);
+            }
+            &.unselection-attach-delete {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+
+    .unselection-attach {
+      display: inline-block;
+      height: 45px;
+      width: 80%;
+      background-color: #FEFEFE;
+      border-radius: 4px;
+      border: 1px solid #e9e9e9;
+      position: relative;
+      text-align: left;
+      color: #575757;
+      font-size: 0px;
+      white-space: nowrap;
+      // overflow: hidden;
+      // unselection-attach-icon这个class之前的附件还在用，所以不能删掉
+      .unselection-attach-icon {
+        display: inline-block;
+        height: 100%;
+        font-size: 20px;
+        line-height: 41px;
+        width: 30px;
+        text-align: center;
+      }
+      [data-attach-type="word"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/word_2x.png) no-repeat;
+      }
+      [data-attach-type="ppt"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/ppt_2x.png) no-repeat;
+      }
+      [data-attach-type="excel"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/excel_2x.png) no-repeat;
+      }
+      [data-attach-type="pdf"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/pdf_2x.png) no-repeat;
+      }
+      [data-attach-type="image"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/image_2x.png) no-repeat;
+      }
+      [data-attach-type="sound"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/sound_2x.png) no-repeat;
+      }
+      [data-attach-type="video"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/video_2x.png) no-repeat;
+      }
+      [data-attach-type="zip"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/zip_2x.png) no-repeat;
+      }
+      [data-attach-type="minder"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/minder_2x.png) no-repeat;
+      }
+      [data-attach-type="file"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/file/2018-03-16/file_2x.png) no-repeat;
+      }
+
+      [data-attach-type] {
+        display: inline-block;
+        height: 100%;
+        font-size: 20px;
+        line-height: 41px;
+        width: 42px;
+        text-align: center;
+        background-size: 24px 28px;
+        background-position: 9px;
+      }
+
+      [data-attach-type] + [data-name] {
+        left: 42px;
+      }
+      [data-name] {
+        position: absolute;
+        left: 35px;
+        right: 85px;
+        bottom: 0px;
+        top: 0px;
+        line-height: 45px;
+      }
+      [data-progress] {
+        display: block;
+        position: absolute;
+        height: 6px;
+        width: 102px;
+        bottom: 3px;
+        left: 42px;
+        background: #F0F0F0;
+        border-radius: 3px;
+        & > span {
+          display: block;
+          height: 100%;
+          border-radius: inherit;
+          background: #5BBBFF;
+          width: 0%;
+        }
+      }
+
+      [data-size] {
+        position: absolute;
+        display: inline-block;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        font-size: 12px;
+        line-height: 45px;
+        padding-right: 10px;
+        &:before {
+          content: attr(data-size);
+        }
+      }
+    }
+    .unselection-global-link {
+      display: inline-block;
+      height: 45px;
+      width: 80%;
+      background-color: #FEFEFE;
+      border-radius: 2px;
+      border: 1px solid rgba(0,0,0,0.03);
+      position: relative;
+      text-align: left;
+      color: #575757;
+      font-size: 0px;
+      white-space: nowrap;
+      [data-name] {
+        display: inline-block;
+        line-height: 45px;
+        vertical-align: middle;
+        width: calc(100% - 73px);
+      }
+      .unselection-attach-operation-icon {
+        line-height: 45px;
+      }
+      [data-global-link-type] {
+        display: inline-block;
+        height: 100%;
+        width: 45px;
+        vertical-align: middle;
+      }
+      [data-global-link-type="todo"], [data-global-link-type="plan"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/todo/task.png) no-repeat;
+        background-size: 24px;
+        background-position: 9px;
+      }
+
+      [data-global-link-type="doc"] {
+        background: url(https://res-front-cdn.timetask.cn/common/img/doc/docItem.png) no-repeat;
+        background-position: 9px;
+        background-size: 27px 26px;
+      }
+
+      [data-global-link-type="file"] {
+        font-size: 20px;
+        line-height: 42px;
+        text-align: center;
+      }
+    }
+    .unselection-task-block {
+      display: inline-block;
+      height: 70px;
+      width: 100%;
+      background: #F4F3F3;
+      border: 1px solid transparent;
+      position: relative;
+      font-size: 14px;
+      [data-title] {
+        font-size: 14px;
+        color: #333;
+        letter-spacing: 0;
+        display: block;
+        padding-left: 20px;
+        text-align: left;
+        margin-top: 13px;
+        margin-bottom: 7px;
+        &:before {
+          content: attr(data-title)
+        }
+      }
+      [data-sub-title] {
+        font-size: 12px;
+        color: #9B9B9B;
+        letter-spacing: 0;
+        display: block;
+        padding-left: 20px;
+        text-align: left;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        &:before {
+          content: attr(data-sub-title)
+        }
+      }
+      .simditor-r-icon-setting {
+        position: absolute;
+        top: 50%;
+        right: 21px;
+        margin-top: -0.53em;
+        cursor: pointer;
+      }
+      .simditor-r-icon-close {
+        position: absolute;
+        top: 0; right: 0;
+        margin-top: -0.5em;
+        margin-right: -0.5em;
+        background: #FFF;
+        border: 1px solid #F1F1F1;
+        box-shadow: 0 0 1px 0 rgba(0,0,0,0.20);
+        border-radius: 50%;
+        color: #BDBDBD;
+        cursor: pointer;
+        display: none;
+      }
+    }
+    inherit {
+      display: block;
+      font-size: 0;
+    }
+    &[data-global-link] {
+      line-height: 10px;
+    }
+  }
+
+  .unselection-wrapper + .unselection-wrapper {
+    margin-top: 8px;
+  }
+
+  .unselection-content:hover {
+    .unselection-attach-more {
+      display: inline-block !important;
+    }
+  }
+  .unselection-attach-more:hover {
+    .unselection-attach-menu {
+      display: inline-block !important;
+    }
+  }
+
+  .unselection-attach:hover {
+    .unselection-attach-operation {
+      display: inline-block;
+    }
+  }
+  .unselection-attach:hover {
+    [data-size] {
+      display: none;
+    }
+  }
+
+  &[contenteditable="true"] {
+    .unselection-task-block:hover {
+      .simditor-r-icon-close {
+        display: block;
+      }
+    }
+    .unselection-attach-delete {
+      display: block !important;
+    }
+    .unselection-global-link:hover {
+      .unselection-attach-operation {
+        display: inline-block;
+      }
+    }
+  }
+
+  & > :first-child {
+    margin-top: 0!important;
+  }
+
+  a{ color: #4298BA; text-decoration: none; word-break: break-all;}
+  a:visited{ color: #4298BA; }
+  a:hover{ color: #0F769F; }
+  a:active{ color:#9E792E; }
+  a:hover, a:active{ outline: 0; }
+
+  h1,h2,h3,h4,h5,h6 {
+    font-weight: bold;
+    margin: 25px 0 20px;
+    color: #000000;
+    line-height: 1.2;
+  }
+
+  h1 { font-size: 24px; }
+  h2 { font-size: 22px; }
+  h3 { font-size: 20px; }
+  h4 { font-size: 18px; }
+  h5 { font-size: 16px; }
+  h6 { font-size: 16px; }
+
+  p, div {
+    word-wrap: break-word;
+    margin: 0;
+    color: #333;
+    word-wrap: break-word;
+  }
+
+  b, strong {
+    font-weight: bold;
+  }
+
+  i, em {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+  }
+
+  strike, del {
+    text-decoration: line-through;
+  }
+
+  ul, ol {
+    list-style:disc outside none;
+    margin: 15px 0;
+    padding: 0 0 0 40px;
+    line-height: 1.6;
+
+    ul, ol {
+      padding-left: 30px;
+    }
+
+    ul {
+      list-style: circle outside none;
+
+      ul {
+        list-style: square outside none;
+      }
+    }
+  }
+
+  ul {
+    li {
+      list-style:disc outside none;
+    }
+  }
+
+  ol {
+    list-style: decimal;
+    li {
+      list-style: decimal;
+    }
+  }
+
+  blockquote {
+    border-left: 6px solid #ddd;
+    padding: 5px 0 5px 10px;
+    margin: 15px 0 15px 15px;
+
+    & > :first-child {
+      margin-top: 0;
+    }
+  }
+
+  code {
+    display: inline-block;
+    padding: 0 4px;
+    margin: 0 5px;
+    background: #eeeeee;
+    border-radius: 3px;
+    font-size: 13px;
+    font-family: 'monaco', 'Consolas', "Liberation Mono", Courier, monospace;
+  }
+
+  pre {
+    padding: 10px 5px 10px 10px;
+    margin: 15px 0;
+    display: block;
+    line-height: 18px;
+    background: #F0F0F0;
+    border-radius: 3px;
+    font-size:13px;
+    font-family: 'monaco', 'Consolas', "Liberation Mono", Courier, monospace;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-x: auto;
+
+    code {
+      display: block;
+      padding: 0;
+      margin: 0;
+      background: none;
+      border-radius: 0;
+    }
+  }
+
+  hr {
+    display: block;
+    height: 0px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 15px 0;
+    padding: 0;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 15px 0;
+
+    thead {
+      background-color: #f9f9f9;
+    }
+
+    td, th {
+      min-width: 40px;
+      height: 30px;
+      border: 1px solid #bbb;
+      vertical-align: top;
+      padding: 2px 4px;
+      text-align: left;
+      box-sizing: border-box;
+
+      &.active {
+        background-color: #ffffee;
+      }
+    }
+  }
+
+  // 这个地方要不要把span设置为inline-block，还有待商榷
+  // span {
+  //   display: inline-block;
+  // }
+
+
+  img {
+    max-width: 100%;
+    vertical-align: middle;
+    height: auto;
+  }
+
+  $font-size-map: (
+    1: 12px,
+    2: 14px,
+    3: 16px,
+    4: 18px,
+    5: 20px,
+    6: 24px,
+    7: 30px,
+    8: 36px
+  );
+
+  @each $size-num in map-keys($font-size-map) {
+    font[size="#{$size-num}"] {
+      font-size: map-get($font-size-map, $size-num);
+    }
+  }
+
+  [class^="check-box-item-"], [class*=" check-box-item-"] {
+    position: relative;
+    padding-left: 2em; // 方案1和2会用到
+    &:before {
+      font-family: 'editor-inside-icon' !important;
+      cursor: pointer;
+      display: inline-block;
+      padding: 0 1px; // 为了避免 checkbox icon有 1px错位的问题
+
+      // // 方案1
+      // position: absolute;
+      // top: 0;
+      // left: 0.5em;
+
+      // 方案2
+      position: absolute;
+      top: 50%;
+      left: 0.5em;
+      margin-top: -12.5px;
+      width: 16px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+
+      // // 方案3
+      // position: relative;
+      // margin-right: .5em;
+      // line-height: normal;
+    }
+  }
+  .check-box-item-unchecked:before {
+    content: "\e916";
+  }
+  .check-box-item-checked {
+    text-decoration: line-through;
+    &:before {
+      content: "\e97c"
+    }
+  }
+}
