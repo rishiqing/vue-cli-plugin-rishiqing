@@ -63,6 +63,8 @@ npm i vue-cli-plugin-rishiqing -D -d
 vue invoke vue-cli-plugin-rishiqing
 ```
 
+之后按照提示，一步一步安装即可
+
 详细的配置说明，参考下面的文档
 
 可选的预置代码
@@ -208,7 +210,7 @@ pull_request_template.md
 
 项目地址前缀
 ------
-配置一个统一的项目地址前缀，默认是`/`
+配置一个统一的项目地址前缀，默认是`/test`
 配置之后，会存放到`.env.local`里，后面可自己修改
 
 项目调试端口
