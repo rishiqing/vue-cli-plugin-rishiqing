@@ -1,13 +1,14 @@
 /*
 * @Author: qinyang
 * @Date:   2018-07-21 16:16:05
-* @Last Modified by:   qinyang
-* @Last Modified time: 2018-07-25 16:32:14
+ * @Last Modified by: caoHao
+ * @Last Modified time: 2018-12-11 21:35:39
 */
 const webpack = require('webpack');
 const Sprites = require('./sprites');
 const Scss    = require('./scss');
 const MemoryFS = require('memory-fs');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 
 const provideConfigMap = {
   R_URL: ['@/constants/url', 'default']
@@ -41,6 +42,9 @@ module.exports = (api, projectOptions) => {
         // 比如 import client from 'rishiqing/client' 即可方便引用 client
         .set('rishiqing', 'vue-cli-plugin-rishiqing/lib');
     Scss(api, config); // 处理 scss 代码
+    config
+      .plugin('CaseSensitivePathsPlugin')
+      .use(CaseSensitivePathsPlugin)
   })
 
   // 运行，生成雪碧图
