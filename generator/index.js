@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
  * @Last Modified by: caoHao
- * @Last Modified time: 2018-12-12 09:50:04
+ * @Last Modified time: 2018-12-12 16:55:43
 */
 const fs = require('fs');
 
@@ -13,8 +13,8 @@ const fs = require('fs');
 // 这样需要执行js的代码
 // __expression is a special flag that allows us to customize stringification
 // output when extracting configs into standalone files
-function makeJSOnlyValue (str) {
-  const fn = () => {}
+function makeJSOnlyValue(str) {
+  const fn = () => { }
   fn.__expression = str
   return fn
 };
@@ -31,7 +31,9 @@ module.exports = (api, options, rootOptions) => {
       "webpack-spritesmith": "^0.5.1",
       "sass-resources-loader": "^1.3.3",
       "resolve-url-loader": "^2.3.0",
-      "case-sensitive-paths-webpack-plugin":"^2.1.2"
+      "case-sensitive-paths-webpack-plugin": "^2.1.2",
+      "@kazupon/vue-i18n-loader": "^0.3.0",
+      "deepmerge": "^3.0.0"
     }
   });
 
@@ -51,7 +53,7 @@ module.exports = (api, options, rootOptions) => {
     });
     api.injectImports(api.entryFile, `import '@/lib/filter/xss'`);
   }
-  
+
   if (options.presetCodeList.includes('sprites')) {
     api.extendPackage({
       scripts: {
@@ -76,6 +78,25 @@ module.exports = (api, options, rootOptions) => {
       }
     });
   }
+  if (options.presetCodeList.includes('rsqI18n')) {
+    api.extendPackage({
+      dependencies: {
+        "vue-i18n": "8.4.0"
+      },
+      vue: {
+        pluginOptions: { //i18n有一些插件选项需要在vue.config.js去暴露：
+          i18n: {
+            locale: 'cn',                  //项目本地化的区域设置 
+            fallbackLocale: 'en',         //项目本地化的后备区域设置 
+            localeDir: 'locales',        //存储本地化消息的目录项目 
+            enableInSFC: false          //在单个文件组件中启用区域设置消息 
+          }
+        }
+      },
+    });
+    api.injectImports('src/main.js', `import i18n from './i18n'`) //向main.js写入东西
+    api.injectRootOptions('src/main.js', `i18n,`)
+  }
 
   api.extendPackage({
     vue: {
@@ -84,7 +105,7 @@ module.exports = (api, options, rootOptions) => {
       devServer: {
         port: makeJSOnlyValue('process.env.PORT || 3001')
       },
-      transpileDependencies:[path.posix.join(__dirname,"rishiqing")] //将lib文件夹下的代码进行babel转化——modify cwp
+      transpileDependencies: ["vue-cli-plugin-rishiqing"]//将lib文件夹下的代码进行babel转化——modify cwp
     }
   });
 

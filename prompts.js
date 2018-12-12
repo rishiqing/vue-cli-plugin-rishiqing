@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 22:15:42
  * @Last Modified by: caoHao
- * @Last Modified time: 2018-12-11 19:11:09
+ * @Last Modified time: 2018-12-12 14:06:31
 */
 const path = require('path');
 
@@ -32,6 +32,10 @@ module.exports = [
       {
         name: 'xss',
         value: 'xss'
+      },
+      {
+        name:'rsqI18n',
+        value:'rsqI18n'
       }
     ]
   }, {
