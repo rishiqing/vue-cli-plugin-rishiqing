@@ -171,7 +171,7 @@ xss [默认未选中]
 2.使用方法可参考：demo.vue里面的代码（更多的使用请参考官文：http://kazupon.github.io/vue-i18n/guide/started.html）
 ##### 注意:
 + 目前此功能默认本地语言为cn，如需修改可去index.js里面去设置
-```
+```js
 //整个index.js 暴露出去的东西将通过插件中根目录index.js(Service 插件)中的
 //api.injectImports(api.entryFile, `import i18n from './i18n'`)这个方法向项目的main.js 写入下面的内容
 
