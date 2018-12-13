@@ -2,14 +2,13 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:16:05
  * @Last Modified by: caoHao
- * @Last Modified time: 2018-12-12 16:22:13
+ * @Last Modified time: 2018-12-13 09:39:49
 */
 const webpack = require('webpack');
 const Sprites = require('./sprites');
 const Scss = require('./scss');
 const MemoryFS = require('memory-fs');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const merge = require('deepmerge')
 
 const provideConfigMap = {
   R_URL: ['@/constants/url', 'default']
@@ -46,13 +45,6 @@ module.exports = (api, projectOptions) => {
     config
       .plugin('CaseSensitivePathsPlugin')
       .use(CaseSensitivePathsPlugin)
-    config.module //for vue-loader-15
-      .rule("i18n")
-      .resourceQuery(/blockType=i18n/)
-      .type('javascript/auto')
-      .use("i18n")
-      .loader("@kazupon/vue-i18n-loader")
-      .end()
   })
 
   // 运行，生成雪碧图

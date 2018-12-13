@@ -15,5 +15,5 @@ context.keys().forEach((item) => {
   const p = path.join('api', item)
   api[fileName] = require(`./${p}`).default // eslint-disable-line
 })
-
+console.log(api)
 export default api
