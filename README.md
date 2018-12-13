@@ -1,12 +1,15 @@
+
 vue-cli-plugin-rishiqing
 ====
 vue-cli 3.0的一个插件，专用于初始化日事清相关的vue项目，方便统一维护和更新常用代码
+
 
 提供的功能
 ====
 * 自动预置一些开发中常用的代码，比如api常量，网络请求等
 * 添加默认的eslint配置
 * 项目目录结构
+
 
 preset
 ====
@@ -67,9 +70,11 @@ vue invoke vue-cli-plugin-rishiqing
 
 详细的配置说明，参考下面的文档
 
+
 可选的预置代码
 ====
 预置代码全放在了generator文件夹下面，如果想知道详细的预置代码，可自己去查看
+
 
 constants [默认选中]
 ------
@@ -88,13 +93,16 @@ constants [默认选中]
 
 在webpack的ProvidePlugin插件里已经配置了一个公共变量，`R_URL`，指向`src/constants/url/index.js`，该变量已经在`.eslintrc.js`里配置成了公共变量。
 
+
 services [默认选中]
 ------
 网络请求，使用axios。services依赖R_URL，所以要正常使用services，必须选中constants
 
+
 simditor style [默认未选中]
 ------
 simditor编辑器的样式代码，默认生成一个文件`src/styles/editor.scss`
+
 
 sprites [默认未选中]
 ------
@@ -146,6 +154,7 @@ npm run sprites
 ```
 
 才能生成默认的雪碧图
+
 
 xss [默认未选中]
 ------
@@ -206,11 +215,13 @@ export default new VueI18n({
 })
 ```
 
+
 默认的预置代码
 ====
 为了统一开发环境，插件会往项目里注入一些默认的代码，以及扩展webpack的配置。
 * 默认注入的预置代码，在`generator/template`下面
 * 扩展webpack的代码在 `index.js` 里面
+
 
 sass-resources-loader
 ------
@@ -230,19 +241,23 @@ sass-resources-loader
 
 如果引入了这种代码，会造成样式代码的重复
 
+
 resolve-url-loader
 ------
 一个webpack loader, 解析scss代码里，url资源的路径
 
+
 rishiqing-deploy
 ------
 部署工具，在开发环境中不会接触到
+
 
 .editorconfig
 ------
 编辑器配置文件，用于简单配置一些代码格式: 缩进用两个空格, 文件末尾留一个空行等
 
 主流编辑器均支持editorconfig
+
 
 .env.*
 ------
@@ -254,22 +269,27 @@ rishiqing-deploy
 
 用于放置环境变量。`.env.local` 是默认被`.gitignore`忽略了的
 
+
 pull_request_template.md
 ------
 提交pull request时的描述模板
 
+
 其他配置
 ====
+
 
 项目地址前缀
 ------
 配置一个统一的项目地址前缀，默认是`/test`
 配置之后，会存放到`.env.local`里，后面可自己修改
 
+
 项目调试端口
 ------
 调试端口，默认是`3001`
 配置之后，会存放到`.env.local`里，后面可自己修改
+
 
 cdn域名
 ------
@@ -278,11 +298,13 @@ cdn域名
 
 
 
+
 webpack扩展
 ====
 使用vue-cli 3.0搭建项目，有一个非常棒的体验，就是项目目录下的代码，几乎不会看到复杂的webpack配置，大部分的webpack配置都放到了`@vue/cli-service`里面去了。vue-cli 3.0提供的插件机制，可以在插件里扩展webpack的配置，可以把一些常用的配置都放到插件里，在多个项目之间复用非常方便。
 
 `vue.config.js`文件里，有一个选项叫`pluginOptions`，这个选项里可以配置一些插件需要的配置项。该插件会读取`pluginOptions.rishiqing`下面的配置作为配置项
+
 
 pluginOptions.rishiqing.provide
 ------
@@ -297,6 +319,7 @@ pluginOptions.rishiqing.provide
 这个配置项，现在就一个可选值, `R_URL`，为true，为false，都一样
 
 如果配置了R_URL，在webpack的ProvidePlugin插件里，会把`R_URL`指向`@/constants/url`，这样在其他地方使用`R_URL`即可方便接口相关的配置
+
 
 pluginOptions.rishiqing.define
 ------
@@ -336,6 +359,7 @@ if (false) {
 需要注意：
 如果在 `pluginOptions.rishiqing.define` 加了新的配置，需要在`.eslintrc.js`文件里把新配置定义为一个全局变量，不然lint的时候会报错
 
+
 默认的eslint配置
 ====
 我们采用了`airbnb`的js规范，然后再根据项目情况，自定义了一些
@@ -346,6 +370,7 @@ if (false) {
 * semi, 不用写分号，但是需要注意，如果某一行开头是 [, (, /, +, - ，这几个字符其中一个，那么上一行必须有分号
 + 'import/prefer-default-export': 'off',文件导出的时不指定default，将不会报错
 
+
 eslint的自动修复功能
 ------
 上面提到的comman-dangle和semi，在`npm run lint`的时候，都能自动修复
@@ -353,8 +378,10 @@ eslint的自动修复功能
 需要注意：
 有一些 eslint 的规则，可能需要在开发过程中调整，请及时反馈，方便统一加到eslint配置文件
 
+
 特别提醒
 ====
+
 
 vue-router
 ------
@@ -367,9 +394,11 @@ export default new Router({
 })
 ```
 
+
 src/styles/common-resources.scss
 ------
 这个文件需要保留，就算里面没有内容，也需要保留，不然构建会报错
+
 
 注意提交自己修改的代码
 ------
@@ -388,6 +417,7 @@ import client from 'rishiqing/client'//比如需要使用lib中检测客户端�
 + 并且插件已经通过vue.config.js的transpileDependencies: ["vue-cli-plugin-rishiqing"]//将lib文件夹下的代码进行babel转化，所以内置的方法中的一些高级语法已经经过babel的处理
 
 
+
 推荐的项目目录结构
 ====
 ```
@@ -398,9 +428,9 @@ import client from 'rishiqing/client'//比如需要使用lib中检测客户端�
 ├── src                                    # 源代码
 │   ├── assets                             # 静态资源文件，如图片和字体
 │       ├── images                         # 图片
+│           ├── original-sprites           # 雪碧图原图
+│           ├── sprites                    # 雪碧图合成图
 │       ├── fonts                          # 字体文件
-│       ├── original-sprites               # 雪碧图原图
-│       ├── sprites                        # 雪碧图合成图
 │   ├── components                         # 公共组件
 │   ├── constants                          # 常量，如URL,第三方配置
 │   ├── i18n                               # 项目国际化
