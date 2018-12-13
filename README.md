@@ -188,14 +188,14 @@ const messages = {}
 
 //context.keys()将以数组的形式返回 
 //eg：["./cn/common.js", "./cn/todo.js","./en/common.js","./en/todo.js"]
-
-context.keys().forEach((item) => { 
+const context = require.context('./languages', true, /\.js$/)
+const messages = {}
+context.keys().forEach((item) => {
   const url = item.split('/')
   const lang = url[1]
   const module = url[2].slice(0, -3)
-  const concatObj = messages[lang] ? messages[lang] : {}
-  let langSource = require(`./languages/${lang}/${module}`).default
-  messages[lang] = Object.assign(concatObj, langSource)	//messages对象合并
+  if (!messages[lang]) messages[lang] = {}
+  messages[lang][module] = require(`./languages/${lang}/${module}`).default
 })
 
 //暴露出一个 vuei18n实例 并添加一些配置项
@@ -270,6 +270,13 @@ pull_request_template.md
 ------
 调试端口，默认是`3001`
 配置之后，会存放到`.env.local`里，后面可自己修改
+
+cdn域名
+------
+默认是`res-front-cdn.timetask.cn`
+配置之后，会存放到`.env.local`里，后面可自己修改
+
+
 
 webpack扩展
 ====
@@ -380,9 +387,6 @@ import client from 'rishiqing/client'//比如需要使用lib中检测客户端�
 ```
 + 并且插件已经通过vue.config.js的transpileDependencies: ["vue-cli-plugin-rishiqing"]//将lib文件夹下的代码进行babel转化，所以内置的方法中的一些高级语法已经经过babel的处理
 
-### 插件在安装前的其他可选项（cdn域名，项目地址前缀，项目调试端口）
-+ 这些都可以在安装插件时手动去配置或者使用默认值
-+ 如果安装完以后，想更改设置可以在项目根目录的.env.xxx文件中去修改对应的值即可
 
 推荐的项目目录结构
 ====
