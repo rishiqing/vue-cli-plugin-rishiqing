@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 22:15:42
  * @Last Modified by: caoHao
- * @Last Modified time: 2018-12-13 15:08:02
+ * @Last Modified time: 2018-12-13 19:54:06
 */
 const path = require('path');
 
@@ -54,7 +54,7 @@ module.exports = [
   }, {
     type: 'input',
     name: 'domainName',
-    message: '项目域名',
+    message: 'cdn域名',
     default: 'res-front-cdn.timetask.cn',
     filter: (input) => {
       return input;

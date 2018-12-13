@@ -171,7 +171,40 @@ xss [默认未选中]
 2.使用方法可参考：demo.vue里面的代码（更多的使用请参考官文：http://kazupon.github.io/vue-i18n/guide/started.html）
 #####注意:
 + 目前此功能默认本地语言为cn，如需修改可去index.js里面去设置
+```
+//整个index.js 暴露出去的东西将通过插件中根目录index.js(Service 插件)中的
+//api.injectImports(api.entryFile, `import i18n from './i18n'`)这个方法向项目的main.js 写入下面的内容
 
+    import Vue from 'vue'
+    import VueI18n from 'vue-i18n'
+    Vue.use(VueI18n) 
+    
+    //通过webpack的require.contest()方法将languages文件夹中的所有后缀为.js文件名取到
+    //（第二个参数为是否获取子目录的文件）
+    
+    const context = require.context('./languages', true, /\.js$/)
+    
+    const messages = {}
+    
+    //context.keys()将以数组的形式返回 
+    //eg：["./cn/common.js", "./cn/todo.js","./en/common.js","./en/todo.js"]
+    
+    context.keys().forEach((item) => { 
+      const url = item.split('/')
+      const lang = url[1]
+      const module = url[2].slice(0, -3)
+      const concatObj = messages[lang] ? messages[lang] : {}
+      let langSource = require(`./languages/${lang}/${module}`).default
+      messages[lang] = Object.assign(concatObj, langSource)	//messages对象合并
+    })
+    
+    //暴露出一个 vuei18n实例 并添加一些配置项
+    export default new VueI18n({
+      locale: 'cn',  				//默认本地语言为`cn`
+      fallbackLocale: 'en', 		//不设置本地语言将设置为‘en’
+      messages: messages 			//语言包的数据
+    })
+```
 
 默认的预置代码
 ====
@@ -346,6 +379,9 @@ src/styles/common-resources.scss
       // 比如需要使用lib中检测客户端的client ： import client from 'rishiqing/client' 即只需引用 client
 + 并且插件已经通过vue.config.js的transpileDependencies: ["vue-cli-plugin-rishiqing"]//将lib文件夹下的代码进行babel转化，所以内置的方法中的一些高级语法已经经过babel的处理
 
+### 插件在安装前的其他可选项（cdn域名，项目地址前缀，项目调试端口）
++ 这些都可以在安装插件时手动去配置或者使用默认值
++ 如果安装完以后，想更改设置可以在项目根目录的.env.xxx文件中去修改对应的值即可
 
 推荐的项目目录结构
 ====
@@ -362,6 +398,10 @@ src/styles/common-resources.scss
 │       ├── sprites                        # 雪碧图合成图
 │   ├── components                         # 公共组件
 │   ├── constants                          # 常量，如URL,第三方配置
+│ 	├── i18n							   # 项目国际化
+│		├── languages 					   # 语言包
+│		├── demo.vue 					   # 模板
+│		├── index.js                       # vue-i18n的使用需要的配置
 │   ├── lib                                # 放置自开发的基础库，如filter，日期处理方法，可随处移植的
 │       ├── filter                         # 过滤器
 │   ├── routers                            # 路由，如果路由配置很简单，则可以使用一个文件，如果复杂，则必须放到文件夹下面分模块管理

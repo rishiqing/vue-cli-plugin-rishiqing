@@ -9,7 +9,6 @@
   "author": "qinyang912",
   "license": "MIT",
   "dependencies": {
-    "i": "^0.3.6",
     "memory-fs": "0.4.1",
     "require-all": "3.0.0"
   }
