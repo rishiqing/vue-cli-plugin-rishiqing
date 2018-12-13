@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 22:15:42
  * @Last Modified by: caoHao
- * @Last Modified time: 2018-12-12 19:23:25
+ * @Last Modified time: 2018-12-13 15:08:02
 */
 const path = require('path');
 
@@ -34,8 +34,8 @@ module.exports = [
         value: 'xss'
       },
       {
-        name:'i18n',
-        value:'i18n'
+        name: 'i18n',
+        value: 'i18n'
       }
     ]
   }, {
@@ -50,6 +50,14 @@ module.exports = [
       //   return false;
       // }
       return false;
+    }
+  }, {
+    type: 'input',
+    name: 'domainName',
+    message: '项目域名',
+    default: 'res-front-cdn.timetask.cn',
+    filter: (input) => {
+      return input;
     }
   }, {
     type: 'input',
