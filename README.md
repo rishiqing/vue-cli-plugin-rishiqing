@@ -153,6 +153,26 @@ xss [默认未选中]
 
 该预置代码，会往vue里注入一个过滤器，`xss`
 
+##i18n[默认未选中]
+用于vue项目的国际化（vue-i18n），会在项目目录下的`src`创建一个如下的目录结构
+```
+├── i18n
+│   ├── languages
+│       ├── cn(中文的语言包)
+│           ├── common.js
+│           ├── todo.js
+│       ├── en(英文的语言包)
+│           ├── common.js
+│           ├── todo.js
+│   ├── demo.vue
+│   ├── index.js
+```
+1.语言包里面的js文件里的内容就是针对不同组件的数据（可根据项目需要手动配置自己的语言包）
+2.使用方法可参考：demo.vue里面的代码（更多的使用请参考官文：http://kazupon.github.io/vue-i18n/guide/started.html）
+#####注意:
++ 目前此功能默认本地语言为cn，如需修改可去index.js里面去设置
+
+
 默认的预置代码
 ====
 为了统一开发环境，插件会往项目里注入一些默认的代码，以及扩展webpack的配置。
@@ -284,6 +304,7 @@ if (false) {
 * no-param-reassign，不能对传入函数的参数进行赋值，也不能对传入函数的object类型的参数的属性进行赋值。不过可以指定一些参数名，被指定的参数，就可以对它的属性进行修改。现在就指定了一个`error`
 * comma-dangle，需要写尾部逗号，防止无意义的git diff. https://eslint.org/docs/rules/comma-dangle.html
 * semi, 不用写分号，但是需要注意，如果某一行开头是 [, (, /, +, - ，这几个字符其中一个，那么上一行必须有分号
++ 'import/prefer-default-export': 'off',文件导出的时不指定default，将不会报错
 
 eslint的自动修复功能
 ------
@@ -313,6 +334,18 @@ src/styles/common-resources.scss
 注意提交自己修改的代码
 ------
 `vue invoke vue-cli-plugin-rishiqing`会修改工程下面的文件，为了明确在执行命令之后，都修改了哪些文件，最好是在执行之前，先`git add`，把本地修改的代码先放到暂存区
+### 关于es9的promise.finally的使用的浏览器兼容问题
++ 最新的@vue-cli 已经默认的内置了Promise finally polyfill，所以可以在项目中放心使用
+
+### 插件中为webpack预置的第三方插件：CaseSensitivePathsPlugin 
++ caseSensitivePathsPlugin的作用：此插件用于检测在项目中用于区分大小写的路径，若出现路径引用与实际的路径有大小写的误差将会在控制台报错并且打印错误日志
+
+### 插件中内置的一些方法的使用方式：（方法的源码在插件源码目录的lib文件中）
++ 因为在预置的webpack中已经通过配置项 Resolve.alias 来为lib文件设置别名，关于方法的用法如下：
+   
+      // 比如需要使用lib中检测客户端的client ： import client from 'rishiqing/client' 即只需引用 client
++ 并且插件已经通过vue.config.js的transpileDependencies: ["vue-cli-plugin-rishiqing"]//将lib文件夹下的代码进行babel转化，所以内置的方法中的一些高级语法已经经过babel的处理
+
 
 推荐的项目目录结构
 ====
