@@ -185,11 +185,13 @@ xss [默认未选中]
 ##### 注意:
 + 目前此功能默认本地语言为cn，如需修改可去index.js里面去设置
 ```js
-//整个index.js 暴露出去的东西将通过插件中根目录index.js(Service 插件)中的
+//整个index.js 暴露出去的东西将通过插件根目录的index.js(Service 插件)去处理，详情如下：
 //其中api.entryFile为webpcak的入口文件即项目中的main.js
-//api.injectImports(api.entryFile, `import i18n from './i18n'`)这个方法向项目的main.js 写入index.js暴露的东西
-//api.injectRootOptions(api.entryFile, `i18n,`)这个方法是用来将i18n挂载到vue实例上
-
+api.injectImports(api.entryFile, `import i18n from './i18n'`)这个方法向项目的main.js 写入index.js暴露的东西
+api.injectRootOptions(api.entryFile, `i18n,`)这个方法是用来将i18n挂载到vue实例上
+```
++ index.js代码详情如下：
+```js
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 Vue.use(VueI18n) //安装vue插件
