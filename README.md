@@ -207,9 +207,9 @@ context.keys().forEach((item) => {
 
 //暴露出一个 vuei18n实例 并添加一些配置项
 export default new VueI18n({
-  locale: 'cn',  				    //默认本地语言为`cn`
-  fallbackLocale: 'en', 		//不设置本地语言将设置为‘en’
-  messages: messages 			  //语言包的数据
+  locale: 'cn',           //默认本地语言为`cn`
+  fallbackLocale: 'en',   //不设置本地语言将设置为‘en’
+  messages: messages      //语言包的数据
 })
 ```
 
