@@ -205,12 +205,18 @@ const messages = {}
 //context.keys()将以数组的形式返回 
 //eg：["./cn/common.js", "./cn/todo.js","./en/common.js","./en/todo.js"]
 
-context.keys().forEach((item) => {
-  const url = item.split('/')
-  const lang = url[1]
-  const module = url[2].slice(0, -3)
-  if (!messages[lang]) messages[lang] = {}
-  messages[lang][module] = require(`./languages/${lang}/${module}`).default
+context.keys().forEach((path) => {
+  let list = path.split('/')
+  let current = messages
+  list.forEach((item, index, list) => {
+    if (index === 0) return
+    if (index < list.length - 1) {
+      if (!current[item]) current[item] = {}
+      current = current[item]
+    } else {
+      current[item.slice(0, -3)] = context(list.join('/')).default
+    }
+  })
 })
 
 //暴露出一个 vuei18n实例 并添加一些配置项

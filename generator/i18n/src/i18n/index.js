@@ -3,13 +3,19 @@ import VueI18n from 'vue-i18n'
 Vue.use(VueI18n)
 
 const context = require.context('./languages', true, /\.js$/)
-const messages = {}
-context.keys().forEach((item) => {
-  const url = item.split('/')
-  const lang = url[1]
-  const module = url[2].slice(0, -3)
-  if (!messages[lang]) messages[lang] = {}
-  messages[lang][module] = require(`./languages/${lang}/${module}`).default
+let messages = {}
+context.keys().forEach((path) => {
+  let list = path.split('/')
+  let current = messages
+  list.forEach((item, index, list) => {
+    if (index === 0) return
+    if (index < list.length - 1) {
+      if (!current[item]) current[item] = {}
+      current = current[item]
+    } else {
+      current[item.slice(0, -3)] = context(list.join('/')).default
+    }
+  })
 })
 
 export default new VueI18n({
