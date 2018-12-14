@@ -11,6 +11,7 @@ context.keys().forEach((item) => {
   if (!messages[lang]) messages[lang] = {}
   messages[lang][module] = require(`./languages/${lang}/${module}`).default
 })
+
 export default new VueI18n({
   locale: 'cn',
   fallbackLocale: 'en',

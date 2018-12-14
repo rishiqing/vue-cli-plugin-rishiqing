@@ -25,6 +25,9 @@ vue-cli 3.0在初始化一个项目的时候，可以提供一个预置选项，
       "lintOn": [
         "commit"
       ]
+    },
+    "vue-cli-plugin-rishiqing": {
+      "prompts": true
     }
   },
   "router": true,
@@ -38,6 +41,7 @@ vue-cli 3.0在初始化一个项目的时候，可以提供一个预置选项，
 - [x] 使用独立的配置文件，而不是把配置信息放到`package.json`里。如vue的配置文件，就放在项目根目录下的`vue.config.js`文件里，eslint的配置文件，就放在项目根目录下的`.eslintrc.js`文件里
 - [x] 安装 babel
 - [x] 安装 eslint，同时使用 airbnb提供的默认eslint配置，并且在每次提交commit的时候，会自动跑eslint，如果eslint没过，则无法提交commit
+- [x] 安装 vue-cli-plugin-rishiqing ，新版的vue-cli的preset已经支持直接内置第三方插件
 - [x] 安装 vue-router
 - [x] 安装 vuex
 - [x] 使用sass作为css的预处理器
@@ -182,7 +186,9 @@ xss [默认未选中]
 + 目前此功能默认本地语言为cn，如需修改可去index.js里面去设置
 ```js
 //整个index.js 暴露出去的东西将通过插件中根目录index.js(Service 插件)中的
-//api.injectImports(api.entryFile, `import i18n from './i18n'`)这个方法向项目的main.js 写入下面的内容
+//其中api.entryFile为webpcak的入口文件即项目中的main.js
+//api.injectImports(api.entryFile, `import i18n from './i18n'`)这个方法向项目的main.js 写入index.js暴露的东西
+//api.injectRootOptions(api.entryFile, `i18n,`)这个方法是用来将i18n挂载到vue实例上
 
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'

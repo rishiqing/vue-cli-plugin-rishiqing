@@ -6,11 +6,11 @@
       <option value="en"> English </option>
     </select>
     <div>
-      <p>小清: {{ $t('hello') }}</p>
-      <p>小宁：{{$t('welcome')}}</p>
+      <p>小清: {{ $t('common.hello') }}</p>
+      <p>小宁：{{$t('common.welcome')}}</p>
     </div>
     <div>
-      <h1>{{$t('company')}}</h1>
+      <h1>{{$t('todo.company')}}</h1>
     </div>
   </div>
 </template>
