@@ -299,8 +299,9 @@ pull_request_template.md
 
 cdn域名
 ------
-默认是`res-front-cdn.timetask.cn`
-配置之后，会存放到`.env.local`里，后面可自己修改
+打包发布包时用到的cdn域名，默认是`res-front-cdn.timetask.cn`
+配置之后，.env.beta和.env.release里，后面可自己修改
+
 
 
 
