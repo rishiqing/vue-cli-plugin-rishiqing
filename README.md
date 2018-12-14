@@ -192,7 +192,7 @@ xss [默认未选中]
 
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-Vue.use(VueI18n) 
+Vue.use(VueI18n) //安装vue插件
 
 //通过webpack的require.contest()方法将languages文件夹中的所有后缀为.js文件名取到
 //（第二个参数为是否获取子目录的文件）
