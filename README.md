@@ -214,7 +214,7 @@ context.keys().forEach((path) => {
       if (!current[item]) current[item] = {}
       current = current[item]
     } else {
-      current[item.slice(0, -3)] = context(list.join('/')).default
+      current[item.slice(0, -3)] = context(path).default
     }
   })
 })
