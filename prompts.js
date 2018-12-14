@@ -1,8 +1,8 @@
 /*
 * @Author: qinyang
 * @Date:   2018-07-21 22:15:42
-* @Last Modified by:   qinyang
-* @Last Modified time: 2018-07-24 10:41:47
+ * @Last Modified by: caoHao
+ * @Last Modified time: 2018-12-13 19:54:06
 */
 const path = require('path');
 
@@ -32,6 +32,10 @@ module.exports = [
       {
         name: 'xss',
         value: 'xss'
+      },
+      {
+        name: 'i18n',
+        value: 'i18n'
       }
     ]
   }, {
@@ -49,11 +53,19 @@ module.exports = [
     }
   }, {
     type: 'input',
+    name: 'domainName',
+    message: 'cdn域名',
+    default: 'res-front-cdn.timetask.cn',
+    filter: (input) => {
+      return input;
+    }
+  }, {
+    type: 'input',
     name: 'baseUrl',
     message: '项目地址前缀',
     default: 'test',
     filter: (input) => {
-      return path.join('/', input, '/');
+      return path.posix.join('/', input, '/');
     }
   }, {
     type: 'input',

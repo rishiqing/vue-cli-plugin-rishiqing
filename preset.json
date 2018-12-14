@@ -7,6 +7,9 @@
       "lintOn": [
         "commit"
       ]
+    },
+    "vue-cli-plugin-rishiqing": {
+      "prompts": true
     }
   },
   "router": true,

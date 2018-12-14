@@ -1,8 +1,8 @@
 /*
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
-* @Last Modified by:   qinyang
-* @Last Modified time: 2018-07-24 04:00:59
+ * @Last Modified by: caoHao
+ * @Last Modified time: 2018-12-14 10:00:19
 */
 const fs = require('fs');
 
@@ -13,8 +13,8 @@ const fs = require('fs');
 // 这样需要执行js的代码
 // __expression is a special flag that allows us to customize stringification
 // output when extracting configs into standalone files
-function makeJSOnlyValue (str) {
-  const fn = () => {}
+function makeJSOnlyValue(str) {
+  const fn = () => { }
   fn.__expression = str
   return fn
 };
@@ -30,7 +30,8 @@ module.exports = (api, options, rootOptions) => {
       "rishiqing-deploy": "^1.0.4",
       "webpack-spritesmith": "^0.5.1",
       "sass-resources-loader": "^1.3.3",
-      "resolve-url-loader": "^2.3.0"
+      "resolve-url-loader": "^2.3.0",
+      "case-sensitive-paths-webpack-plugin": "^2.1.2"
     }
   });
 
@@ -50,7 +51,7 @@ module.exports = (api, options, rootOptions) => {
     });
     api.injectImports(api.entryFile, `import '@/lib/filter/xss'`);
   }
-  
+
   if (options.presetCodeList.includes('sprites')) {
     api.extendPackage({
       scripts: {
@@ -75,6 +76,16 @@ module.exports = (api, options, rootOptions) => {
       }
     });
   }
+  if (options.presetCodeList.includes('i18n')) {
+    api.extendPackage({
+      dependencies: {
+        "vue-i18n": "^8.4.0"
+      }
+    });
+    //向main.js写入东西
+    api.injectImports(api.entryFile, `import i18n from './i18n'`)
+    api.injectRootOptions(api.entryFile, `i18n,`)
+  }
 
   api.extendPackage({
     vue: {
@@ -82,7 +93,8 @@ module.exports = (api, options, rootOptions) => {
       baseUrl: makeJSOnlyValue('process.env.BASE_URL'),
       devServer: {
         port: makeJSOnlyValue('process.env.PORT || 3001')
-      }
+      },
+      transpileDependencies: ["vue-cli-plugin-rishiqing"]//将lib文件夹下的代码进行babel转化——modify cwp
     }
   });
 
@@ -97,6 +109,7 @@ module.exports = (api, options, rootOptions) => {
   api.extendPackage({
     eslintConfig: {
       rules: {
+        'import/prefer-default-export': 'off',
         'no-console': 'error',
         'no-debugger': 'error',
         'consistent-return': 'off',

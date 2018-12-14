@@ -1,13 +1,14 @@
 /*
 * @Author: qinyang
 * @Date:   2018-07-21 16:16:05
-* @Last Modified by:   qinyang
-* @Last Modified time: 2018-07-25 16:32:14
+ * @Last Modified by: caoHao
+ * @Last Modified time: 2018-12-13 09:39:49
 */
 const webpack = require('webpack');
 const Sprites = require('./sprites');
-const Scss    = require('./scss');
+const Scss = require('./scss');
 const MemoryFS = require('memory-fs');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 
 const provideConfigMap = {
   R_URL: ['@/constants/url', 'default']
@@ -30,17 +31,20 @@ module.exports = (api, projectOptions) => {
         .use(webpack.ProvidePlugin, [provideConfigKeys.reduce((acc, item) => {
           acc[item] = provideConfigMap[item];
           return acc;
-        } ,{})]);
+        }, {})]);
     }
     config
       .resolve
-        .alias
-        // lib 文件夹专用来放置公共基础代码
-        // 把rishiqing指向vue-cli-plugin-rishiqing/lib文件夹
-        // 方便在业务代码里引用
-        // 比如 import client from 'rishiqing/client' 即可方便引用 client
-        .set('rishiqing', 'vue-cli-plugin-rishiqing/lib');
+      .alias
+      // lib 文件夹专用来放置公共基础代码
+      // 把rishiqing指向vue-cli-plugin-rishiqing/lib文件夹
+      // 方便在业务代码里引用
+      // 比如 import client from 'rishiqing/client' 即可方便引用 client
+      .set('rishiqing', 'vue-cli-plugin-rishiqing/lib');
     Scss(api, config); // 处理 scss 代码
+    config
+      .plugin('CaseSensitivePathsPlugin')
+      .use(CaseSensitivePathsPlugin)
   })
 
   // 运行，生成雪碧图

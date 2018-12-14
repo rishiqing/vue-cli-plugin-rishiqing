@@ -1,12 +1,15 @@
+
 vue-cli-plugin-rishiqing
 ====
 vue-cli 3.0的一个插件，专用于初始化日事清相关的vue项目，方便统一维护和更新常用代码
+
 
 提供的功能
 ====
 * 自动预置一些开发中常用的代码，比如api常量，网络请求等
 * 添加默认的eslint配置
 * 项目目录结构
+
 
 preset
 ====
@@ -22,6 +25,9 @@ vue-cli 3.0在初始化一个项目的时候，可以提供一个预置选项，
       "lintOn": [
         "commit"
       ]
+    },
+    "vue-cli-plugin-rishiqing": {
+      "prompts": true
     }
   },
   "router": true,
@@ -35,6 +41,7 @@ vue-cli 3.0在初始化一个项目的时候，可以提供一个预置选项，
 - [x] 使用独立的配置文件，而不是把配置信息放到`package.json`里。如vue的配置文件，就放在项目根目录下的`vue.config.js`文件里，eslint的配置文件，就放在项目根目录下的`.eslintrc.js`文件里
 - [x] 安装 babel
 - [x] 安装 eslint，同时使用 airbnb提供的默认eslint配置，并且在每次提交commit的时候，会自动跑eslint，如果eslint没过，则无法提交commit
+- [x] 安装 vue-cli-plugin-rishiqing ，新版的vue-cli的preset已经支持直接内置第三方插件
 - [x] 安装 vue-router
 - [x] 安装 vuex
 - [x] 使用sass作为css的预处理器
@@ -67,9 +74,11 @@ vue invoke vue-cli-plugin-rishiqing
 
 详细的配置说明，参考下面的文档
 
+
 可选的预置代码
 ====
 预置代码全放在了generator文件夹下面，如果想知道详细的预置代码，可自己去查看
+
 
 constants [默认选中]
 ------
@@ -88,13 +97,16 @@ constants [默认选中]
 
 在webpack的ProvidePlugin插件里已经配置了一个公共变量，`R_URL`，指向`src/constants/url/index.js`，该变量已经在`.eslintrc.js`里配置成了公共变量。
 
+
 services [默认选中]
 ------
 网络请求，使用axios。services依赖R_URL，所以要正常使用services，必须选中constants
 
+
 simditor style [默认未选中]
 ------
 simditor编辑器的样式代码，默认生成一个文件`src/styles/editor.scss`
+
 
 sprites [默认未选中]
 ------
@@ -147,17 +159,81 @@ npm run sprites
 
 才能生成默认的雪碧图
 
+
 xss [默认未选中]
 ------
 跨站脚本攻击过滤，主要用于显示富文本，比如笔记打印，笔记分享，任务打印等等地方，需要在显示富文本之前，先进行过滤。
 
 该预置代码，会往vue里注入一个过滤器，`xss`
 
+## i18n[默认未选中]
+用于vue项目的国际化（vue-i18n），会在项目目录下的`src`创建一个如下的目录结构
+```
+├── i18n
+│   ├── languages
+│       ├── cn(中文的语言包)
+│           ├── common.js
+│           ├── todo.js
+│       ├── en(英文的语言包)
+│           ├── common.js
+│           ├── todo.js
+│   ├── demo.vue
+│   ├── index.js
+```
+1.语言包里面的js文件里的内容就是针对不同组件的数据（可根据项目需要手动配置自己的语言包）
+2.使用方法可参考：demo.vue里面的代码（更多的使用请参考官文：http://kazupon.github.io/vue-i18n/guide/started.html）
+##### 注意:
++ 目前此功能默认本地语言为cn，如需修改可去index.js里面去设置
+```js
+//整个index.js 暴露出去的东西将通过插件根目录的index.js(Service 插件)去处理，详情如下：
+//其中api.entryFile为webpcak的入口文件即项目中的main.js
+api.injectImports(api.entryFile, `import i18n from './i18n'`) //这个方法向项目的main.js 写入index.js暴露的东西
+api.injectRootOptions(api.entryFile, `i18n,`)                 //这个方法是用来将i18n挂载到vue实例上
+```
++ index.js代码详情如下：
+```js
+import Vue from 'vue'
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n) //安装vue插件
+
+//通过webpack的require.contest()方法将languages文件夹中的所有后缀为.js文件名取到
+//（第二个参数为是否获取子目录的文件）
+
+const context = require.context('./languages', true, /\.js$/)
+const messages = {}
+
+//context.keys()将以数组的形式返回 
+//eg：["./cn/common.js", "./cn/todo.js","./en/common.js","./en/todo.js"]
+
+context.keys().forEach((path) => {
+  let list = path.split('/')
+  let current = messages
+  list.forEach((item, index, list) => {
+    if (index === 0) return
+    if (index < list.length - 1) {
+      if (!current[item]) current[item] = {}
+      current = current[item]
+    } else {
+      current[item.slice(0, -3)] = context(path).default
+    }
+  })
+})
+
+//暴露出一个 vuei18n实例 并添加一些配置项
+export default new VueI18n({
+  locale: 'cn',           //默认本地语言为`cn`
+  fallbackLocale: 'en',   //不设置本地语言将设置为‘en’
+  messages: messages      //语言包的数据
+})
+```
+
+
 默认的预置代码
 ====
 为了统一开发环境，插件会往项目里注入一些默认的代码，以及扩展webpack的配置。
 * 默认注入的预置代码，在`generator/template`下面
 * 扩展webpack的代码在 `index.js` 里面
+
 
 sass-resources-loader
 ------
@@ -177,19 +253,23 @@ sass-resources-loader
 
 如果引入了这种代码，会造成样式代码的重复
 
+
 resolve-url-loader
 ------
 一个webpack loader, 解析scss代码里，url资源的路径
 
+
 rishiqing-deploy
 ------
 部署工具，在开发环境中不会接触到
+
 
 .editorconfig
 ------
 编辑器配置文件，用于简单配置一些代码格式: 缩进用两个空格, 文件末尾留一个空行等
 
 主流编辑器均支持editorconfig
+
 
 .env.*
 ------
@@ -201,28 +281,43 @@ rishiqing-deploy
 
 用于放置环境变量。`.env.local` 是默认被`.gitignore`忽略了的
 
+
 pull_request_template.md
 ------
 提交pull request时的描述模板
 
+
 其他配置
 ====
+
 
 项目地址前缀
 ------
 配置一个统一的项目地址前缀，默认是`/test`
 配置之后，会存放到`.env.local`里，后面可自己修改
 
+
 项目调试端口
 ------
 调试端口，默认是`3001`
 配置之后，会存放到`.env.local`里，后面可自己修改
+
+
+cdn域名
+------
+打包发布包时用到的cdn域名，默认是`res-front-cdn.timetask.cn`
+配置之后，.env.beta和.env.release里，后面可自己修改
+
+
+
+
 
 webpack扩展
 ====
 使用vue-cli 3.0搭建项目，有一个非常棒的体验，就是项目目录下的代码，几乎不会看到复杂的webpack配置，大部分的webpack配置都放到了`@vue/cli-service`里面去了。vue-cli 3.0提供的插件机制，可以在插件里扩展webpack的配置，可以把一些常用的配置都放到插件里，在多个项目之间复用非常方便。
 
 `vue.config.js`文件里，有一个选项叫`pluginOptions`，这个选项里可以配置一些插件需要的配置项。该插件会读取`pluginOptions.rishiqing`下面的配置作为配置项
+
 
 pluginOptions.rishiqing.provide
 ------
@@ -237,6 +332,7 @@ pluginOptions.rishiqing.provide
 这个配置项，现在就一个可选值, `R_URL`，为true，为false，都一样
 
 如果配置了R_URL，在webpack的ProvidePlugin插件里，会把`R_URL`指向`@/constants/url`，这样在其他地方使用`R_URL`即可方便接口相关的配置
+
 
 pluginOptions.rishiqing.define
 ------
@@ -276,6 +372,7 @@ if (false) {
 需要注意：
 如果在 `pluginOptions.rishiqing.define` 加了新的配置，需要在`.eslintrc.js`文件里把新配置定义为一个全局变量，不然lint的时候会报错
 
+
 默认的eslint配置
 ====
 我们采用了`airbnb`的js规范，然后再根据项目情况，自定义了一些
@@ -284,6 +381,8 @@ if (false) {
 * no-param-reassign，不能对传入函数的参数进行赋值，也不能对传入函数的object类型的参数的属性进行赋值。不过可以指定一些参数名，被指定的参数，就可以对它的属性进行修改。现在就指定了一个`error`
 * comma-dangle，需要写尾部逗号，防止无意义的git diff. https://eslint.org/docs/rules/comma-dangle.html
 * semi, 不用写分号，但是需要注意，如果某一行开头是 [, (, /, +, - ，这几个字符其中一个，那么上一行必须有分号
++ 'import/prefer-default-export': 'off',文件导出的时不指定default，将不会报错
+
 
 eslint的自动修复功能
 ------
@@ -292,8 +391,10 @@ eslint的自动修复功能
 需要注意：
 有一些 eslint 的规则，可能需要在开发过程中调整，请及时反馈，方便统一加到eslint配置文件
 
+
 特别提醒
 ====
+
 
 vue-router
 ------
@@ -306,13 +407,29 @@ export default new Router({
 })
 ```
 
+
 src/styles/common-resources.scss
 ------
 这个文件需要保留，就算里面没有内容，也需要保留，不然构建会报错
 
+
 注意提交自己修改的代码
 ------
 `vue invoke vue-cli-plugin-rishiqing`会修改工程下面的文件，为了明确在执行命令之后，都修改了哪些文件，最好是在执行之前，先`git add`，把本地修改的代码先放到暂存区
+### 关于es9的promise.finally的使用的浏览器兼容问题
++ 最新的@vue-cli 已经默认的内置了Promise finally polyfill，所以可以在项目中放心使用
+
+### 插件中为webpack预置的第三方插件：CaseSensitivePathsPlugin 
++ caseSensitivePathsPlugin的作用：此插件用于检测在项目中用于区分大小写的路径，若出现路径引用与实际的路径有大小写的误差将会在控制台报错并且打印错误日志
+
+### 插件中内置的一些方法的使用方式：（方法的源码在插件源码目录的lib文件中）
++ 因为在预置的webpack中已经通过配置项 Resolve.alias 来为lib文件设置别名，关于方法的用法如下：
+```js
+import client from 'rishiqing/client'//比如需要使用lib中检测客户端的client，只需引用 client
+```
++ 并且插件已经通过vue.config.js的transpileDependencies: ["vue-cli-plugin-rishiqing"]//将lib文件夹下的代码进行babel转化，所以内置的方法中的一些高级语法已经经过babel的处理
+
+
 
 推荐的项目目录结构
 ====
@@ -324,11 +441,15 @@ src/styles/common-resources.scss
 ├── src                                    # 源代码
 │   ├── assets                             # 静态资源文件，如图片和字体
 │       ├── images                         # 图片
+│           ├── original-sprites           # 雪碧图原图
+│           ├── sprites                    # 雪碧图合成图
 │       ├── fonts                          # 字体文件
-│       ├── original-sprites               # 雪碧图原图
-│       ├── sprites                        # 雪碧图合成图
 │   ├── components                         # 公共组件
 │   ├── constants                          # 常量，如URL,第三方配置
+│   ├── i18n                               # 项目国际化
+│       ├── languages                      # 语言包
+│       ├── demo.vue                       # 模板
+│       ├── index.js                       # vue-i18n的使用需要的配置
 │   ├── lib                                # 放置自开发的基础库，如filter，日期处理方法，可随处移植的
 │       ├── filter                         # 过滤器
 │   ├── routers                            # 路由，如果路由配置很简单，则可以使用一个文件，如果复杂，则必须放到文件夹下面分模块管理
