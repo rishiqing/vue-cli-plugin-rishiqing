@@ -192,13 +192,11 @@ Vue.use(VueI18n)
 //（第二个参数为是否获取子目录的文件）
 
 const context = require.context('./languages', true, /\.js$/)
-
 const messages = {}
 
 //context.keys()将以数组的形式返回 
 //eg：["./cn/common.js", "./cn/todo.js","./en/common.js","./en/todo.js"]
-const context = require.context('./languages', true, /\.js$/)
-const messages = {}
+
 context.keys().forEach((item) => {
   const url = item.split('/')
   const lang = url[1]
@@ -209,9 +207,9 @@ context.keys().forEach((item) => {
 
 //暴露出一个 vuei18n实例 并添加一些配置项
 export default new VueI18n({
-  locale: 'cn',  				//默认本地语言为`cn`
+  locale: 'cn',  				    //默认本地语言为`cn`
   fallbackLocale: 'en', 		//不设置本地语言将设置为‘en’
-  messages: messages 			//语言包的数据
+  messages: messages 			  //语言包的数据
 })
 ```
 
