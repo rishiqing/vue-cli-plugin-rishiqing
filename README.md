@@ -208,7 +208,7 @@ const messages = {}
 context.keys().forEach((path) => {
   let list = path.split('/')
   let current = messages
-  list.forEach((item, index, list) => {
+  list.forEach((item, index) => {
     if (index === 0) return
     if (index < list.length - 1) {
       if (!current[item]) current[item] = {}
