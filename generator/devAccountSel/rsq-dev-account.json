@@ -1,0 +1,24 @@
+{
+    "accounts": [
+        {
+            "username": "110110",
+            "password": "12345",
+            "desc": "请改写初始值"
+        },
+        {
+            "username": "911911",
+            "password": "12345",
+            "desc": "请改写初始值"
+        }
+    ],
+    "servers": [
+        {
+            "path": "/task",
+            "desc": "Beta版服务器"
+        },
+        {
+            "path": "/task2",
+            "desc": "正式版服务器"
+        }
+    ]
+}

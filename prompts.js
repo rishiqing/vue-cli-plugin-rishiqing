@@ -9,9 +9,10 @@ const path = require('path');
 module.exports = [
   {
     type: 'checkbox',
-    name: 'presetCodeList', // 需要预置哪些代码块
-    message: '需要预置哪些代码',
-    default: ['constants', 'services'],
+    // 需要预置哪些代码块
+    name: 'presetCodeList', 
+    message: '请选择需要预置的代码块',
+    default: ['constants', 'services', 'devAccountSel'],
     choices: [
       {
         name: 'constants',
@@ -20,6 +21,11 @@ module.exports = [
       {
         name: 'services',
         value: 'services'
+      },
+      // 账号服务器选择功能
+      {
+        name: 'devAccountSel',
+        value: 'devAccountSel'
       },
       {
         name: 'simditor style',
@@ -54,7 +60,7 @@ module.exports = [
   }, {
     type: 'input',
     name: 'domainName',
-    message: 'cdn域名',
+    message: 'CDN域名',
     default: 'res-front-cdn.timetask.cn',
     filter: (input) => {
       return input;
@@ -62,7 +68,7 @@ module.exports = [
   }, {
     type: 'input',
     name: 'baseUrl',
-    message: '项目地址前缀',
+    message: '设置项目地址前缀',
     default: 'test',
     filter: (input) => {
       return path.posix.join('/', input, '/');
@@ -70,12 +76,12 @@ module.exports = [
   }, {
     type: 'input',
     name: 'port',
-    message: '项目调试端口',
+    message: '设置项目调试端口',
     default: 3001,
     validate: (input) => {
       const p = Number(input);
       if (isNaN(p)) {
-        return '需要输入纯数字';
+        return '需要输入正整数';
       }
       return true;
     },

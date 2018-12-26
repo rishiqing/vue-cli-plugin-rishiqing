@@ -1,0 +1,109 @@
+/*
+ * @Author: TimZhang 
+ * @Date: 2018-12-26 20:50:37 
+ * @Last Modified by:   TimZhang 
+ * @Last Modified time: 2018-12-26 20:50:37 
+ */
+#accout-serve-sel-container {
+  display: none;
+  width: 800px;
+  height: 400px;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
+}
+
+.show-it {
+  display: block !important;
+}
+
+#accout-serve-sel-container ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: disc;
+  margin-left: 40px;
+  padding: 0;
+}
+
+.item-li {
+  list-style: none;
+  display: inline-block;
+  padding: 0 10px;
+  height: 32px;
+  line-height: 30px;
+  font-size: 16px;
+  background-color: hsla(220, 4%, 58%, 0.1);
+  border: 1px solid hsla(220, 4%, 58%, 0.2);
+  color: #909399;
+  border-radius: 4px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.selected-li {
+  color: #409eff;
+  background-color: rgba(64, 158, 255, 0.1);
+  border-color: rgba(64, 158, 255, 0.2);
+}
+
+.cookie-input {
+  background-color: #fff;
+  background-image: none;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: inherit;
+  height: 40px;
+  line-height: 40px;
+  outline: none;
+  padding: 0 15px;
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 90%;
+  margin-top: 1em;
+  margin-left: 40px;
+}
+
+#confirm-btn {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  transition: .1s;
+  font-weight: 500;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  &:hover {
+    background: #66b1ff;
+    border-color: #66b1ff;
+    color: #fff;
+  }
+}
