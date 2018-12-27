@@ -2,8 +2,6 @@
 # vue-cli-plugin-rishiqing
 > Vue CLI 3 的一个第三方插件，专用于初始化日事清相关的vue项目，方便统一维护和更新常用代码。
 
-&nbsp;
-
 
 
 ## 提供的功能
@@ -11,28 +9,61 @@
 * 添加默认的eslint配置；
 * 构建项目目录；
 
-&nbsp;
-
 
 
 ## 插件的安装
-通过`vue create`初始化项目后，你可以先添加插件，再`invoke`它，调用它的生成器：
+1. 通过`vue create`初始化项目后，你可以先添加插件，再`invoke`它，调用它的生成器：
 
 ```shell
 npm i vue-cli-plugin-rishiqing -D -d
 vue invoke vue-cli-plugin-rishiqing
 ```
-或者在初始化项目时直接调用：
+2. 通过预置preset配置，在创建工程时选择rishiqing插件：
+
+只要运行过`vue create`命令，就会在操作系统的用户文件夹下生成`.vuerc`文件，(`~/.vuerc`)，比如windows下通过下面的命令显示此目录：
 ```shell
-vue create --preset rishiqing/vue-cli-plugin-rishiqing your-project-name
+cd ~
+pwd
+```
+```shell
+/c/Users/Administrator  
+```
+将下面配置信息合并进`.vuerc`文件即可，之后再使用`vue create`就会自动安装 rishiqing 插件了。
+```json
+{
+  "packageManager": "npm",     // 示意用，本行无需合并
+  "presets": {
+    "rishiqing": {
+      "useConfigFiles": true,
+      "plugins": {
+        "@vue/cli-plugin-babel": {},
+        "@vue/cli-plugin-eslint": {
+          "config": "airbnb",
+          "lintOn": [
+            "commit"
+          ]
+        },
+        "vue-cli-plugin-rishiqing": {
+          "prompts": true
+        }
+      },
+      "router": true,
+      "vuex": true,
+      "cssPreprocessor": "sass"
+    }
+  }
+}
 ```
 
-&nbsp;
+3. 还可以通过`vue ui`打开 CLI 的 GUI,通过图形界面添加插件。
+
 
 
 
 ## preset 说明
-Vue CLI 3 在初始化一个项目的时候，可以提供一个预置选项，vue会根据这个预置选项提供的配置生成项目，免去在创建的时候，反复选择需要的功能。preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins-and-presets.html#presets)。在插件的根目录下有一个`preset.json`文件
+Vue CLI 3 在初始化一个项目的时候，可以提供一个预置选项，vue会根据这个预置选项提供的配置生成项目，免去在创建的时候，反复选择需要的功能。
+
+preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins-and-presets.html#presets)。在插件的根目录下有一个`preset.json`文件
 
 ```json
 {
@@ -65,8 +96,6 @@ Vue CLI 3 在初始化一个项目的时候，可以提供一个预置选项，v
 - [x] 安装 vuex；
 - [x] 使用sass作为css的预处理器；
 
-&nbsp;
-
 
 
 ## 可选的预置代码
@@ -76,7 +105,7 @@ Vue CLI 3 在初始化一个项目的时候，可以提供一个预置选项，v
 * 扩展webpack的代码在 `index.js` 里面
 
 
-### constants <font color=gray size=2>默认选中</font>
+### constants <font color="#00B51D" size="1" >默认选中</font>
 常量，在`src`下面创建一个`constants`文件夹，用于放置不变的数据。会在`src`下面创建这么一个目录结构:
 
 ```
@@ -93,21 +122,47 @@ Vue CLI 3 在初始化一个项目的时候，可以提供一个预置选项，v
 在webpack的ProvidePlugin插件里已经配置了一个公共变量，`R_URL`，指向`src/constants/url/index.js`，该变量已经在`.eslintrc.js`里配置成了公共变量。
 
 
-### services <font color=gray size=2>默认选中</font>
+### services <font color="#00B51D" size="1">默认选中</font>
 网络请求，使用axios。services依赖R_URL，所以要正常使用services，必须选中constants
 
 
-### devAccountSel <font color=gray size=2>默认选中</font>
+### devAccountSel <font color="#00B51D" size="1">默认选中</font>
 调试账号、web服务器切换功能，在生成的项目中，运行时，通过`Ctrl/command + Shift + l`按键，呼出账号切换界面,快速切换调试账号或web服务器。
 
-通过项目根目录下的`rsq-dev-account.json`文件配置相关信息。
+通过项目根目录下的`rsq-dev-account.json`文件配置相关信息：
 
+```json
+{
+    "accounts": [
+        {
+            "username": "110110",
+            "password": "12345",
+            "desc": "请改写初始值"
+        },
+        {
+            "username": "911911",
+            "password": "12345",
+            "desc": "请改写初始值"
+        }
+    ],
+    "servers": [
+        {
+            "path": "/task",
+            "desc": "Beta版服务器"
+        },
+        {
+            "path": "/task2",
+            "desc": "正式版服务器"
+        }
+    ]
+}
+```
 
-### simditor style <font color=gray size=2>默认未选中</font>
+### simditor style <font color="gray" size="1">默认未选中</font>
 simditor编辑器的样式代码，默认生成一个文件`src/styles/editor.scss`
 
 
-### sprites <font color=gray size=2>默认未选中</font>
+### sprites <font color="gray" size="1">默认未选中</font>
 雪碧图插件，雪碧图的原图都分类放在 `src/assets/images/original-sprites`下面。默认提供两组雪碧图：logo, third。雪碧图图片的名称必须遵守命名规则：
 
 一倍尺寸图: `picture-name.png`, 两倍尺寸图: `picture-name@2x.png`
@@ -116,7 +171,7 @@ simditor编辑器的样式代码，默认生成一个文件`src/styles/editor.sc
 
 还会在项目的根目录下生成文件夹`sprites/config`，用来放置生成雪碧图的配置文件。一组雪碧图，就需要一个独立的配置文件。以third雪碧图为例，它的配置文件为:
 
-```js
+​```js
 module.exports = {
   cwd: 'third', // 指定当前组雪碧图，在 src/assets/images/original-sprites 下的哪个文件夹下面
   glob: '**/*.*', // 一个匹配规则，用于匹配 src/assets/images/original-sprites/third 下面的图片名称，被匹配中的图片，就会生成到雪碧图里
@@ -126,7 +181,7 @@ module.exports = {
 
 放好原图，配置好配置文件之后，即可运行如下命令，生成雪碧图
 
-```shell
+​```shell
 npm run sprites
 ```
 
@@ -158,12 +213,14 @@ npm run sprites
 才能生成默认的雪碧图
 
 
-### xss <font color=gray size=2>默认未选中</font>
+### xss <font color="gray" size="1">默认未选中</font>
+
+
 跨站脚本攻击过滤，主要用于显示富文本，比如笔记打印，笔记分享，任务打印等等地方，需要在显示富文本之前，先进行过滤。
 该预置代码，会往vue里注入一个过滤器，`xss`
 
 
-### i18n <font color=gray size=2>默认未选中</font>
+### i18n <font color="gray" size="1">默认未选中</font>
 用于vue项目的国际化（vue-i18n），会在项目目录下的`src`创建一个如下的目录结构
 ```
 ├── i18n
@@ -181,51 +238,7 @@ npm run sprites
 2.使用方法可参考：demo.vue里面的代码（更多的使用请参考官文：http://kazupon.github.io/vue-i18n/guide/started.html）
 
 注意:
-目前此功能默认本地语言为cn，如需修改可去index.js里面去设置
-```js
-//整个index.js 暴露出去的东西将通过插件根目录的index.js(Service 插件)去处理，详情如下：
-//其中api.entryFile为webpcak的入口文件即项目中的main.js
-api.injectImports(api.entryFile, `import i18n from './i18n'`) //这个方法向项目的main.js 写入index.js暴露的东西
-api.injectRootOptions(api.entryFile, `i18n,`)                 //这个方法是用来将i18n挂载到vue实例上
-```
-index.js代码详情如下：
-```js
-import Vue from 'vue'
-import VueI18n from 'vue-i18n'
-Vue.use(VueI18n) //安装vue插件
-
-//通过webpack的require.contest()方法将languages文件夹中的所有后缀为.js文件名取到
-//（第二个参数为是否获取子目录的文件）
-
-const context = require.context('./languages', true, /\.js$/)
-const messages = {}
-
-//context.keys()将以数组的形式返回 
-//eg：["./cn/common.js", "./cn/todo.js","./en/common.js","./en/todo.js"]
-
-context.keys().forEach((path) => {
-  let list = path.split('/')
-  let current = messages
-  list.forEach((item, index) => {
-    if (index === 0) return
-    if (index < list.length - 1) {
-      if (!current[item]) current[item] = {}
-      current = current[item]
-    } else {
-      current[item.slice(0, -3)] = context(path).default
-    }
-  })
-})
-
-//暴露出一个 vuei18n实例 并添加一些配置项
-export default new VueI18n({
-  locale: 'cn',           //默认本地语言为`cn`
-  fallbackLocale: 'en',   //不设置本地语言将设置为‘en’
-  messages: messages      //语言包的数据
-})
-```
-
-&nbsp;
+目前此功能默认本地语言为cn，如需修改可在`i18n` 目录下的`index.js`里设置。
 
 
 
@@ -276,8 +289,6 @@ export default new VueI18n({
 ### pull_request_template.md
 提交pull request时的描述模板
 
-&nbsp;
-
 
 
 
@@ -300,7 +311,7 @@ export default new VueI18n({
 打包发布包时用到的cdn域名，默认是`res-front-cdn.timetask.cn`
 配置之后，.env.beta和.env.release里，后面可自己修改
 
-&nbsp;
+
 
 
 
@@ -380,7 +391,7 @@ if (false) {
 需要注意：
 有一些 eslint 的规则，可能需要在开发过程中调整，请及时反馈，方便统一加到eslint配置文件
 
-&nbsp;
+
 
 
 
@@ -449,4 +460,5 @@ import client from 'rishiqing/client'//比如需要使用lib中检测客户端�
 │   ├── views                              # 视图层，页面
 │   ├── App.vue                            # vue入口组件
 │   ├── main.js                            # 项目的入口文件
+├── rsq-dev-account.json                   # 配置调试账户、WEB服务器
 ```

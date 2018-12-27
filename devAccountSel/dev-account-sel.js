@@ -1,8 +1,8 @@
 /*
  * @Author: TimZhang 
  * @Date: 2018-12-26 20:50:29 
- * @Last Modified by:   TimZhang 
- * @Last Modified time: 2018-12-26 20:50:29 
+ * @Last Modified by: TimZhang
+ * @Last Modified time: 2018-12-27 15:33:19
  */
 import './dev-account-sel.scss';
 
@@ -37,7 +37,7 @@ class AccountServeSelector {
     // 插入选择界面
     document.body.innerHTML += theContainerHtml;
     // 最外层容器DOM
-    this.dMainContainer =  document.getElementById('accout-serve-sel-container');
+    this.dMainContainer = document.getElementById('accout-serve-sel-container');
     // 关闭按钮DOM
     this.dConfirmBtn = document.getElementById('confirm-btn');
     // 服务器 ul
@@ -58,14 +58,14 @@ class AccountServeSelector {
           this.hideSurface();
           return;
         }
-        
+
         // 显示界面
         this.isOpen = true;
         this.domAddClass(this.dMainContainer, 'show-it');
 
         // 读取 cookie 的设值
         let cookiFromLocal = this.getDevCookieFromLocal();
-        if (cookiFromLocal){
+        if(cookiFromLocal) {
           this.dCookieInput.value = cookiFromLocal;
           this.setCookie('debuggingCookie', cookiFromLocal, 5);
         }
@@ -83,7 +83,7 @@ class AccountServeSelector {
 
           // 根据 localStorage 内容标亮已选项目
           this.hightlightSelected();
-        });
+        }).catch(error => console.error(error));
       }
 
       // 上下键选择账号
@@ -102,7 +102,7 @@ class AccountServeSelector {
       }
 
       // 回车
-      if (e.which === 13) { 
+      if (e.which === 13) {
         this.hideSurface();
       }
 
@@ -120,12 +120,12 @@ class AccountServeSelector {
     });
 
     // 确认按钮事件
-    this.domBind(this.dConfirmBtn, 'click' ,(e) => {
+    this.domBind(this.dConfirmBtn, 'click', (e) => {
       this.hideSurface();
     });
   }
 
-  hideSurface () {
+  hideSurface() {
     this.domRemoveClass(this.dMainContainer, 'show-it');
     this.isOpen = false;
   }
@@ -134,9 +134,13 @@ class AccountServeSelector {
   getConfigData() {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open('get', 'rsq-dev-account.json');
+      xhr.open('get', '/fetch-local/rsq-dev-account.json');
       xhr.onload = function () {
-        resolve(JSON.parse(xhr.response));
+        if (xhr.status == 500) {
+          reject(JSON.parse(xhr.response).error);
+        } else {
+          resolve(JSON.parse(xhr.response));
+        }
       };
       xhr.onerror = function () {
         reject();
@@ -154,27 +158,27 @@ class AccountServeSelector {
                 <small class="account-desc">${item.desc}</small>
               </li>`
     }).join('');
-    
+
     this.dAccountUl.innerHTML = theHtml;
 
     // 绑定点击事件
-    let theCollection = document.querySelectorAll('.account-li');
-    for(let i = 0; i < theCollection.length; i++){
-      theCollection[i].addEventListener('click', (e) => {
+    let theCollection = this.dAccountUl.querySelectorAll('.account-li');
+    for(let i = 0; i < theCollection.length; i++) {
+      this.domBind(theCollection[i], 'click', (e) => {
         this.setSelectedAccItem(e.currentTarget);
-      }, false);
+      });
     }
   }
 
   // 高亮选中项，写入 localStorage,账户
-  setSelectedAccItem (theDom) {
-    let theAccName = theDom.getAttribute('data-username');
-    let theAccPassword = theDom.getAttribute('data-password');
+  setSelectedAccItem(theDom) {
+    let theAccName = theDom.dataset.username;
+    let theAccPassword = theDom.dataset.password;
     // 将选中项写入 localStorage
     this.setAccountToLocal(theAccName);
     this.setPasswordToLocal(theAccPassword);
     // 添加选中样式
-    let dSelectedOne = document.querySelector('.account-li.selected-li');
+    let dSelectedOne = this.dAccountUl.querySelector('.account-li.selected-li');
     dSelectedOne && this.domRemoveClass(dSelectedOne, 'selected-li');
     this.domAddClass(theDom, 'selected-li');
   }
@@ -191,75 +195,75 @@ class AccountServeSelector {
     this.dServerUl.innerHTML = theHtml;
 
     // 绑定点击事件
-    let theCollection = document.querySelectorAll('.server-li');
-    for (let i = 0; i < theCollection.length; i++) {
-      theCollection[i].addEventListener('click', (e) => {
+    let theCollection = this.dServerUl.querySelectorAll('.server-li');
+    for(let i = 0; i < theCollection.length; i++) {
+      this.domBind(theCollection[i], 'click', (e) => {
         this.setSelectedServeItem(e.currentTarget);
-      }, false);
+      });
     }
   }
 
   // 高亮选中项，写入 localStorage,账户
   setSelectedServeItem(theDom) {
-    let thePath = theDom.getAttribute('data-path');
+    let thePath = theDom.dataset.path;
     // 将选中项写入 localStorage
     this.setServerPathToLocal(thePath);
     // 添加选中样式
-    let dSelectedOne = document.querySelector('.server-li.selected-li');
+    let dSelectedOne = this.dServerUl.querySelector('.server-li.selected-li');
     dSelectedOne && this.domRemoveClass(dSelectedOne, 'selected-li');
     this.domAddClass(theDom, 'selected-li');
   }
 
   // 高亮 localStorage 中的已选项
-  hightlightSelected () {
+  hightlightSelected() {
     let accSelected = this.getAccountFromLocal();
-    if (accSelected) {
-      let theDom = document.querySelector('li.account-li[data-username="' + accSelected + '"]');
+    if(accSelected) {
+      let theDom = this.dAccountUl.querySelector('li.account-li[data-username="' + accSelected + '"]');
       theDom && this.domAddClass(theDom, 'selected-li');
     }
 
     let serveSelected = this.getServerPathFromLocal();
-    if (serveSelected) {
-      let theDom = document.querySelector('li.server-li[data-path="' + serveSelected + '"]');
+    if(serveSelected) {
+      let theDom = this.dServerUl.querySelector('li.server-li[data-path="' + serveSelected + '"]');
       theDom && this.domAddClass(theDom, 'selected-li');
     }
   }
 
   // 账号上下键选择
-  prevAccount () {
+  prevAccount() {
     let preDom = this.getCurrentAccountItem().previousElementSibling;
     preDom && this.setSelectedAccItem(preDom);
   }
-  nextAccount () {
+  nextAccount() {
     let nextDom = this.getCurrentAccountItem().nextElementSibling;
     nextDom && this.setSelectedAccItem(nextDom);
   }
   getCurrentAccountItem() {
-    let dCurrentOne = document.querySelector('.account-li.selected-li');
+    let dCurrentOne = this.dAccountUl.querySelector('.account-li.selected-li');
     if (!dCurrentOne) {
       // 没有已选中的,就选第一个
-      dCurrentOne = document.querySelector('.account-li');
+      dCurrentOne = this.dAccountUl.querySelector('.account-li');
       dCurrentOne && this.setSelectedAccItem(dCurrentOne);
     }
     if (dCurrentOne) {
       return dCurrentOne;
     }
   }
-  
+
   // 服务器左右按键选择
-  prevServe () {
+  prevServe() {
     let preDom = this.getCurrentServeItem().previousElementSibling;
     preDom && this.setSelectedServeItem(preDom);
   }
-  nextServe () {
+  nextServe() {
     let nextDom = this.getCurrentServeItem().nextElementSibling;
     nextDom && this.setSelectedServeItem(nextDom);
   }
-  getCurrentServeItem () {
-    let dCurrentOne = document.querySelector('.server-li.selected-li');
+  getCurrentServeItem() {
+    let dCurrentOne = this.dServerUl.querySelector('.server-li.selected-li');
     if (!dCurrentOne) {
       // 没有已选中的,就选第一个
-      dCurrentOne = document.querySelector('.server-li');
+      dCurrentOne = this.dServerUl.querySelector('.server-li');
       dCurrentOne && this.setSelectedServeItem(dCurrentOne);
     }
     if (dCurrentOne) {
@@ -302,7 +306,7 @@ class AccountServeSelector {
   // DOM 操作函数
   domBind(obj, ev, fn) {
     if (obj.addEventListener) {
-      obj.addEventListener(ev, fn, false);
+      obj.addEventListener(ev, fn);
     } else {
       obj.attachEvent('on' + ev, function () {
         fn.call(obj);
@@ -315,7 +319,7 @@ class AccountServeSelector {
       obj.className = addClass;
       return;
     }
-    
+
     let originClass = obj.className.split(' ');
     for (let i = 0; i < originClass.length; i++) {
       if (originClass[i] === addClass) return;

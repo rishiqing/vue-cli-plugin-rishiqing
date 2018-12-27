@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:16:05
  * @Last Modified by: TimZhang
- * @Last Modified time: 2018-12-26 20:52:40
+ * @Last Modified time: 2018-12-27 15:31:40
 */
 const webpack = require('webpack');
 const Sprites = require('./sprites');
@@ -67,10 +67,16 @@ module.exports = (api, projectOptions) => {
 
       // 读取 rsq-dev-account.json 中设置的账号服务器信息
       api.configureDevServer((app, server) => {
-        app.use(pluginConfig.baseUrl + 'rsq-dev-account.json', (req, res) => {
+        app.use('/fetch-local/rsq-dev-account.json', (req, res) => {
           let theFilePath = api.resolve('rsq-dev-account.json');
-          let theFileStr = fs.readFileSync(theFilePath, 'utf8');
-          res.json(JSON.parse(theFileStr));
+          try {
+            let theFileStr = fs.readFileSync(theFilePath, 'utf8');
+            res.json(JSON.parse(theFileStr));
+          } catch (error) {
+            console.error("读取rsq-dev-account.json文件报错！");
+            console.error(error);
+            res.status(500).send({ error: '服务端读取rsq-dev-account.json文件报错！' });
+          }
         });
       });
     }

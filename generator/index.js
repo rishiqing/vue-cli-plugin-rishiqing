@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
  * @Last Modified by: TimZhang
- * @Last Modified time: 2018-12-26 21:34:31
+ * @Last Modified time: 2018-12-27 14:05:10
 */
 const fs = require('fs');
 
@@ -58,8 +58,7 @@ module.exports = (api, options, rootOptions) => {
             },
             define: {
               __DEV__: makeJSOnlyValue(`process.env.NODE_ENV === 'development'`)
-            },
-            baseUrl: makeJSOnlyValue('process.env.BASE_URL')
+            }
           }
         }
       }
