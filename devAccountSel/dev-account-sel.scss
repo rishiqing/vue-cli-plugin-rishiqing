@@ -1,28 +1,33 @@
 /*
  * @Author: TimZhang 
  * @Date: 2018-12-26 20:50:37 
- * @Last Modified by:   TimZhang 
- * @Last Modified time: 2018-12-26 20:50:37 
+ * @Last Modified by: TimZhang
+ * @Last Modified time: 2018-12-28 14:58:44
  */
 #accout-serve-sel-container {
   display: none;
   width: 800px;
-  height: 400px;
+  height: 380px;
   position: fixed;
-  top: 70px;
+  top: 50px;
   left: 0;
   right: 0;
   margin: 0 auto;
-  padding: 15px;
+  padding: 25px;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
+  overflow: auto;
 }
 
 .show-it {
   display: block !important;
 }
 
-#accout-serve-sel-container ul {
+.not-scroll {
+    overflow: hidden !important;
+}
+
+#accout-serve-sel-container ul.server-ul {
   display: flex;
   flex-wrap: wrap;
   list-style-type: disc;
@@ -32,10 +37,9 @@
 
 .item-li {
   list-style: none;
-  display: inline-block;
   padding: 0 10px;
-  height: 32px;
-  line-height: 30px;
+  height: 42px;
+  line-height: 40px;
   font-size: 16px;
   background-color: hsla(220, 4%, 58%, 0.1);
   border: 1px solid hsla(220, 4%, 58%, 0.2);
@@ -48,6 +52,13 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.server-li {
+  display: inline;
+}
+.account-li {
+  width: 40%;
 }
 
 .selected-li {
@@ -76,7 +87,6 @@
 }
 
 #confirm-btn {
-  display: inline-block;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
@@ -98,9 +108,9 @@
   color: #fff;
   background-color: #409eff;
   border-color: #409eff;
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
+  position: relative;
+  float: right;
+  margin-top: 20px;
   &:hover {
     background: #66b1ff;
     border-color: #66b1ff;
