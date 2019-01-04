@@ -2,9 +2,12 @@
  * @Author: TimZhang 
  * @Date: 2018-12-26 20:50:29 
  * @Last Modified by: TimZhang
- * @Last Modified time: 2018-12-28 14:58:29
+ * @Last Modified time: 2019-01-04 15:36:14
  */
 import './dev-account-sel.scss';
+
+// 配置文件请求路径, 需要与 index.js 文件中 api.configureDevServer 方法中路径一直
+const CONFIG_FILE_URL = '/fetch-local/rsq-dev-account.json';
 
 const LOCALSTORAGE_ACCOUNT_KEY = 'dev-account-username';
 const LOCALSTORAGE_PASSWORD_KEY = 'dev-account-password';
@@ -131,7 +134,7 @@ class AccountServeSelector {
   getConfigData() {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open('get', '/fetch-local/rsq-dev-account.json');
+      xhr.open('get', CONFIG_FILE_URL);
       xhr.onload = function () {
         if (xhr.status == 500) {
           reject(JSON.parse(xhr.response).error);
