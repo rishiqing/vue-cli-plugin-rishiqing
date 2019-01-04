@@ -2,11 +2,11 @@
  * @Author: TimZhang 
  * @Date: 2018-12-26 20:50:29 
  * @Last Modified by: TimZhang
- * @Last Modified time: 2019-01-04 15:36:14
+ * @Last Modified time: 2019-01-04 15:39:17
  */
 import './dev-account-sel.scss';
 
-// 配置文件请求路径, 需要与 index.js 文件中 api.configureDevServer 方法中路径一直
+// 配置文件请求路径, 需要与 index.js 文件中 api.configureDevServer 方法中路径一致
 const CONFIG_FILE_URL = '/fetch-local/rsq-dev-account.json';
 
 const LOCALSTORAGE_ACCOUNT_KEY = 'dev-account-username';
