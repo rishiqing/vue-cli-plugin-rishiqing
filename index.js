@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:16:05
  * @Last Modified by: TimZhang
- * @Last Modified time: 2018-12-27 15:31:40
+ * @Last Modified time: 2019-01-17 15:09:16
 */
 const webpack = require('webpack');
 const Sprites = require('./sprites');
@@ -17,6 +17,8 @@ const provideConfigMap = {
 };
 
 module.exports = (api, projectOptions) => {
+  // 获取对本插件的配置信息
+  // 写在项目 vue.config.js 文件中, pluginOptions 属性
   const pluginConfig = (projectOptions.pluginOptions || {}).rishiqing || {};
 
   api.chainWebpack(config => {
@@ -58,7 +60,7 @@ module.exports = (api, projectOptions) => {
 
     // `调试账户选择`功能所需的脚本
     if (process.env.NODE_ENV === 'development') {
-      if (pluginConfig.devAccountSel) {
+      if (pluginConfig.enableDevAccountSel) {
         config
           .entry('app')
           .prepend(path.join(__dirname, 'devAccountSel', 'dev-account-sel.js'))

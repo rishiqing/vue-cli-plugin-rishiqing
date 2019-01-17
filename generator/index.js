@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
  * @Last Modified by: TimZhang
- * @Last Modified time: 2018-12-27 14:05:10
+ * @Last Modified time: 2019-01-17 15:09:38
 */
 const fs = require('fs');
 
@@ -71,7 +71,7 @@ module.exports = (api, options, rootOptions) => {
       vue: {
         pluginOptions: {
           rishiqing: {
-            devAccountSel: true
+            enableDevAccountSel: true
           }
         }
       }
