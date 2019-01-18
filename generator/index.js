@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
  * @Last Modified by: TimZhang
- * @Last Modified time: 2019-01-17 15:09:38
+ * @Last Modified time: 2019-01-17 15:36:32
 */
 const fs = require('fs');
 
@@ -39,7 +39,8 @@ module.exports = (api, options, rootOptions) => {
   api.extendPackage({
     vue: {
       lintOnSave: false,
-      baseUrl: makeJSOnlyValue('process.env.BASE_URL'),
+      // baseUrl Deprecated since Vue CLI 3.3, 使用 publicPath 替代
+      publicPath: makeJSOnlyValue('process.env.BASE_URL'),
       devServer: {
         port: makeJSOnlyValue('process.env.PORT || 3001')
       },
@@ -48,6 +49,7 @@ module.exports = (api, options, rootOptions) => {
     }
   });
 
+  // 向 vue.config.js 中写入本插件的 配置信息
   if (options.presetCodeList.includes('constants')) {
     api.extendPackage({
       vue: {
