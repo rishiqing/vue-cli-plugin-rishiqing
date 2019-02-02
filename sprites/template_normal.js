@@ -1,31 +1,35 @@
+/* eslint-disable camelcase */
 class Template_Normal {
-  constructor (type, options) {
-    this.type = type;
-    this.options = options;
+  constructor(type, options) {
+    this.type = type
+    this.options = options
   }
+
   // drop last indentation
-  dli (s) {
-    const lines = s.split('\n').filter(s => s.trim().length);
-    const lastIndentLength = /^\s*/.exec(lines[lines.length - 1])[0].length;
+  // eslint-disable-next-line class-methods-use-this
+  dli(s) {
+    const lines = s.split('\n').filter(item => item.trim().length)
+    const lastIndentLength = /^\s*/.exec(lines[lines.length - 1])[0].length
     return s
       .split('\n')
       .map(line => line.slice(lastIndentLength))
-      .join('\n');
+      .join('\n')
   }
-  getTemplate () {
-    return ((data) => {
-      return this.generate(data);
-    }).bind(this);
+
+  getTemplate() {
+    return (data => this.generate(data))
   }
-  generate (data) {
-    const a = this.blockSprites(data);
-    const b = this.blockSpritesheet(data);
-    const c = this.blockSpriteFunctions(data);
-    const d = this.blockSpritesheelFunctions(data);
-    return a + '\n' + b + '\n' + c + '\n' + d;
+
+  generate(data) {
+    const a = this.blockSprites(data)
+    const b = this.blockSpritesheet(data)
+    const c = this.blockSpriteFunctions(data)
+    const d = this.blockSpritesheelFunctions(data)
+    return `${a}\n${b}\n${c}\n${d}`
   }
-  blockSprites (data, needComment = true) {
-    const type = this.type;
+
+  blockSprites(data, needComment = true) {
+    const type = this.type
     const comment = `
 /*
   图标名列表：
@@ -36,32 +40,35 @@ class Template_Normal {
 
   这个只在未配置retina的时候，@include ${type}-sprite(图标名), 来生成单个图标的css代码
 */
-    `;
+    `
     const sprites = data.sprites
       .map(sprite => this.dli(`
         $${sprite.name}: (${sprite.px.x}, ${sprite.px.y}, ${sprite.px.offset_x}, ${sprite.px.offset_y}, ${sprite.px.width}, ${sprite.px.height}, ${sprite.px.total_width}, ${sprite.px.total_height}, '${sprite.escaped_image}', '${sprite.name}');
       `))
-      .join('');
-    return needComment ? comment + '\n' + sprites : sprites;
+      .join('')
+    return needComment ? `${comment}\n${sprites}` : sprites
   }
-  blockSpritesheet (data) {
-    const type = this.type;
+
+  blockSpritesheet(data) {
+    const type = this.type
     const block_sprites_name = data.sprites
       .map(sprite => `$${sprite.name}`)
-      .join(', ');
+      .join(', ')
 
-    const spritesheet = data.spritesheet;
+    const spritesheet = data.spritesheet
     const block_spritesheet = this.dli(`
       $${type}-spritesheet-width: ${spritesheet.px.width};
       $${type}-spritesheet-height: ${spritesheet.px.height};
       $${type}-spritesheet-image: '${spritesheet.escaped_image}';
       $${type}-spritesheet-sprites: (${block_sprites_name}); // 图标名的组合，可以 @include ${type}-sprites($${type}-spritesheet-sprites),生成所有图标的css代码
       $${type}-spritesheet: (${spritesheet.px.width}, ${spritesheet.px.height}, '${spritesheet.escaped_image}', $${type}-spritesheet-sprites);
-    `);
-    return block_spritesheet;
+    `)
+    return block_spritesheet
   }
-  blockSpriteFunctions (data) {
-    const type = this.type;
+
+  // eslint-disable-next-line no-unused-vars
+  blockSpriteFunctions(data) {
+    const type = this.type
     const block_sprite_functions = this.dli(`
       @mixin ${type}-sprite-width($sprite) {
         width: nth($sprite, 5);
@@ -88,11 +95,13 @@ class Template_Normal {
         @include ${type}-sprite-width($sprite);
         @include ${type}-sprite-height($sprite);
       }
-    `);
-    return block_sprite_functions;
+    `)
+    return block_sprite_functions
   }
-  blockSpritesheelFunctions (data) {
-    const type = this.type;
+
+  // eslint-disable-next-line no-unused-vars
+  blockSpritesheelFunctions(data) {
+    const type = this.type
     const block_spritesheel_functions = this.dli(`
       /*
         使用 @include ${type}-sprites($${type}-spritesheet-sprites)，即可生成所有图标的css代码
@@ -105,9 +114,9 @@ class Template_Normal {
           }
         }
       }
-    `);
-    return block_spritesheel_functions;
+    `)
+    return block_spritesheel_functions
   }
 }
 
-module.exports = Template_Normal;
+module.exports = Template_Normal

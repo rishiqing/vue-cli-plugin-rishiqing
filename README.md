@@ -157,6 +157,16 @@ preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins
     ]
 }
 ```
+选中后，会将账户、服务器信息以及cookie值写入`localStorage`中，通过下面的键名获取对应的值：
+```
+dev-account-username: 用户名
+dev-account-password: 密码
+dev-server-path: 服务器路径
+dev-cookie: cookie值
+```
+
+同时会将cookie值写入cookie中，可以通过cookie的键名获取cookie，键名为: `debuggingCookie`。
+
 
 ### simditor style <font color="gray" size="1">默认未选中</font>
 simditor编辑器的样式代码，默认生成一个文件`src/styles/editor.scss`

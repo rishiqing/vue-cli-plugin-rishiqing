@@ -1,11 +1,13 @@
+/* eslint-disable import/no-unresolved */
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+
 Vue.use(VueI18n)
 
 const context = require.context('./languages', true, /\.js$/)
-let messages = {}
+const messages = {}
 context.keys().forEach((path) => {
-  let list = path.split('/')
+  const list = path.split('/')
   let current = messages
   list.forEach((item, index) => {
     if (index === 0) return
@@ -21,5 +23,5 @@ context.keys().forEach((path) => {
 export default new VueI18n({
   locale: 'cn',
   fallbackLocale: 'en',
-  messages: messages
+  messages,
 })

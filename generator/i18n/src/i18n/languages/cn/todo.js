@@ -1,3 +1,3 @@
 export default {
-  company : '日事清'
+  company: '日事清',
 }

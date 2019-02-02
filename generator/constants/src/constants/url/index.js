@@ -1,7 +1,9 @@
 import * as path from 'path'
 
 let BASE_URL = '/task'
+// eslint-disable-next-line no-undef
 if (__DEV__) {
+  // eslint-disable-next-line no-undef
   const serverPath = window.localStorage.getItem('dev-server-path')
   BASE_URL = serverPath || '/task'
 }
