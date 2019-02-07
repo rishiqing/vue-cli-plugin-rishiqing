@@ -18,6 +18,12 @@
 npm i vue-cli-plugin-rishiqing -D -d
 vue invoke vue-cli-plugin-rishiqing
 ```
+
+或者直接安装并调用它：
+```shell
+vue add rishiqing
+```
+
 2. 通过预置preset配置，在创建工程时选择rishiqing插件：
 
 只要运行过`vue create`命令，就会在操作系统的用户文件夹下生成`.vuerc`文件，(`~/.vuerc`)，比如windows下通过下面的命令显示此目录：
@@ -26,7 +32,7 @@ cd ~
 pwd
 ```
 ```shell
-/c/Users/Administrator  
+/c/Users/Administrator
 ```
 将下面配置信息合并进`.vuerc`文件即可，之后再使用`vue create`就会自动安装 rishiqing 插件了。
 ```json
@@ -426,7 +432,7 @@ export default new Router({
 ### 关于es9的promise.finally的使用的浏览器兼容问题
 + 最新的@vue-cli 已经默认的内置了Promise finally polyfill，所以可以在项目中放心使用
 
-### 插件中为webpack预置的第三方插件：CaseSensitivePathsPlugin 
+### 插件中为webpack预置的第三方插件：CaseSensitivePathsPlugin
 + caseSensitivePathsPlugin的作用：此插件用于检测在项目中用于区分大小写的路径，若出现路径引用与实际的路径有大小写的误差将会在控制台报错并且打印错误日志
 
 ### 插件中内置的一些方法的使用方式：（方法的源码在插件源码目录的lib文件中）

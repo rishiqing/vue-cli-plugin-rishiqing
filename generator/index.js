@@ -29,10 +29,12 @@ module.exports = (api, options, rootOptions) => {
     },
     devDependencies: {
       'rishiqing-deploy': '^1.0.4',
-      'webpack-spritesmith': '^0.5.1',
       'sass-resources-loader': '^1.3.3',
       'resolve-url-loader': '^2.3.0',
-      'case-sensitive-paths-webpack-plugin': '^2.1.2',
+      // 'case-sensitive-paths-webpack-plugin': '^2.1.2',
+      // 'memory-fs': '^0.4.1',
+      // "require-all": '^3.0.0',
+      // 'webpack-spritesmith': '^0.5.1',
     },
   })
 
@@ -57,6 +59,7 @@ module.exports = (api, options, rootOptions) => {
         pluginOptions: {
           rishiqing: {
             provide: {
+              // 设为`false`,则不添加此全局模块
               R_URL: true,
             },
             define: {

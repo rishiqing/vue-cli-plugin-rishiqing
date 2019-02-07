@@ -83,7 +83,7 @@ module.exports = [
     default: 3001,
     validate: (input) => {
       const p = Number(input)
-      if (Math.isNaN(p)) {
+      if (Number.isNaN(p)) {
         return '需要输入正整数'
       }
       return true
