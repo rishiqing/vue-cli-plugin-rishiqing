@@ -5,6 +5,7 @@
  * @Last Modified by: TimZhang
  * @Last Modified time: 2019-02-02 10:10:59
 */
+// eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack')
 const MemoryFS = require('memory-fs')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
