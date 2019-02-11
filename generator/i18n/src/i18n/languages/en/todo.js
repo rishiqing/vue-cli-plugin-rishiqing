@@ -1,3 +1,3 @@
 export default {
-  company : 'rishiqing.com'
+  company: 'rishiqing.com',
 }

@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-undef */
 import axios from 'axios'
 
 const TIME_OUT = 30000 // 默认 30s的超时时间

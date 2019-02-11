@@ -1,8 +1,9 @@
+/* eslint-disable import/no-unresolved */
 import Vue from 'vue'
 import whiteList from '@/constants/whiteList'
 import xss from 'xss'
 
-Vue.filter('xss', function (content) {
+Vue.filter('xss', (content) => {
   if (typeof content !== 'string') return content
   const wl = {} // _whiteList
   whiteList.tags.forEach((item) => {

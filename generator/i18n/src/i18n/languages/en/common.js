@@ -1,4 +1,4 @@
 export default {
-  hello:'hello Nanjing!',
-  welcome:'welcome to nanjing'
+  hello: 'hello Nanjing!',
+  welcome: 'welcome to nanjing',
 }

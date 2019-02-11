@@ -17,7 +17,7 @@ module.exports = (api, config) => {
       sourceMap: false,
       resources: [
         api.resolve('src/styles/common-resources.scss'),
-      ]
+      ],
     })
   config.module
     .rule('scss')
@@ -28,10 +28,10 @@ module.exports = (api, config) => {
       sourceMap: false,
       resources: [
         api.resolve('src/styles/common-resources.scss'),
-      ]
+      ],
     })
 
-  // 添加 resolve-url-loader 
+  // 添加 resolve-url-loader
   // 用来解析scss代码里的url里指定的静态文件，如图片和字体文件
   config.module
     .rule('scss')
@@ -41,7 +41,7 @@ module.exports = (api, config) => {
     .loader('resolve-url-loader')
     .options({
       debug: false,
-      root: api.resolve('src')
+      root: api.resolve('src'),
     })
   config.module
     .rule('scss')
@@ -51,7 +51,7 @@ module.exports = (api, config) => {
     .loader('resolve-url-loader')
     .options({
       debug: true,
-      root: api.resolve('src')
+      root: api.resolve('src'),
     })
 
   // 修改 sass-loader 的 options
@@ -60,18 +60,14 @@ module.exports = (api, config) => {
     .rule('scss')
     .oneOf('vue')
     .use('sass-loader')
-    .tap(options => {
-      return Object.assign({}, options, {
-        sourceMap: true
-      });
-    })
+    .tap(options => Object.assign({}, options, {
+      sourceMap: true,
+    }))
   config.module
     .rule('scss')
     .oneOf('normal')
     .use('sass-loader')
-    .tap(options => {
-      return Object.assign({}, options, {
-        sourceMap: true
-      });
-    })
+    .tap(options => Object.assign({}, options, {
+      sourceMap: true,
+    }))
 }
