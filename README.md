@@ -133,9 +133,11 @@ preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins
 
 
 ### devAccountSel <font color="#00B51D" size="1">默认选中</font>
-调试账号、web服务器切换功能，在生成的项目中，运行时，通过`Ctrl/command + Shift + l`按键，呼出账号切换界面,快速切换调试账号或web服务器。
+提供调试账号、web服务器切换功能，在生成的项目中，运行时，通过`Ctrl/command + Shift + l`按键，呼出账号切换界面,快速切换调试账号或web服务器。
 
-通过项目根目录下的`rsq-dev-account.json`文件配置相关信息：
+用法：
+
+在项目根目录下的`rsq-dev-account.json`文件中配置相关信息：
 
 ```json
 {
@@ -163,7 +165,7 @@ preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins
     ]
 }
 ```
-选中后，会将账户、服务器信息以及cookie值写入`localStorage`中，通过下面的键名获取对应的值：
+项目运行后，通过`Ctrl/command + Shift + l`按键，呼出账号切换界面；可以通过方向键进行选择，也可以通过鼠标点击选择；选中后，会将账户、服务器信息以及cookie值写入`localStorage`中，通过下面的键名获取对应的值：
 ```
 dev-account-username: 用户名
 dev-account-password: 密码
@@ -179,15 +181,27 @@ simditor编辑器的样式代码，默认生成一个文件`src/styles/editor.sc
 
 
 ### sprites <font color="gray" size="1">默认未选中</font>
-雪碧图插件，雪碧图的原图都分类放在 `src/assets/images/original-sprites`下面。默认提供两组雪碧图：logo, third。雪碧图图片的名称必须遵守命名规则：
+提供雪碧图自动生成功能。
 
-一倍尺寸图: `picture-name.png`, 两倍尺寸图: `picture-name@2x.png`
+用法：
 
-只有遵守命名规则，才能正常生成
+##### 1.将需要合成的图片按文件夹分组放在`src/assets/images/original-sprites` 路径下。
 
-还会在项目的根目录下生成文件夹`sprites/config`，用来放置生成雪碧图的配置文件。一组雪碧图，就需要一个独立的配置文件。以third雪碧图为例，它的配置文件为:
+默认提供两组待合成图片：logo, third，可以参考其命名方式，原始图片命名遵循以下规范：
 
-​```js
+一倍尺寸图: `picture-name.png`
+
+两倍尺寸图: `picture-name@2x.png`
+
+只有遵守命名规则，才能正常生成。
+
+##### 2.配置配置文件
+
+配置文件需要放置在`sprites/config`路径下，有几个分组，就写几个同名的配置文件，请参考示例。
+
+配置文件内容，以third分组展示示例如下:
+
+```js
 module.exports = {
   cwd: 'third', // 指定当前组雪碧图，在 src/assets/images/original-sprites 下的哪个文件夹下面
   glob: '**/*.*', // 一个匹配规则，用于匹配 src/assets/images/original-sprites/third 下面的图片名称，被匹配中的图片，就会生成到雪碧图里
@@ -195,42 +209,36 @@ module.exports = {
 }
 ```
 
-放好原图，配置好配置文件之后，即可运行如下命令，生成雪碧图
 
-​```shell
-npm run sprites
-```
-
-雪碧图的生成结果有两个，一个是合成的雪碧图，一个是scss代码。
-
-* 合成的雪碧图放到了 `src/assets/images/sprites` 下面
-* scss代码放到了 `src/styles/sprites` 下面
-
-生成的scss代码，里面全是变量和mixin，可在 `src/styles/common-resources.scss` 里引入，这样就可以方便在.vue组件里，或者在其他scss文件里使用生成的变量和mixin，例如：
-
-```sass
-// src/styles/common-resources.scss
-@import "sprites/third-sprite";
-```
-
-```sass
-// 在其他scss文件或者.vue组件的style里面
-.third-qq {
-  @include third-retina-sprite($icon-third-qq-group);
-}
-```
-
-另外需要注意，如果在`vue invoke`的时候，选中了`sprites`，需要在`invoke`结束之后，手动执行
+##### 3.运行命令生成雪碧图以及相应的`scss`代码
 
 ```shell
 npm run sprites
 ```
 
-才能生成默认的雪碧图
+```
+* 合成的雪碧图生成在 `src/assets/images/sprites` 路径下
+* scss代码生成在 `src/styles/sprites` 下
+
+生成的scss代码，全是sass变量和mixin，可在 `src/styles/common-resources.scss` 里引入，这样就可以方便在.vue组件里，或者在其他scss文件里使用生成的变量和mixin，例如：
+```
+
+```sass
+// src/styles/common-resources.scss 中
+@import "sprites/third-sprite"
+```
+
+
+
+```sass
+// 在其他scss文件或者.vue组件的`style`中
+.third-qq {
+  @include third-retina-sprite($icon-third-qq-group);
+}
+```
 
 
 ### xss <font color="gray" size="1">默认未选中</font>
-
 
 跨站脚本攻击过滤，主要用于显示富文本，比如笔记打印，笔记分享，任务打印等等地方，需要在显示富文本之前，先进行过滤。
 该预置代码，会往vue里注入一个过滤器，`xss`
@@ -263,7 +271,7 @@ npm run sprites
 ### sass-resources-loader
 一个webpack loader, 自动往scss文件里引入我们提前配置好的文件.
 
-生成一个文件`src/styles/common-resources.scss`，这个文件已经在`sass-resources-loader`的配置项里被加载，所以不需要再在任何地方引入.可以在这个文件里引入sass的公共变量和mixin。如雪碧图生成的scss代码，就可以在这里引入，然后就方便在.vue文件和其他scss文件里使用了
+生成一个文件`src/styles/common-resources.scss`，这个文件已经在`sass-resources-loader`的配置项里被加载，所以不需要再在任何地方引入，可以在这个文件里引入sass的公共变量和mixin。如雪碧图生成的scss代码，就可以在这里引入，然后就方便在.vue文件和其他scss文件里使用了
 
 需要注意：
 * 这个文件，就算没有引入任何代码，也不要删除，不然在构建的时候会报错
