@@ -31,6 +31,8 @@ module.exports = (api, options, rootOptions) => {
       'rishiqing-deploy': '^1.0.4',
       'sass-resources-loader': '^1.3.3',
       'resolve-url-loader': '^2.3.0',
+      'sass-loader': '^7.1.0',
+      'node-sass': '^4.11.0',
       // 'case-sensitive-paths-webpack-plugin': '^2.1.2',
       // 'memory-fs': '^0.4.1',
       // "require-all": '^3.0.0',
