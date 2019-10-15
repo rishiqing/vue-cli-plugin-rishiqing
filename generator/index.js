@@ -25,16 +25,13 @@ module.exports = (api, options, rootOptions) => {
     scripts: {
       'build-beta': 'vue-cli-service build --mode beta',
       'build-release': 'vue-cli-service build --mode release',
-      deploy: "rishiqing-deploy --config='.rishiqing-deploy.yml'",
+      deploy: 'rishiqing-deploy',
+      start: 'vue-cli-service serve',
     },
     devDependencies: {
-      'rishiqing-deploy': '^1.0.4',
+      'rishiqing-deploy': '^2.0.9',
       'sass-resources-loader': '^1.3.3',
       'resolve-url-loader': '^2.3.0',
-      // 'case-sensitive-paths-webpack-plugin': '^2.1.2',
-      // 'memory-fs': '^0.4.1',
-      // "require-all": '^3.0.0',
-      // 'webpack-spritesmith': '^0.5.1',
     },
   })
 
@@ -46,6 +43,11 @@ module.exports = (api, options, rootOptions) => {
       publicPath: makeJSOnlyValue('process.env.BASE_URL'),
       devServer: {
         port: makeJSOnlyValue('process.env.PORT || 3001'),
+        proxy: {
+          '/task': {
+            target: 'https://www.rishiqing.com',
+          },
+        },
       },
       // 将lib文件夹下的代码进行babel转化——modify cwp
       transpileDependencies: ['vue-cli-plugin-rishiqing'],
@@ -121,10 +123,31 @@ module.exports = (api, options, rootOptions) => {
     api.injectRootOptions(api.entryFile, 'i18n,')
   }
 
+  if (options.presetCodeList.includes('rishiqingSingleSpa')) {
+    api.extendPackage({
+      dependencies: {
+        '@rishiqing/kite-design': '^0.0.35',
+        // '@rishiqing/sdk': '0.0.1',
+        'vue-rx': '^6.2.0',
+        // axios: 'latest',
+      },
+      eslintConfig: {
+        globals: {
+          RISHIQING_SINGLE_SPA: true,
+          ROUTER_BASE: true,
+        },
+      },
+      css: {
+        extract: false,
+      },
+    })
+  }
+
   // .eslintrc.js 配置
   const eslintGlobals = {
     // 默认把__DEV__加进去
     __DEV__: true,
+    KITE_DESIGN_THEME_COLOR: true,
   }
 
   if (options.presetCodeList.includes('constants')) {
@@ -148,22 +171,19 @@ module.exports = (api, options, rootOptions) => {
 
   api.postProcessFiles((files) => {
     if (files['.gitignore']) {
-      files['.gitignore'] += '\n# rishiqing-deploy config file\n'
-      files['.gitignore'] += '.rishiqing-deploy.yml\n'
+      files['.gitignore'] += '\n'
       // 忽略调试账号配置文件
       files['.gitignore'] += 'rsq-dev-account.json\n'
     }
-
-    // 替换favicon
-    if (files['public/index.html']) {
-      files['public/index.html'] = files['public/index.html'].replace(/<%= BASE_URL %>favicon\.ico/, '//res-front-cdn.timetask.cn/common/img/web-icon/icon.png')
-    }
   })
+
+  if (options.presetCodeList.includes('init')) {
+    // 先渲染默认的模板文件
+    api.render('./template', Object.assign({}, options, rootOptions))
+  }
 
   // 根据用户的需要，预置代码
   options.presetCodeList.forEach((item) => {
-    api.render(`./${item}`, options)
+    api.render(`./${item}`, Object.assign({}, options, rootOptions))
   })
-
-  api.render('./template', options)
 }

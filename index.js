@@ -7,24 +7,32 @@
 */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack')
-const MemoryFS = require('memory-fs')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const path = require('path')
 const fs = require('fs')
 const Scss = require('./scss')
-const Sprites = require('./sprites')
+const registerCommand = require('./registerCommand')
+const singleSpaConfig = require('./singleSpaConfig')
 
 module.exports = (api, projectOptions) => {
   // 获取对本插件的配置信息
   // 写在项目 vue.config.js 文件中, pluginOptions 属性
   const pluginConfig = (projectOptions.pluginOptions || {}).rishiqing || {}
 
+  const KITE_DESIGN_THEME_COLOR = fs
+    .readFileSync(path.resolve(__dirname, './assets/kite-design-theme-color.css'), 'utf8')
+    .replace(/\n/g, '')
+
   api.chainWebpack((webpackConfig) => {
     // 配置`DefinePlugin`插件
     webpackConfig
       .plugin('define')
       .tap((options) => {
-        options[0] = Object.assign(options[0], pluginConfig.define)
+        options[0] = Object.assign(options[0], {
+          KITE_DESIGN_THEME_COLOR: `'${KITE_DESIGN_THEME_COLOR}'`,
+          RISHIQING_SINGLE_SPA: process.env.RISHIQING_SINGLE_SPA === 'true',
+          ROUTER_BASE: `'${process.env.ROUTER_BASE}'`,
+        }, pluginConfig.define)
         return options
       })
 
@@ -58,6 +66,8 @@ module.exports = (api, projectOptions) => {
       .resolve
       .alias
       .set('rishiqing', 'vue-cli-plugin-rishiqing/lib')
+      // kite-design 里会依赖 r-request
+      .set('r-request', path.resolve(__dirname, './lib/r-request.js'))
 
     // 处理 scss 代码
     Scss(api, webpackConfig)
@@ -78,6 +88,11 @@ module.exports = (api, projectOptions) => {
 
       // 读取 rsq-dev-account.json 中设置的账号服务器信息
       api.configureDevServer((app) => {
+        app.use((req, res, next) => {
+          // 响应头设置 CORS
+          res.set('Access-Control-Allow-Origin', '*')
+          next()
+        })
         app.use('/fetch-local/rsq-dev-account.json', (req, res) => {
           const theFilePath = api.resolve('rsq-dev-account.json')
           try {
@@ -93,38 +108,12 @@ module.exports = (api, projectOptions) => {
     }
   })
 
-  // 注册`生成雪碧图`命令
-  api.registerCommand('sprites', () => {
-    const chain = api.resolveChainableWebpackConfig()
-    // 把devServer配置给删掉
-    chain.devServer.clear()
-    Sprites(api, chain)
-    const mfs = new MemoryFS()
-    const compiler = webpack(chain.toConfig())
-    compiler.outputFileSystem = mfs
-    compiler.run((err, stats) => {
-      if (err) {
-        console.error(err.stack || err)
-        if (err.details) {
-          console.error(err.details)
-        }
-        return
-      }
+  // 如果RISHIQING_SINGLE_SPA环境变量等于true，则开启singleSpaConfig相关配置
+  if (process.env.RISHIQING_SINGLE_SPA === 'true') {
+    singleSpaConfig(api, projectOptions)
+  }
 
-      const info = stats.toJson()
-
-      if (stats.hasErrors()) {
-        console.error(info.errors)
-      }
-
-      if (stats.hasWarnings()) {
-        console.warn(info.warnings)
-      }
-      console.log('sprites DONE!')
-    })
-  })
+  registerCommand(api)
 }
 
-module.exports.defaultModes = {
-  sprites: 'development',
-}
+module.exports.defaultModes = registerCommand.defaultModes

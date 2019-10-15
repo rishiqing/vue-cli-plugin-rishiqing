@@ -1,3 +1,4 @@
 NODE_ENV=production
 BASE_URL=https://<%= domainName %><%= baseUrl %>beta/
 ROUTER_BASE=<%= baseUrl %>
+RISHIQING_SINGLE_SPA=true

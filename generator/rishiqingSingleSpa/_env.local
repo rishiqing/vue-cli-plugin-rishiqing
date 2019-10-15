@@ -1,3 +1,4 @@
 BASE_URL=<%= baseUrl %>
-PORT=<%= port %>
 ROUTER_BASE=<%= baseUrl %>
+PORT=<%= port %>
+RISHIQING_SINGLE_SPA=false
