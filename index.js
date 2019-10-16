@@ -82,7 +82,15 @@ module.exports = (api, projectOptions) => {
       if (pluginConfig.enableDevAccountSel) {
         webpackConfig
           .entry('app')
-          .prepend(path.join(__dirname, 'devAccountSel', 'dev-account-sel.js'))
+          .prepend(path.resolve(__dirname, './devAccountSel/dev-account-sel.js'))
+          .end()
+      }
+
+      if (pluginConfig.rishiqingSingleSpa) {
+        webpackConfig
+          .entry('app')
+          .prepend(path.resolve(__dirname, './assets/normalize.css'))
+          .prepend(path.resolve(__dirname, './assets/kite-design-theme-color.css'))
           .end()
       }
 

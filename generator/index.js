@@ -142,6 +142,11 @@ module.exports = (api, options, rootOptions) => {
         css: {
           extract: false,
         },
+        pluginOptions: {
+          rishiqing: {
+            rishiqingSingleSpa: true,
+          },
+        },
       },
     })
     // 因为 rishiqingSingleSpa里直接覆盖了main.js文件，所以，如果引入了i18n，需要再单独处理
