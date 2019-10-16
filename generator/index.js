@@ -200,6 +200,7 @@ module.exports = (api, options, rootOptions) => {
 
   // 根据用户的需要，预置代码
   options.presetCodeList.forEach((item) => {
+    if (item === 'init') return
     api.render(`./${item}`, Object.assign({}, options, rootOptions))
   })
 }
