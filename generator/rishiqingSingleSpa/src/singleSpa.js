@@ -6,6 +6,7 @@ import store from './store'
 let vueContainer
 
 // singleSpa 启动函数
+// eslint-disable-next-line no-empty-function
 export async function bootstrap() {}
 
 // singleSpa 挂载函数

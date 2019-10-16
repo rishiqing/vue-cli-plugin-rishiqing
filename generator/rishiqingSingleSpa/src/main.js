@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VurRx from 'vue-rx'
+// import VurRx from 'vue-rx'
 import KiteBasic from '@rishiqing/kite-design/dist/kite-basic'
 import KiteBusiness from '@rishiqing/kite-design/dist/kite-business'
 import App from './App.vue'
@@ -12,7 +12,7 @@ import '@rishiqing/kite-design/dist/kite-business.css'
 export * from './singleSpa'
 
 if (!RISHIQING_SINGLE_SPA) {
-  Vue.use(VurRx)
+  // Vue.use(VurRx)
   Vue.use(KiteBasic)
   Vue.use(KiteBusiness)
 }
