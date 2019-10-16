@@ -129,7 +129,7 @@ module.exports = (api, options, rootOptions) => {
         // 这个地方，引入第三方库的版本不能直接写 latest，不然无法正常添加到dependencies
         '@rishiqing/kite-design': '^0.0.35',
         // '@rishiqing/sdk': '0.0.1',
-        'vue-rx': '^6.2.0',
+        // 'vue-rx': '^6.2.0',
         axios: '^0.19.0',
       },
       eslintConfig: {

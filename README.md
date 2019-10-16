@@ -8,6 +8,7 @@
 * 自动预置常用的代码，比如api常量，网络请求等；
 * 添加默认的eslint配置；
 * 构建项目目录；
+* rishiqingSingleSpa项目初始化配置;
 
 
 
@@ -187,7 +188,7 @@ simditor编辑器的样式代码，默认生成一个文件`src/styles/editor.sc
 
 还会在项目的根目录下生成文件夹`sprites/config`，用来放置生成雪碧图的配置文件。一组雪碧图，就需要一个独立的配置文件。以third雪碧图为例，它的配置文件为:
 
-​```js
+```js
 module.exports = {
   cwd: 'third', // 指定当前组雪碧图，在 src/assets/images/original-sprites 下的哪个文件夹下面
   glob: '**/*.*', // 一个匹配规则，用于匹配 src/assets/images/original-sprites/third 下面的图片名称，被匹配中的图片，就会生成到雪碧图里
