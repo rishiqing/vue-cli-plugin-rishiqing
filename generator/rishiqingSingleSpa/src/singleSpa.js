@@ -9,21 +9,23 @@ let vueContainer
 export async function bootstrap() {}
 
 // singleSpa 挂载函数
-export async function mount(options) {
+export async function mount(props) {
   vueContainer = new Vue({
     router,
     store,
     render: h => h(App),
   }).$mount()
 
-  const el = document.querySelector(`#${options.containerId}`)
-  el.append(vueContainer.$el)
+  const el = document.querySelector(`#${props.containerId}`)
+  el.appendChild(vueContainer.$el)
 }
 
 // singleSpa 卸载函数
 export async function unmount() {
   if (vueContainer) {
     vueContainer.$destroy()
-    vueContainer.$el.parentElement.removeChild(vueContainer.$el)
+    if (vueContainer.$el.parentElement) {
+      vueContainer.$el.parentElement.removeChild(vueContainer.$el)
+    }
   }
 }

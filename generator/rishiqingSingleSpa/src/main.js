@@ -27,4 +27,6 @@ async function init() {
   }).$mount('#app')
 }
 
-init()
+if (!RISHIQING_SINGLE_SPA) {
+  init()
+}
