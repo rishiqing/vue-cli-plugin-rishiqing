@@ -6,14 +6,25 @@
 */
 const path = require('path')
 
+// function showWhenInit(answers) {
+//   if (answers.presetCodeList.includes('init')) {
+//     return true
+//   }
+//   return false
+// }
+
 module.exports = [
   {
     type: 'checkbox',
     // 需要预置哪些代码块
     name: 'presetCodeList',
     message: '请选择需要预置的代码块',
-    default: ['constants', 'services', 'devAccountSel'],
+    default: ['init', 'constants', 'services', 'devAccountSel'],
     choices: [
+      {
+        name: '初始化配置',
+        value: 'init',
+      },
       {
         name: 'constants',
         value: 'constants',
@@ -26,6 +37,10 @@ module.exports = [
       {
         name: 'devAccountSel',
         value: 'devAccountSel',
+      },
+      {
+        name: 'rishiqingSingleSpa',
+        value: 'rishiqingSingleSpa',
       },
       {
         name: 'simditor style',
@@ -46,20 +61,6 @@ module.exports = [
     ],
   }, {
     type: 'input',
-    name: 'simditorStyleFilePath',
-    message: '放置simditor的地方',
-    default: 'src/styles/editor.scss',
-    // eslint-disable-next-line arrow-body-style
-    when: () => {
-      // if (answers.presetCodeList.includes('simditor')) {
-      //   return true;
-      // } else {
-      //   return false;
-      // }
-      return false
-    },
-  }, {
-    type: 'input',
     name: 'domainName',
     message: 'CDN域名',
     default: 'res-front-cdn.timetask.cn',
@@ -67,6 +68,7 @@ module.exports = [
     filter: (input) => {
       return input
     },
+    // when: showWhenInit,
   }, {
     type: 'input',
     name: 'baseUrl',
@@ -76,6 +78,7 @@ module.exports = [
     filter: (input) => {
       return path.posix.join('/', input, '/')
     },
+    // when: showWhenInit,
   }, {
     type: 'input',
     name: 'port',
@@ -92,5 +95,6 @@ module.exports = [
     filter: (input) => {
       return Number(input)
     },
+    // when: showWhenInit,
   },
 ]
