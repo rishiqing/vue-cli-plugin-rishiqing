@@ -89,7 +89,7 @@ module.exports = (api, options, rootOptions) => {
   if (options.presetCodeList.includes('services')) {
     api.extendPackage({
       dependencies: {
-        axios: '^0.18.0',
+        axios: '^0.19.0',
       },
     })
   }
@@ -100,7 +100,7 @@ module.exports = (api, options, rootOptions) => {
         xss: '^1.0.3',
       },
     })
-    api.injectImports(api.entryFile, 'import \'@/lib/filter/xss\'')
+    // api.injectImports(api.entryFile, 'import \'@/lib/filter/xss\'')
   }
 
   if (options.presetCodeList.includes('sprites')) {
@@ -126,10 +126,11 @@ module.exports = (api, options, rootOptions) => {
   if (options.presetCodeList.includes('rishiqingSingleSpa')) {
     api.extendPackage({
       dependencies: {
+        // 这个地方，引入第三方库的版本不能直接写 latest，不然无法正常添加到dependencies
         '@rishiqing/kite-design': '^0.0.35',
         // '@rishiqing/sdk': '0.0.1',
         'vue-rx': '^6.2.0',
-        // axios: 'latest',
+        axios: '^0.19.0',
       },
       eslintConfig: {
         globals: {
@@ -137,10 +138,20 @@ module.exports = (api, options, rootOptions) => {
           ROUTER_BASE: true,
         },
       },
-      css: {
-        extract: false,
+      vue: {
+        css: {
+          extract: false,
+        },
       },
     })
+    // 因为 rishiqingSingleSpa里直接覆盖了main.js文件，所以，如果引入了i18n，需要再单独处理
+    if (options.presetCodeList.includes('i18n')) {
+      api.injectImports(api.entryFile, 'import i18n from \'./i18n\'')
+      api.injectRootOptions(api.entryFile, 'i18n,')
+
+      api.injectImports('src/singleSpa.js', 'import i18n from \'./i18n\'')
+      api.injectRootOptions('src/singleSpa.js', 'i18n,')
+    }
   }
 
   // .eslintrc.js 配置
