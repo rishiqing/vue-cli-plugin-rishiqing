@@ -12,7 +12,11 @@
 
 
 
-## 插件的安装
+[CHANGELOG](CHANGELOG.md)
+
+
+
+## install
 通过预置`preset`配置，在创建工程时选择rishiqing插件(推荐)：
 
 只要运行过`vue create`命令，就会在操作系统的用户文件夹下生成`.vuerc`文件，(`~/.vuerc`)，比如windows下通过下面的命令显示此目录：
@@ -52,7 +56,7 @@ pwd
 
 
 
-## preset 说明
+## preset说明
 Vue CLI 3 在初始化一个项目的时候，可以提供一个预置选项，vue会根据这个预置选项提供的配置生成项目，免去在创建的时候，反复选择需要的功能。
 
 preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins-and-presets.html#presets)。在插件的根目录下有一个`preset.json`文件
@@ -161,7 +165,7 @@ dev-cookie: cookie值
 
 ### rishiqingSingleSpa<font color="gray" size="1">默认未选中</font>
 
-初始化rishiqingSingleSpa相关的配置
+初始化rishiqingSingleSpa相关的配置。具体文档参考 [RISHIQING_SINGLE_SPA](doc/RISHIQING_SINGLE_SPA.md)
 
 
 ### simditor style <font color="gray" size="1">默认未选中</font>
