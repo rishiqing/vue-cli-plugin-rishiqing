@@ -69,6 +69,11 @@ module.exports = (api, projectOptions) => {
       // kite-design 里会依赖 r-request
       .set('r-request', path.resolve(__dirname, './lib/r-request.js'))
 
+    // 把 resolve.symlinks置为false, 这样可以避免很多npm link安装的包，在找文件的时候的错误
+    webpackConfig
+      .resolve
+      .set('symlinks', false)
+
     // 处理 scss 代码
     Scss(api, webpackConfig)
 

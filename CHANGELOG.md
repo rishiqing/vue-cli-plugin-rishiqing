@@ -1,3 +1,6 @@
+# 2019-10-22
+resolve.symlinks置为false，避免通过npm link安装的包的依赖解析问题
+
 # 2019-10-15
 
 添加rishiqingSingleSpa项目初始化配置
