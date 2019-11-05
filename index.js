@@ -96,6 +96,7 @@ module.exports = (api, projectOptions) => {
           .entry('app')
           .prepend(path.resolve(__dirname, './assets/normalize.css'))
           .prepend(path.resolve(__dirname, './assets/kite-design-theme-color.css'))
+          .prepend(path.resolve(__dirname, './assets/kite-design-func-color.css'))
           .end()
       }
 
