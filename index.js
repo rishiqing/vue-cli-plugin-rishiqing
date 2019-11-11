@@ -7,12 +7,31 @@
 */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack')
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
+const postcssCustomProperties = require('postcss-custom-properties')
 const path = require('path')
 const fs = require('fs')
 const Scss = require('./scss')
 const registerCommand = require('./registerCommand')
 const singleSpaConfig = require('./singleSpaConfig')
+
+const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
+
+// 添加 postcss-custom-properties
+// 这样在不支持css变量的浏览器可以使用默认值
+function addPostcssCustomProperties(rule) {
+  rule.tap(options => Object.assign({}, options, {
+    plugins: function plugins() {
+      return [
+        postcssCustomProperties({
+          importFrom: [
+            path.resolve(__dirname, './assets/kite-design-theme-color.css'),
+            path.resolve(__dirname, './assets/kite-design-func-color.css'),
+          ],
+        }),
+      ]
+    },
+  }))
+}
 
 module.exports = (api, projectOptions) => {
   // 获取对本插件的配置信息
@@ -77,11 +96,6 @@ module.exports = (api, projectOptions) => {
     // 处理 scss 代码
     Scss(api, webpackConfig)
 
-    // 路径大小写敏感插件
-    webpackConfig
-      .plugin('CaseSensitivePathsPlugin')
-      .use(CaseSensitivePathsPlugin)
-
     // `调试账户选择`功能所需的脚本
     if (process.env.NODE_ENV === 'development') {
       if (pluginConfig.enableDevAccountSel) {
@@ -98,6 +112,8 @@ module.exports = (api, projectOptions) => {
           .prepend(path.resolve(__dirname, './assets/kite-design-theme-color.css'))
           .prepend(path.resolve(__dirname, './assets/kite-design-func-color.css'))
           .end()
+
+        types.forEach(type => addPostcssCustomProperties(webpackConfig.module.rule('scss').oneOf(type).use('postcss-loader')))
       }
 
       // 读取 rsq-dev-account.json 中设置的账号服务器信息

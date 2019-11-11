@@ -12,8 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "@rishiqing/webpack-system-register": "^1.6.0",
-    "case-sensitive-paths-webpack-plugin": "^2.2.0",
     "memory-fs": "^0.4.1",
+    "postcss-custom-properties": "^9.0.2",
     "require-all": "^3.0.0",
     "webpack": "^4.29.2",
     "webpack-spritesmith": "^1.0.0"
