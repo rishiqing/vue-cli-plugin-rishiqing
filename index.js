@@ -96,8 +96,8 @@ module.exports = (api, projectOptions) => {
     // 处理 scss 代码
     Scss(api, webpackConfig)
 
-    // `调试账户选择`功能所需的脚本
     if (process.env.NODE_ENV === 'development') {
+      // `调试账户选择`功能所需的脚本
       if (pluginConfig.enableDevAccountSel) {
         webpackConfig
           .entry('app')
@@ -106,14 +106,13 @@ module.exports = (api, projectOptions) => {
       }
 
       if (pluginConfig.rishiqingSingleSpa) {
+        // 添加css变量 & 浏览器样式初始化
         webpackConfig
           .entry('app')
           .prepend(path.resolve(__dirname, './assets/normalize.css'))
           .prepend(path.resolve(__dirname, './assets/kite-design-theme-color.css'))
           .prepend(path.resolve(__dirname, './assets/kite-design-func-color.css'))
           .end()
-
-        types.forEach(type => addPostcssCustomProperties(webpackConfig.module.rule('scss').oneOf(type).use('postcss-loader')))
       }
 
       // 读取 rsq-dev-account.json 中设置的账号服务器信息
@@ -135,6 +134,10 @@ module.exports = (api, projectOptions) => {
           }
         })
       })
+    }
+
+    if (pluginConfig.rishiqingSingleSpa) {
+      types.forEach(type => addPostcssCustomProperties(webpackConfig.module.rule('scss').oneOf(type).use('postcss-loader')))
     }
   })
 
