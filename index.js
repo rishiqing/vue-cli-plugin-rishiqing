@@ -87,6 +87,12 @@ module.exports = (api, projectOptions) => {
       .set('rishiqing', 'vue-cli-plugin-rishiqing/lib')
       // kite-design 里会依赖 r-request
       .set('r-request', path.resolve(__dirname, './lib/r-request.js'))
+      // 只所以配置vue和vuex的alias，是为了保证在打包构建过程中，vue和vuex始终只用当前项目下安装的
+      // 不会出现不同的第三方包，引入不同的vue或者vuex的问题
+      // 之前由于引入不同的vue，导致kite-design里的k-modal不能正常使用的问题
+      // https://github.com/vuejs/vue/issues/6698
+      .set('vue', path.resolve(process.cwd(), 'node_modules/vue'))
+      .set('vuex', path.resolve(process.cwd(), 'node_modules/vuex'))
 
     // 把 resolve.symlinks置为false, 这样可以避免很多npm link安装的包，在找文件的时候的错误
     webpackConfig
