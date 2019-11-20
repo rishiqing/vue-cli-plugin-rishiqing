@@ -1,3 +1,6 @@
+# 2019-11-20
+kite-design相关的主题色和功能色，加入对应的rgb变量.比如`--kite-theme-color-1: #f0f9ff;`对应的rgb变量是`--kite-theme-color-1-rgb: 240, 249, 255;`
+
 # 2019-10-22
 resolve.symlinks置为false，避免通过npm link安装的包的依赖解析问题
 

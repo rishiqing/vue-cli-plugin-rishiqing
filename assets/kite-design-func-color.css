@@ -1,6 +1,10 @@
 :root {
   --kite-func-color-link: #2B88FE;
+  --kite-func-color-link-rgb: 43, 136, 254;
   --kite-func-color-success: #51C419;
+  --kite-func-color-success-rgb: 81, 196, 25;
   --kite-func-color-warn: #FAAD15;
+  --kite-func-color-warn-rgb: 250, 173, 21;
   --kite-func-color-error: #F5222D;
+  --kite-func-color-error-rgb: 245, 34, 45;
 }

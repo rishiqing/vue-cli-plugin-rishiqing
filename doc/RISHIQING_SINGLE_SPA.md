@@ -124,24 +124,51 @@ webpackConfig.plugins.push(new WebpackSystemRegister({
 
 ##### kite-design-theme-color.css
 
-普通模式下，会引入 kite-design的10个主题颜色变量：
+普通模式下，会引入 kite-design的10个主题颜色变量，以及对应的rgb变量：
 
 ```css
 :root {
   --kite-theme-color-1: #f0f9ff;
+  --kite-theme-color-1-rgb: 240, 249, 255;
   --kite-theme-color-2: #cfeaff;
+  --kite-theme-color-2-rgb: 207, 234, 255;
   --kite-theme-color-3: #a6d5ff;
+  --kite-theme-color-3-rgb: 166, 213, 255;
   --kite-theme-color-4: #7dbeff;
+  --kite-theme-color-4-rgb: 125, 190, 255;
   --kite-theme-color-5: #54a4ff;
+  --kite-theme-color-5-rgb: 84, 164, 255;
   --kite-theme-color-6: #2b88fe;
+  --kite-theme-color-6-rgb: 43, 136, 254;
   --kite-theme-color-7: #1a66d9;
+  --kite-theme-color-7-rgb: 26, 102, 217;
   --kite-theme-color-8: #0c49b3;
+  --kite-theme-color-8-rgb: 12, 73, 179;
   --kite-theme-color-9: #03318c;
+  --kite-theme-color-9-rgb: 3, 49, 140;
   --kite-theme-color-10: #011f66;
+  --kite-theme-color-10-rgb: 1, 31, 102;
 }
 ```
 
 开发中，可直接使用这几个颜色变量
+
+##### kite-design-func-color.css
+
+引入kite-design的4个功能色变量，以及对应的rgb变量：
+
+```css
+:root {
+  --kite-func-color-link: #2B88FE;
+  --kite-func-color-link-rgb: 43, 136, 254;
+  --kite-func-color-success: #51C419;
+  --kite-func-color-success-rgb: 81, 196, 25;
+  --kite-func-color-warn: #FAAD15;
+  --kite-func-color-warn-rgb: 250, 173, 21;
+  --kite-func-color-error: #F5222D;
+  --kite-func-color-error-rgb: 245, 34, 45;
+}
+```
 
 ##### normalize.css
 
