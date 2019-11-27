@@ -1,21 +1,18 @@
 import Vue from 'vue'
 // import VurRx from 'vue-rx'
-import KiteBasic from '@rishiqing/kite-design/dist/kite-basic'
-import KiteBusiness from '@rishiqing/kite-design/dist/kite-business'
+// 按需引入kite-design组件
+import { Button } from '@rishiqing/kite-design'
+import '@rishiqing/kite-design/lib/style/utils.css'
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import '@rishiqing/kite-design/dist/kite-basic.css'
-import '@rishiqing/kite-design/dist/kite-business.css'
 
 export * from './singleSpa'
 
-if (!RISHIQING_SINGLE_SPA) {
-  // Vue.use(VurRx)
-  Vue.use(KiteBasic)
-  Vue.use(KiteBusiness)
-}
+// Vue.use(VurRx)
+Vue.use(Button)
 
 Vue.config.productionTip = false
 

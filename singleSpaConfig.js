@@ -42,11 +42,13 @@ module.exports = function singleSpaConfig(api) {
       //   callback()
       // },
     ]
-
     webpackConfig.plugins.push(new WebpackSystemRegister({
       systemjsDeps: [
         /^share-data/,
       ],
     }))
+
+    // 如果在Webpack中使用System global构建代码，需要以下配置来避免重写:
+    webpackConfig.module.rules.push({ parser: { system: false } })
   })
 }
