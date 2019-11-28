@@ -1,7 +1,9 @@
 import Vue from 'vue'
 // import VurRx from 'vue-rx'
+
 // 按需引入kite-design组件
 import { Button } from '@rishiqing/kite-design'
+// kite的工具类css
 import '@rishiqing/kite-design/lib/style/utils.css'
 
 import App from './App.vue'
