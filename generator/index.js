@@ -1,8 +1,8 @@
 /*
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
- * @Last Modified by: TimZhang
- * @Last Modified time: 2019-02-02 10:03:56
+ * @Last Modified by: qile
+ * @Last Modified time: 2019-11-29 16:03:36
 */
 
 // 这是 https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-plugin-eslint/eslintOptions.js
@@ -32,6 +32,8 @@ module.exports = (api, options, rootOptions) => {
       'rishiqing-deploy': '^2.0.9',
       'sass-resources-loader': '^1.3.3',
       'resolve-url-loader': '^2.3.0',
+      "babel-plugin-import": "^1.13.0",
+      "worker-loader": "^2.0.0",
     },
   })
 
@@ -51,6 +53,21 @@ module.exports = (api, options, rootOptions) => {
       },
       // 将lib文件夹下的代码进行babel转化——modify cwp
       transpileDependencies: ['vue-cli-plugin-rishiqing'],
+    },
+  })
+
+  // 基础 babel.config.js 参数设置
+  api.extendPackage({
+    babel: {
+      plugins : [
+        ['import',
+          {
+            libraryName: '@rishiqing/kite-design',
+            libraryDirectory: 'lib/components',
+            style: name => `${name}/style.css`,
+          },
+        ],
+      ]
     },
   })
 
@@ -127,7 +144,7 @@ module.exports = (api, options, rootOptions) => {
     api.extendPackage({
       dependencies: {
         // 这个地方，引入第三方库的版本不能直接写 latest，不然无法正常添加到dependencies
-        '@rishiqing/kite-design': '^0.0.35',
+        '@rishiqing/kite-design': '^0.0.38-viii.6499',
         // '@rishiqing/sdk': '0.0.1',
         // 'vue-rx': '^6.2.0',
         axios: '^0.19.0',
@@ -158,7 +175,6 @@ module.exports = (api, options, rootOptions) => {
       api.injectRootOptions('src/singleSpa.js', 'i18n,')
     }
   }
-
   // .eslintrc.js 配置
   const eslintGlobals = {
     // 默认把__DEV__加进去

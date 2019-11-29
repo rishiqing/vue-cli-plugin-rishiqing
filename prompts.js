@@ -1,8 +1,8 @@
 /*
 * @Author: qinyang
 * @Date:   2018-07-21 22:15:42
- * @Last Modified by: TimZhang
- * @Last Modified time: 2019-02-02 10:19:30
+ * @Last Modified by: qile
+ * @Last Modified time: 2019-11-27 22:13:46
 */
 const path = require('path')
 
@@ -19,7 +19,7 @@ module.exports = [
     // 需要预置哪些代码块
     name: 'presetCodeList',
     message: '请选择需要预置的代码块',
-    default: ['init', 'constants', 'services', 'devAccountSel'],
+    default: ['init', 'constants', 'services', 'devAccountSel',],
     choices: [
       {
         name: '初始化配置',

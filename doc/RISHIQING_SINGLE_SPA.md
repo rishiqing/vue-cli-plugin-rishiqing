@@ -183,4 +183,13 @@ webpackConfig.plugins.push(new WebpackSystemRegister({
 `ROUTER_BASE`，字符串，表示项目的地址前缀，主要用在router.js里的base
 
 
+##### kite-design的按需引用
+引入了[babel-plugin-import](https://github.com/ant-design/babel-plugin-import)可以更方便的实现按需加载组件，
+也实现了组件css文件的自动按需引用，从而减少文件体积，使项目构建打包更加快速。
+
+这个babel插件相关的配置已经写入到了工程根目录下的`babel.config.js`文件中。并且在`main.js`写了如何按需应用的例子。
+
+:::tip
+  更多`kite-design`组件按需引用的相关内容和使用方式，请移步到[kite-design](https://kite-design.rishiqing.com/)
+:::
 
