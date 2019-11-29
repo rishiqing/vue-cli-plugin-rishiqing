@@ -1,8 +1,12 @@
 import Vue from 'vue'
 // import VurRx from 'vue-rx'
 
-// 按需引入kite-design组件
-import { Button } from '@rishiqing/kite-design'
+// kite-basic基础组件
+import KiteBasic from '@rishiqing/kite-design/lib/src/kite-basic'
+// kite-basic业务组件按需引用
+import {Emoji} from '@rishiqing/kite-design/lib/src/kite-basic'
+// 样式代码
+import '@rishiqing/kite-design/lib/src/style'
 // kite的工具类css
 import '@rishiqing/kite-design/lib/style/utils.css'
 
@@ -14,7 +18,8 @@ import store from './store'
 export * from './singleSpa'
 
 // Vue.use(VurRx)
-Vue.use(Button)
+Vue.use(KiteBasic)
+Vue.use(Emoji)
 
 Vue.config.productionTip = false
 

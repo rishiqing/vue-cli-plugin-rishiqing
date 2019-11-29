@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
  * @Last Modified by: qile
- * @Last Modified time: 2019-11-28 13:42:15
+ * @Last Modified time: 2019-11-29 11:56:07
 */
 
 // 这是 https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-plugin-eslint/eslintOptions.js
@@ -59,9 +59,6 @@ module.exports = (api, options, rootOptions) => {
   // 基础 babel.config.js 参数设置
   api.extendPackage({
     babel: {
-      presets: [
-        '@vue/app',
-      ],
       plugins : [
         ['import',
           {
