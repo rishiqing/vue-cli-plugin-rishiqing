@@ -3,8 +3,10 @@ import Vue from 'vue'
 
 // kite-basic基础组件
 import KiteBasic from '@rishiqing/kite-design/lib/src/kite-basic'
-// kite-basic业务组件按需引用
-import {Emoji} from '@rishiqing/kite-design'
+
+// 如果需要按需引用 kite 的业务组件，可以参考这种写法
+// import { Emoji } from '@rishiqing/kite-design'
+
 // 样式代码
 import '@rishiqing/kite-design/lib/src/style'
 // kite的工具类css
@@ -19,7 +21,7 @@ export * from './singleSpa'
 
 // Vue.use(VurRx)
 Vue.use(KiteBasic)
-Vue.use(Emoji)
+// Vue.use(Emoji)
 
 Vue.config.productionTip = false
 

@@ -2,7 +2,7 @@
 * @Author: qinyang
 * @Date:   2018-07-21 16:46:58
  * @Last Modified by: qile
- * @Last Modified time: 2019-11-29 11:56:07
+ * @Last Modified time: 2019-11-29 16:03:36
 */
 
 // 这是 https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-plugin-eslint/eslintOptions.js
@@ -144,7 +144,7 @@ module.exports = (api, options, rootOptions) => {
     api.extendPackage({
       dependencies: {
         // 这个地方，引入第三方库的版本不能直接写 latest，不然无法正常添加到dependencies
-        '@rishiqing/kite-design': '0.0.38-viii.6499',
+        '@rishiqing/kite-design': '^0.0.38-viii.6499',
         // '@rishiqing/sdk': '0.0.1',
         // 'vue-rx': '^6.2.0',
         axios: '^0.19.0',
