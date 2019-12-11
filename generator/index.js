@@ -32,8 +32,8 @@ module.exports = (api, options, rootOptions) => {
       'rishiqing-deploy': '^2.0.9',
       'sass-resources-loader': '^1.3.3',
       'resolve-url-loader': '^2.3.0',
-      "babel-plugin-import": "^1.13.0",
-      "worker-loader": "^2.0.0",
+      'babel-plugin-import': '^1.13.0',
+      'worker-loader': '^2.0.0',
     },
   })
 
@@ -59,7 +59,7 @@ module.exports = (api, options, rootOptions) => {
   // 基础 babel.config.js 参数设置
   api.extendPackage({
     babel: {
-      plugins : [
+      plugins: [
         ['import',
           {
             libraryName: '@rishiqing/kite-design',
@@ -67,7 +67,7 @@ module.exports = (api, options, rootOptions) => {
             style: name => `${name}/style.css`,
           },
         ],
-      ]
+      ],
     },
   })
 
@@ -144,7 +144,7 @@ module.exports = (api, options, rootOptions) => {
     api.extendPackage({
       dependencies: {
         // 这个地方，引入第三方库的版本不能直接写 latest，不然无法正常添加到dependencies
-        '@rishiqing/kite-design': '^0.0.38-viii.6499',
+        '@rishiqing/kite-design': '^0.0.40-viii.7173',
         // '@rishiqing/sdk': '0.0.1',
         // 'vue-rx': '^6.2.0',
         axios: '^0.19.0',

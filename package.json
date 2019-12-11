@@ -11,7 +11,7 @@
   "author": "qinyang912",
   "license": "MIT",
   "dependencies": {
-    "@rishiqing/webpack-system-register": "^1.6.0",
+    "@rishiqing/webpack-system-register": "^1.6.1",
     "memory-fs": "^0.4.1",
     "postcss-custom-properties": "^9.0.2",
     "require-all": "^3.0.0",
