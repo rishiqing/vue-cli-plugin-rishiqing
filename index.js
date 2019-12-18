@@ -13,6 +13,7 @@ const fs = require('fs')
 const Scss = require('./scss')
 const registerCommand = require('./registerCommand')
 const singleSpaConfig = require('./singleSpaConfig')
+const Color = require('./lib/color')
 
 const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
 
@@ -24,8 +25,9 @@ function addPostcssCustomProperties(rule) {
       return [
         postcssCustomProperties({
           importFrom: [
-            path.resolve(__dirname, './assets/kite-design-theme-color.css'),
-            path.resolve(__dirname, './assets/kite-design-func-color.css'),
+            {
+              customProperties: Color.generateColor('#2B88FE'),
+            },
           ],
         }),
       ]
@@ -38,9 +40,9 @@ module.exports = (api, projectOptions) => {
   // 写在项目 vue.config.js 文件中, pluginOptions 属性
   const pluginConfig = (projectOptions.pluginOptions || {}).rishiqing || {}
 
-  const KITE_DESIGN_THEME_COLOR = fs
-    .readFileSync(path.resolve(__dirname, './assets/kite-design-theme-color.css'), 'utf8')
-    .replace(/\n/g, '')
+  // const KITE_DESIGN_THEME_COLOR = fs
+  //   .readFileSync(path.resolve(__dirname, './assets/kite-design-theme-color.css'), 'utf8')
+  //   .replace(/\n/g, '')
 
   api.chainWebpack((webpackConfig) => {
     // 配置`DefinePlugin`插件
@@ -48,7 +50,7 @@ module.exports = (api, projectOptions) => {
       .plugin('define')
       .tap((options) => {
         options[0] = Object.assign(options[0], {
-          KITE_DESIGN_THEME_COLOR: `'${KITE_DESIGN_THEME_COLOR}'`,
+          // KITE_DESIGN_THEME_COLOR: `'${KITE_DESIGN_THEME_COLOR}'`,
           RISHIQING_SINGLE_SPA: process.env.RISHIQING_SINGLE_SPA === 'true',
           ROUTER_BASE: `'${process.env.ROUTER_BASE}'`,
         }, pluginConfig.define)
@@ -115,9 +117,10 @@ module.exports = (api, projectOptions) => {
         // 添加css变量 & 浏览器样式初始化
         webpackConfig
           .entry('app')
+          .prepend(path.resolve(__dirname, './assets/insert-color.js'))
           .prepend(path.resolve(__dirname, './assets/normalize.css'))
-          .prepend(path.resolve(__dirname, './assets/kite-design-theme-color.css'))
-          .prepend(path.resolve(__dirname, './assets/kite-design-func-color.css'))
+          // .prepend(path.resolve(__dirname, './assets/kite-design-theme-color.css'))
+          // .prepend(path.resolve(__dirname, './assets/kite-design-func-color.css'))
           .end()
       }
 

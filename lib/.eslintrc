@@ -2,5 +2,8 @@
   "rules": {
     "import/no-unresolved": "off",
     "no-empty-function": "off"
+  },
+  "globals": {
+    "__DEV__": true
   }
 }

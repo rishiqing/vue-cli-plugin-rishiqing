@@ -133,11 +133,13 @@ preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins
         {
             "username": "110110",
             "password": "12345",
+            "token": "token",
             "desc": "请改写初始值"
         },
         {
             "username": "911911",
             "password": "12345",
+            "token": "token",
             "desc": "请改写初始值"
         }
     ],
@@ -157,6 +159,7 @@ preset的具体信息，可以参考[这里](https://cli.vuejs.org/guide/plugins
 ```
 dev-account-username: 用户名
 dev-account-password: 密码
+dev-account-token: TOKEN
 dev-server-path: 服务器路径
 dev-cookie: cookie值
 ```

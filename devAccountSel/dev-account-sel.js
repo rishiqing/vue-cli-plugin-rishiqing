@@ -15,6 +15,7 @@ const CONFIG_FILE_URL = '/fetch-local/rsq-dev-account.json'
 
 const LOCALSTORAGE_ACCOUNT_KEY = 'dev-account-username'
 const LOCALSTORAGE_PASSWORD_KEY = 'dev-account-password'
+const LOCALSTORAGE_TOKEN_KEY = 'dev-account-token'
 const LOCALSTORAGE_SERVER_KEY = 'dev-server-path'
 const LOCALSTORAGE_COOKIE_KEY = 'dev-cookie'
 
@@ -94,6 +95,9 @@ class AccountServeSelector {
         }).catch(error => console.error(error))
       }
 
+      // 如果处在关闭状态，就不执行下面的逻辑了
+      if (!this.isOpen) return
+
       // 上下键选择账号
       if (e.which === 38) { // 上方向键
         this.prevAccount()
@@ -156,7 +160,7 @@ class AccountServeSelector {
   // 添加账户可选项目DOM
   addAccountLi(dataArr) {
     // 生成HTML
-    const theHtml = dataArr.map(item => `<li class="item-li account-li" data-username="${item.username}" data-password="${item.password}">
+    const theHtml = dataArr.map(item => `<li class="item-li account-li" data-username="${item.username || ''}" data-password="${item.password || ''}" data-token="${item.token || ''}">
                 <span class="account-username">${item.username}</span>
                 <small class="account-desc">${item.desc}</small>
               </li>`).join('')
@@ -201,9 +205,11 @@ class AccountServeSelector {
   saveToLocalAccItem(theDom) {
     const theAccName = theDom.dataset.username
     const theAccPassword = theDom.dataset.password
+    const theAccToken = theDom.dataset.token
     // 将选中项写入 localStorage
     this.setAccountToLocal(theAccName)
     this.setPasswordToLocal(theAccPassword)
+    this.setTokenToLocal(theAccToken)
   }
 
   // 写入 localStorage,服务器
@@ -345,6 +351,14 @@ class AccountServeSelector {
 
   getPasswordFromLocal() {
     return window.localStorage.getItem(LOCALSTORAGE_PASSWORD_KEY)
+  }
+
+  setTokenToLocal(token) {
+    window.localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, token)
+  }
+
+  getTokenFromLocal() {
+    return window.localStorage.getItem(LOCALSTORAGE_TOKEN_KEY)
   }
 
   setServerPathToLocal(server) {

@@ -1,3 +1,12 @@
+# 2019-12-18
+用js代码生成kite-design的主题色，并插入到页面里，不再用css文件
+
+修复dev-account-sel的快捷键报错bug，同时支持保存token
+
+新增 lib/single-spa-data.js，在singleSpa项目里，可以更加方便获取基础数据
+
+调整 lib/r-request.js，发起接口调用的时候，请求头里带上token
+
 # 2019-11-20
 kite-design相关的主题色和功能色，加入对应的rgb变量.比如`--kite-theme-color-1: #f0f9ff;`对应的rgb变量是`--kite-theme-color-1-rgb: 240, 249, 255;`
 
