@@ -76,38 +76,6 @@ webpackConfig.optimization = {
 }
 ```
 
-##### 把部分第三方库配置成external
-
-```js
-const ExternalsList = [
-  'vue',
-  'vuex',
-  'vue-router',
-  // 'vue-rx',
-  'axios',
-  // '@rishiqing/sdk',
-  '@rishiqing/kite-design/dist/kite-basic',
-  '@rishiqing/kite-design/dist/kite-business',
-  'kite-basic',
-  'kite-business',
-  '@rishiqing/kite-design/dist/kite-basic.css',
-  '@rishiqing/kite-design/dist/kite-business.css',
-]
-
-webpackConfig.externals = [
-  function externals(context, request, callback) {
-    if (ExternalsList.includes(request)) {
-      return callback(null, `var window.app.require('${request}')`)
-    }
-    callback()
-  },
-]
-```
-
-`ExternalsList`里列出的这几个库，在微应用打包的时候，不会直接把这些库的代码直接打包到app.js文件里，而是调用`window.app.require`直接从主工程里引用。这样可以有效的减小微应用的体积。
-
-但这样也会带来版本依赖的问题，比如kite-design，项目A需要依赖0.0.30，项目B需要依赖0.0.35，如果都统一从主工程里引入了，那么kite-design的版本肯定只有一个，所以会带来问题
-
 ##### 使用webpackSystemRegister处理一些特殊包
 
 ```js
@@ -122,12 +90,13 @@ webpackConfig.plugins.push(new WebpackSystemRegister({
 
 #### 普通模式
 
-##### kite-design-theme-color.css
+##### 颜色变量引入
 
-普通模式下，会引入 kite-design的10个主题颜色变量，以及对应的rgb变量：
+普通模式下，会引入kite-design的主题颜色变量，以及对应的rgb变量：
 
 ```css
 :root {
+  /* 主题色变量 */
   --kite-theme-color-1: #f0f9ff;
   --kite-theme-color-1-rgb: 240, 249, 255;
   --kite-theme-color-2: #cfeaff;
@@ -148,14 +117,34 @@ webpackConfig.plugins.push(new WebpackSystemRegister({
   --kite-theme-color-9-rgb: 3, 49, 140;
   --kite-theme-color-10: #011f66;
   --kite-theme-color-10-rgb: 1, 31, 102;
+  
+  /* 错误色变量 */
+  --kite-error-color-1: #fff1f0;
+  --kite-error-color-1-rgb: 255, 241, 240;
+  --kite-error-color-2: #ffccc7;
+  --kite-error-color-2-rgb: 255, 204, 199;
+  --kite-error-color-3: #ffa39e;
+  --kite-error-color-3-rgb: 255, 163, 158;
+  --kite-error-color-4: #ff7875;
+  --kite-error-color-4-rgb: 255, 120, 117;
+  --kite-error-color-5: #ff4d4f;
+  --kite-error-color-5-rgb: 255, 77, 79;
+  --kite-error-color-6: #f5222d;
+  --kite-error-color-6-rgb: 245, 34, 45;
+  --kite-error-color-7: #cf1322;
+  --kite-error-color-7-rgb: 207, 19, 34;
+  --kite-error-color-8: #a8071a;
+  --kite-error-color-8-rgb: 168, 7, 26;
+  --kite-error-color-9: #820014;
+  --kite-error-color-9-rgb: 130, 0, 20;
+  --kite-error-color-10: #5c0011;
+  --kite-error-color-10-rgb: 92, 0, 17;
 }
 ```
 
 开发中，可直接使用这几个颜色变量
 
-##### kite-design-func-color.css
-
-引入kite-design的4个功能色变量，以及对应的rgb变量：
+还引入了kite-design的4个功能色变量，以及对应的rgb变量：
 
 ```css
 :root {
@@ -183,13 +172,108 @@ webpackConfig.plugins.push(new WebpackSystemRegister({
 `ROUTER_BASE`，字符串，表示项目的地址前缀，主要用在router.js里的base
 
 
-##### kite-design的按需引用
-引入了[babel-plugin-import](https://github.com/ant-design/babel-plugin-import)可以更方便的实现按需加载组件，
-也实现了组件css文件的自动按需引用，从而减少文件体积，使项目构建打包更加快速。
 
-这个babel插件相关的配置已经写入到了工程根目录下的`babel.config.js`文件中。并且在`main.js`写了如何按需应用的例子。
+### 获取用户基础数据
 
-:::tip
-  更多`kite-design`组件按需引用的相关内容和使用方式，请移步到[kite-design](https://kite-design.rishiqing.com/)
-:::
+获取用户的基础数据主要分两种情况：
+
+1、微应用模式     2、普通模式
+
+#### 微应用模式
+
+这种模式下，应用需要接入到主工程里才能使用，用户的基础数据可以从主工程提供的`share-data`获取
+
+```js
+const data = {}
+const ShareData = require('share-data')
+const basicData = ShareData.getBasicData()
+data.USER_INFO = basicData.USER_INFO
+data.USER_TREE = basicData.USER_TREE || []
+```
+
+
+
+#### 普通模式
+
+普通模式，也就是我们通常用的调试环境，由于没有接入到主工程，没有`share-data`可用，所以使用账号密码登录或者token来获取用户信息
+
+```js
+const password = window.localStorage.getItem('dev-account-password')
+const username = window.localStorage.getItem('dev-account-username')
+const token = window.localStorage.getItem('dev-account-token')
+if (token) {
+  service.defaults.headers.token = token
+}
+// 获取用户数据
+let userInfo
+if (token) {
+  userInfo = await loadUserInfo()
+} else {
+  userInfo = await login(username, password)
+}
+
+// 获取部门数据
+const userTree = await loadDeptList()
+```
+
+从代码可以看到，我们利用了我们的账号调试。当配置了token，会优先使用token，如果没有配置token，则会使用账号和密码
+
+
+
+#### 整合两种模式
+
+为了在两种模式下都能非常方便的获取到用户基础数据，新增`lib/single-spa-data.js `用来处理用户的基础数据。
+
+上demo:
+
+在main.js里初始化数据：
+
+```js
+import {
+  initData,
+} from 'rishiqing/single-spa-data'
+
+async function init() {
+  // 先初始化数据，需要注意，initData是一个异步函数
+  await initData()
+  new Vue({
+    router,
+    store,
+    i18n,
+    render: h => h(App),
+  }).$mount('#app')
+}
+
+if (!RISHIQING_SINGLE_SPA) {
+  init()
+}
+```
+
+
+
+在其他组件里使用数据：
+
+```vue
+<script>
+import {
+  getUserInfo,
+  getToken,
+  getDeptList,
+  getFreshTime,
+} from 'rishiqing/single-spa-data'
+
+export default {
+  mounted() {
+    // 获取用户的基本信息
+    const userInfo = getUserInfo()
+    // 获取用户的token
+    const token = getToken()
+    // 获取部门树列表
+    const deptList = getDeptList()
+    // 获取freshTime
+    const freshTime = getFreshTime()
+  }
+}
+</script>
+```
 

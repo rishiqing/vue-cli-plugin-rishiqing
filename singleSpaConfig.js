@@ -52,7 +52,6 @@ module.exports = function singleSpaConfig(api) {
      * 由于webpack在内部也引入了System.js，但我们在项目中使用System.import()的时候
      * 需要使用自己主工程引入的System.js，因此此处需要将webpack中的system配置为false。
      */
-
     webpackConfig.module.rules.push({ parser: { system: false } })
   })
 }
