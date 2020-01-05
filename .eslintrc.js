@@ -46,6 +46,7 @@ module.exports = {
   },
   'globals': {
     RISHIQING_SINGLE_SPA: true,
-    ROUTER_BASE: true
+    ROUTER_BASE: true,
+    SINGLE_SPA_ID: true,
   },
 }

@@ -16,6 +16,14 @@ const singleSpaConfig = require('./singleSpaConfig')
 const Color = require('./lib/color')
 
 const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
+const styleTypes = ['css', 'postcss', 'scss', 'sass', 'less', 'stylus']
+
+function S4() {
+  // eslint-disable-next-line no-bitwise
+  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+}
+
+const SingleSpaId = `${S4()}-${S4()}-${S4()}`
 
 // 添加 postcss-custom-properties
 // 这样在不支持css变量的浏览器可以使用默认值
@@ -33,6 +41,19 @@ function addPostcssCustomProperties(rule) {
       ]
     },
   }))
+}
+
+// 修改vue-style-loader，让style标签可以自定义属性
+function changeVueStyleLoader(rule) {
+  rule
+    .loader('@rishiqing/vue-style-loader')
+    .options({
+      sourceMap: false,
+      shadowMode: false,
+      attrs: {
+        'data-single-spa-id': SingleSpaId,
+      },
+    })
 }
 
 module.exports = (api, projectOptions) => {
@@ -53,6 +74,7 @@ module.exports = (api, projectOptions) => {
           // KITE_DESIGN_THEME_COLOR: `'${KITE_DESIGN_THEME_COLOR}'`,
           RISHIQING_SINGLE_SPA: process.env.RISHIQING_SINGLE_SPA === 'true',
           ROUTER_BASE: `'${process.env.ROUTER_BASE}'`,
+          SINGLE_SPA_ID: `'${SingleSpaId}'`,
         }, pluginConfig.define)
         return options
       })
@@ -95,6 +117,14 @@ module.exports = (api, projectOptions) => {
       // https://github.com/vuejs/vue/issues/6698
       .set('vue', path.resolve(process.cwd(), 'node_modules/vue'))
       .set('vuex', path.resolve(process.cwd(), 'node_modules/vuex'))
+
+    // 把当前仓库下的node_modules也加为loader的搜寻地址
+    // 这样方便直接在vue-cli-plugin-rishiqing里安装loader
+    // 比如上面加入的 @rishiqing/vue-style-loader
+    webpackConfig
+      .resolveLoader
+      .modules
+      .add(path.resolve(__dirname, 'node_modules'))
 
     // 把 resolve.symlinks置为false, 这样可以避免很多npm link安装的包，在找文件的时候的错误
     webpackConfig
@@ -147,6 +177,11 @@ module.exports = (api, projectOptions) => {
 
     if (pluginConfig.rishiqingSingleSpa) {
       types.forEach(type => addPostcssCustomProperties(webpackConfig.module.rule('scss').oneOf(type).use('postcss-loader')))
+      types.forEach((type) => {
+        styleTypes.forEach((styleType) => {
+          changeVueStyleLoader(webpackConfig.module.rule(styleType).oneOf(type).use('vue-style-loader'))
+        })
+      })
     }
   })
 
