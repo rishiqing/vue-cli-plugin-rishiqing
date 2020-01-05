@@ -1,4 +1,9 @@
+# 2020-01-05
+
+新增singleSpa的样式切换功能
+
 # 2019-12-18
+
 用js代码生成kite-design的主题色，并插入到页面里，不再用css文件
 
 修复dev-account-sel的快捷键报错bug，同时支持保存token

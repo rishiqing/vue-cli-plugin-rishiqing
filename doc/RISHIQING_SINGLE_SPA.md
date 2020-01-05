@@ -277,3 +277,110 @@ export default {
 </script>
 ```
 
+
+
+### 样式销毁 & 插入
+
+在多个singleSpa应用之间切换的时候，singleSpa初始化插入的style标签并不能自动销毁和插入，而是会永久留在head标签里，这样会导致多个singleSpa应用的样式代码相互影响。需要想办法，在singleSpa应用销毁的时候，同时也销毁它引进的style，在singleSpa挂载的时候，又重新插入style。
+
+
+
+#### 解决方案
+
+在每个singleSpa构建的时候，会随机生成一个字符串，格式为：`xxxx-xxxx-xxxx`，这个字符串会作为属性`data-single-spa-id`的值，设置到style标签上，dom结构大致如下:
+
+![84D64C97-D9FD-48D2-A52C-ECD551068B9D](assets/53FD4DEB-A5E2-44D1-BB4B-EEA4D601517A.png)
+
+这样可以实现不同的singleSpa，在往dom里插入style的时候，都会带上一个属性，名为: `data-single-spa-id`，值为一个随机数，只要在singleSpa挂载和销毁的时候，通过这个属性找到对应的style列表，然后进行灵活的移除和插入即可
+
+这个随机数的值做成了一个全局变量：`SINGLE_SPA_ID`
+
+
+
+#### 已有项目如何实现样式切换
+
+第一步：更新vue-cli-plugin-rishiqing到最新版
+
+第二步：在src/singleSpa.js文件里加入两个方法
+
+```js
+let styleCache
+
+function addStyle() {
+  try {
+    const head = document.querySelector('head')
+    if (styleCache) {
+      styleCache.forEach((style) => {
+        head.appendChild(style)
+      })
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
+}
+
+function removeStyle() {
+  // 移除掉所有的style
+  try {
+    styleCache = [...document.querySelectorAll(`style[data-single-spa-id="${SINGLE_SPA_ID}"]`)]
+    styleCache.forEach((style) => {
+      style.parentNode.removeChild(style)
+    })
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error)
+  }
+}
+```
+
+第三步：在mount里调用addStyle, 在unmount里调用removeStyle
+
+```js
+// singleSpa 挂载函数
+export async function mount(props) {
+  // 调用addStyle
+  addStyle()
+  await init()
+  vueContainer = new Vue({
+    router,
+    store,
+    i18n,
+    render: h => h(App),
+  }).$mount()
+
+  const el = document.querySelector(`#${props.containerId}`)
+  el.appendChild(vueContainer.$el)
+}
+
+// singleSpa 卸载函数
+export async function unmount() {
+  if (vueContainer) {
+    vueContainer.$destroy()
+    if (vueContainer.$el.parentElement) {
+      vueContainer.$el.parentElement.removeChild(vueContainer.$el)
+    }
+  }
+  // 调用removeStyle
+  removeStyle()
+}
+```
+
+第四步：完善.eslintrc.js的globals配置
+
+```json
+globals: {
+  RISHIQING_SINGLE_SPA: true,
+  ROUTER_BASE: true,
+  __DEV__: true,
+  KITE_DESIGN_THEME_COLOR: true,
+  R_URL: true,
+  SINGLE_SPA_ID: true,
+},
+```
+
+第五步：重启，完成
+
+#### 新项目如何实现样式切换
+
+直接用最新的vue-cli-plugin-rishiqing初始化项目即可，开箱即用

@@ -15,6 +15,7 @@ import '@rishiqing/kite-design/lib/style/utils.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import systemInit from './init'
 
 
 export * from './singleSpa'
@@ -26,6 +27,7 @@ Vue.use(KiteBasic)
 Vue.config.productionTip = false
 
 async function init() {
+  await systemInit()
   new Vue({
     router,
     store,

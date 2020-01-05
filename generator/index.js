@@ -48,6 +48,9 @@ module.exports = (api, options, rootOptions) => {
         proxy: {
           '/task': {
             target: 'https://www.rishiqing.com',
+            changeOrigin: true,
+            logLevel: 'debug',
+            protocolRewrite: 'http',
           },
         },
       },
@@ -151,6 +154,7 @@ module.exports = (api, options, rootOptions) => {
         globals: {
           RISHIQING_SINGLE_SPA: true,
           ROUTER_BASE: true,
+          SINGLE_SPA_ID: true,
         },
       },
       vue: {

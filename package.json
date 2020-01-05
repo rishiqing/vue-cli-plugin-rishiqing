@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-rishiqing",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "vue-cli 3.0 plugin for rishiqing",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@ant-design/colors": "^3.2.2",
+    "@rishiqing/vue-style-loader": "^4.1.2",
     "@rishiqing/webpack-system-register": "^1.6.1",
     "hex-rgb": "^4.1.0",
     "memory-fs": "^0.4.1",
