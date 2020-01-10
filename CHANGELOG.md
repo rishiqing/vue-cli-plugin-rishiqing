@@ -1,3 +1,13 @@
+# 2020-01-10
+
+lib/single-spa-data.js新增三个方法：
+
+​    getUnfoldDeptList方法，获取部门列表，而不是树结构列表
+
+​    getUserList方法，获取成员列表
+
+​    getCurrentUserCompanyAuthorities方法，获取当前用户在公司层面的权限
+
 # 2020-01-05
 
 新增singleSpa的样式切换功能

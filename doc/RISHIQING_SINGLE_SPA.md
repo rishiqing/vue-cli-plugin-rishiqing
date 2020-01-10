@@ -259,19 +259,29 @@ import {
   getUserInfo,
   getToken,
   getDeptList,
+  getUnfoldDeptList,
+  getUserList,
   getFreshTime,
+  getCurrentUserCompanyAuthorities,
 } from 'rishiqing/single-spa-data'
 
 export default {
-  mounted() {
+  async mounted() {
     // 获取用户的基本信息
     const userInfo = getUserInfo()
     // 获取用户的token
     const token = getToken()
     // 获取部门树列表
     const deptList = getDeptList()
+    // 获取部门列表
+    const unfoldDeptList = getUnfoldDeptList()
+    // 获取成员列表
+    const userList = getUserList()
     // 获取freshTime
     const freshTime = getFreshTime()
+    // 获取当前用户公司层面的权限
+    // 需要注意这个方法返回的是Promise，每次调用都会直接发起请求
+    const auth = await getCurrentUserCompanyAuthorities()
   }
 }
 </script>
