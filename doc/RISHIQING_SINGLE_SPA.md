@@ -263,6 +263,9 @@ import {
   getUserList,
   getFreshTime,
   getCurrentUserCompanyAuthorities,
+  getDeptListByIds,
+  getUserListByIds,
+  getParentIdListByDeptIdList,
 } from 'rishiqing/single-spa-data'
 
 export default {
@@ -271,7 +274,7 @@ export default {
     const userInfo = getUserInfo()
     // 获取用户的token
     const token = getToken()
-    // 获取部门树列表
+    // 获取部门树
     const deptList = getDeptList()
     // 获取部门列表
     const unfoldDeptList = getUnfoldDeptList()
@@ -282,6 +285,12 @@ export default {
     // 获取当前用户公司层面的权限
     // 需要注意这个方法返回的是Promise，每次调用都会直接发起请求
     const auth = await getCurrentUserCompanyAuthorities()
+    // 通过部门的id列表，获取部门的详细数据列表
+    const deptList = getDeptListByIds([1, 2, 3])
+    // 通过成员的id列表，获取成员的详细数据列表
+    const userList = getUserListByIds([1, 2, 3])
+    // 通过部门的id列表，获取对应部门的所有父级部门的id列表
+    const parentIdList = getParentIdListByDeptIdList([1, 2, 3])
   }
 }
 </script>

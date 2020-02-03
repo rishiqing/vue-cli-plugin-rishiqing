@@ -1,3 +1,17 @@
+# 2020-02-03
+
+新增 lib/util.js 文件，用来放一些公共基础方法
+
+lib/single-spa-data.js新增方法：
+
+​	getDeptListByIds方法，通过部门id列表，获取部门的数据列表
+
+​	getUserListByIds方法，通过成员id列表，获取成员的数据列表
+
+​	getParentIdListByDeptIdList方法，通过传入的部门id列表，获取对应的上级部门的id列表
+
+lib/single-spa-data.js里的成员数据加入一个 deptIdList 字段，记录一个成员属于哪些部门
+
 # 2020-01-10
 
 lib/single-spa-data.js新增三个方法：
