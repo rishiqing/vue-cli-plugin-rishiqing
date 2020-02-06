@@ -1,0 +1,13 @@
+{
+  "platform": "rishiqing",
+  "name": "日事清",
+  "sentry": {},
+  "growingIo": {},
+  "kf": {},
+  "aliStatistics": {},
+  "function": {
+    "archive": true,
+    "tomato": true,
+    "search": true
+  }
+}

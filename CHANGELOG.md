@@ -1,3 +1,40 @@
+# 2020-02-06
+
+* vue.config.js里的 `pluginOptions.rishiqing` 下面新增一个参数`forceAddKiteDesignThemeColor`，配置为true，则在打包的时候，会强制加上 kiteDesign的主题色变量和normalize.css样式
+
+  ```js
+  module.exports = {
+    pluginOptions: {
+      rishiqing: {
+        provide: {
+          R_URL: true,
+        },
+        define: {
+          __DEV__: process.env.NODE_ENV === 'development',
+        },
+        enableDevAccountSel: true,
+        rishiqingSingleSpa: true,
+        // 构建的时候，强制加上kiteDesign的主题色和normalize.css
+        forceAddKiteDesignThemeColor: true,
+      },
+    },
+  }
+  ```
+
+
+
+* lib/single-spa-data.js新增方法：
+
+  getMessageClient方法：返回一个 [eventemitter3](https://www.npmjs.com/package/eventemitter3) 事件对象，可监听`message`事件，即可监听到rishiqing-front里收到的实时消息
+
+  getSystemConfig方法：获取到系统配置数据，可用来做平台区分，详细用法，请参考 [RISHIQING_SINGLE_SPA 文档](doc/RISHIQING_SINGLE_SPA.md)
+
+* lib/util.js新增方法：
+
+  clearVerticalTab方法：用于清理字符串里的垂直制表符
+
+* 新增依赖包：eventemitter3
+
 # 2020-02-03
 
 新增 lib/util.js 文件，用来放一些公共基础方法

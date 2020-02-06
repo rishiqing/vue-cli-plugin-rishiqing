@@ -266,6 +266,8 @@ import {
   getDeptListByIds,
   getUserListByIds,
   getParentIdListByDeptIdList,
+  getMessageClient,
+  getSystemConfig,
 } from 'rishiqing/single-spa-data'
 
 export default {
@@ -291,10 +293,99 @@ export default {
     const userList = getUserListByIds([1, 2, 3])
     // 通过部门的id列表，获取对应部门的所有父级部门的id列表
     const parentIdList = getParentIdListByDeptIdList([1, 2, 3])
+    // 获取rishiqing-front的消息客户端
+    const messageClient = getMessageClient()
+    // 获取系统配置数据，用于做平台区分处理以及其他第三方等配置数据
+    const systemConfig = getSystemConfig()
   }
 }
 </script>
 ```
+
+##### 消息客户端使用
+
+> 现在消息客户端只有接入到rishiqing-front的时候才能正常监听到message事件
+>
+> 在普通开发模式下，getMessageClient()只会返回一个事件对象，但是不会触发message事件
+>
+> getMessageClient()返回的是一个 eventemitter3 初始化的事件对象，具体使用方式，可查看 [eventemitter3](https://www.npmjs.com/package/eventemitter3)的文档
+
+```vue
+<script>
+import {
+  getMessageClient,
+} from 'rishiqing/single-spa-data'
+  
+export default {
+  mounted() {
+    // 监听 message 事件
+    getMessageClient().on('message', this.onMessageHandle)
+  },
+  methods: {
+    onMessageHandle(data) {
+      console.log('data', data)
+    },
+  },
+  beforeDestroy() {
+    // 记得随时销毁监听，避免造成内存泄漏
+    getMessageClient().off('message', this.onMessageHandle)
+  }
+}
+</script>
+```
+
+##### systemConfig系统配置数据
+
+> 在接入到rishiqing-front之后，getSystemConfig()返回的是 rishiqing-front里的systemConfig数据
+>
+> 在普通开发模式下，默认情况 getSystemConfig() 只会返回一个空对象 {}
+>
+> 但如果为了调试，可以在项目根目录下新建一个 `system-config.json` 文件，之后调用 getSystemConfig() 就会返回 ``system-config.json`` 里配置的json数据了
+
+> 注： ``system-config.json``文件修改之后，不用重启webpack，刷新页面即可生效
+
+数据参考:
+
+```json
+{
+  "platform": "rishiqing",
+  "name": "日事清",
+  "sentry": {},
+  "growingIo": {},
+  "kf": {},
+  "aliStatistics": {},
+  "function": {
+    "archive": true,
+    "tomato": true,
+    "search": true
+  }
+}
+```
+
+
+
+使用参考：
+
+```vue
+<script>
+import {
+  getSystemConfig,
+} from 'rishiqing/single-spa-data'
+  
+export default {
+  mounted() {
+    if (getSystemConfig().platform === 'rishiqing') {
+      console.log('日事清')
+    }
+    if (getSystemConfig().platform === 'workbei') {
+      console.log('功倍')
+    }
+  },
+}
+</script>
+```
+
+
 
 
 
