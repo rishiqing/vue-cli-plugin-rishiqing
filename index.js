@@ -56,14 +56,38 @@ function changeVueStyleLoader(rule) {
     })
 }
 
+// 创建可以获取到项目根目录下的文件的api
+function createFetchLocalApi(app, api, filename) {
+  app.use(`/fetch-local/${filename}`, (req, res) => {
+    const filePath = api.resolve(filename)
+    let isExist = false
+    try {
+      fs.statSync(filePath)
+      isExist = true
+    } catch (e) {
+      // pass
+    }
+    // 如果文件存在，解析出现了问题，则直接报错
+    if (isExist) {
+      try {
+        const content = fs.readFileSync(filePath, 'utf8')
+        res.json(JSON.parse(content))
+      } catch (error) {
+        console.error(`读取项目根目录下的 ${filename} 文件报错!`)
+        console.error(error)
+        res.status(500).send({ error: `读取项目根目录下的 ${filename} 文件报错!` })
+      }
+    } else {
+      // 文件不存在
+      res.json({ noExist: true })
+    }
+  })
+}
+
 module.exports = (api, projectOptions) => {
   // 获取对本插件的配置信息
-  // 写在项目 vue.config.js 文件中, pluginOptions 属性
+  // 写在项目 vue.config.js 文件中, pluginOptions.rishiqing 属性下面
   const pluginConfig = (projectOptions.pluginOptions || {}).rishiqing || {}
-
-  // const KITE_DESIGN_THEME_COLOR = fs
-  //   .readFileSync(path.resolve(__dirname, './assets/kite-design-theme-color.css'), 'utf8')
-  //   .replace(/\n/g, '')
 
   api.chainWebpack((webpackConfig) => {
     // 配置`DefinePlugin`插件
@@ -71,7 +95,6 @@ module.exports = (api, projectOptions) => {
       .plugin('define')
       .tap((options) => {
         options[0] = Object.assign(options[0], {
-          // KITE_DESIGN_THEME_COLOR: `'${KITE_DESIGN_THEME_COLOR}'`,
           RISHIQING_SINGLE_SPA: process.env.RISHIQING_SINGLE_SPA === 'true',
           ROUTER_BASE: `'${process.env.ROUTER_BASE}'`,
           SINGLE_SPA_ID: `'${SingleSpaId}'`,
@@ -134,23 +157,13 @@ module.exports = (api, projectOptions) => {
     // 处理 scss 代码
     Scss(api, webpackConfig)
 
+    // 开发环境下的配置
     if (process.env.NODE_ENV === 'development') {
       // `调试账户选择`功能所需的脚本
       if (pluginConfig.enableDevAccountSel) {
         webpackConfig
           .entry('app')
           .prepend(path.resolve(__dirname, './devAccountSel/dev-account-sel.js'))
-          .end()
-      }
-
-      if (pluginConfig.rishiqingSingleSpa) {
-        // 添加css变量 & 浏览器样式初始化
-        webpackConfig
-          .entry('app')
-          .prepend(path.resolve(__dirname, './assets/insert-color.js'))
-          .prepend(path.resolve(__dirname, './assets/normalize.css'))
-          // .prepend(path.resolve(__dirname, './assets/kite-design-theme-color.css'))
-          // .prepend(path.resolve(__dirname, './assets/kite-design-func-color.css'))
           .end()
       }
 
@@ -161,18 +174,24 @@ module.exports = (api, projectOptions) => {
           res.set('Access-Control-Allow-Origin', '*')
           next()
         })
-        app.use('/fetch-local/rsq-dev-account.json', (req, res) => {
-          const theFilePath = api.resolve('rsq-dev-account.json')
-          try {
-            const theFileStr = fs.readFileSync(theFilePath, 'utf8')
-            res.json(JSON.parse(theFileStr))
-          } catch (error) {
-            console.error('读取rsq-dev-account.json文件报错！')
-            console.error(error)
-            res.status(500).send({ error: '服务端读取rsq-dev-account.json文件报错！' })
-          }
-        })
+        // 获取项目根目录下面的rsq-dev-account.json文件里的数据
+        createFetchLocalApi(app, api, 'rsq-dev-account.json')
+        // 获取项目根目录下面的system-config.json文件里的数据
+        createFetchLocalApi(app, api, 'system-config.json', false)
       })
+    }
+
+    // 当为开发环境并且 pluginConfig.rishiqingSingleSpa为true 可添加kiteDesign的主题颜色变量和normalize.css
+    // 获取配置 pluginConfig.forceAddKiteDesignTheme为true 也可实现强制添加主题颜色变量和normalize.css
+    if (
+      (process.env.NODE_ENV === 'development' && pluginConfig.rishiqingSingleSpa)
+      || pluginConfig.forceAddKiteDesignThemeColor
+    ) {
+      webpackConfig
+        .entry('app')
+        .prepend(path.resolve(__dirname, './assets/insert-color.js'))
+        .prepend(path.resolve(__dirname, './assets/normalize.css'))
+        .end()
     }
 
     if (pluginConfig.rishiqingSingleSpa) {
@@ -186,6 +205,10 @@ module.exports = (api, projectOptions) => {
   })
 
   // 如果RISHIQING_SINGLE_SPA环境变量等于true，则开启singleSpaConfig相关配置
+  // 注意 process.env.RISHIQING_SINGLE_SPA 和 pluginConfig.rishiqingSingleSpa 的区别
+  // process.env.RISHIQING_SINGLE_SPA 为 true，表示需要构建用于在rishiqing-front里加载的single-spa项目
+  // 而 pluginConfig.rishiqingSingleSpa 只是表示，这个项目是否需要 single-spa 的相关配置
+  // 严格来说，pluginConfig.rishiqingSingleSpa 应该取名为 pluginConfig.needConfigForKiteDesign 需要加上kite-design的相关配置
   if (process.env.RISHIQING_SINGLE_SPA === 'true') {
     singleSpaConfig(api, projectOptions)
   }
