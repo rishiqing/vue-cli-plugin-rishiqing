@@ -1,3 +1,31 @@
+# 2020-02-08
+
+* 新增 lib/file.js文件，用于放置文件相关的方法
+
+  getByteOfMb: 把兆转换成字节数
+
+  isServerReceivedImg: 判断文件是不是我们可接受的图片类型
+
+  getFileTail: 获取文件的后缀
+
+  getImgSizeLimit: 获取图片尺寸限制
+
+  getFileSizeLimit: 获取普通文件的尺寸限制
+
+  isFileSizeOk: 判断文件的尺寸是否符合
+
+* lib/single-spa-data.js新增方法：
+
+  isVip: 是否是vip
+
+  isZyVipOrMore: 是否是专业或者以上会员
+
+  isQyVipOrMore： 是否是企业或者以上会员
+
+  isUltimateVipOrMore: 是否是旗舰或者以上会员
+
+
+
 # 2020-02-06
 
 * vue.config.js里的 `pluginOptions.rishiqing` 下面新增一个参数`forceAddKiteDesignThemeColor`，配置为true，则在打包的时候，会强制加上 kiteDesign的主题色变量和normalize.css样式
