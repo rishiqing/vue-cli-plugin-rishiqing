@@ -268,6 +268,11 @@ import {
   getParentIdListByDeptIdList,
   getMessageClient,
   getSystemConfig,
+  
+  isVip,
+  isZyVipOrMore,
+  isQyVipOrMore,
+  isUltimateVipOrMore,
 } from 'rishiqing/single-spa-data'
 
 export default {
@@ -297,6 +302,15 @@ export default {
     const messageClient = getMessageClient()
     // 获取系统配置数据，用于做平台区分处理以及其他第三方等配置数据
     const systemConfig = getSystemConfig()
+    
+    // 是否是会员
+    const vip = isVip()
+    // 是否是专业或者以上会员
+    const zyVipOrMore = isZyVipOrMore()
+    // 是否是企业或者以上会员
+    const qyVipOrMore = isQyVipOrMore()
+    // 是否是旗舰或者以上会员
+    const ultimateVipOrMore = isUltimateVipOrMore()
   }
 }
 </script>
