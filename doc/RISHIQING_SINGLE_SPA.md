@@ -268,6 +268,8 @@ import {
   getParentIdListByDeptIdList,
   getMessageClient,
   getSystemConfig,
+  findUserById,
+  findDeptById,
   
   isVip,
   isZyVipOrMore,
@@ -302,6 +304,10 @@ export default {
     const messageClient = getMessageClient()
     // 获取系统配置数据，用于做平台区分处理以及其他第三方等配置数据
     const systemConfig = getSystemConfig()
+    // 通过成员的id查找到成员详细数据
+    const user = findUserById('123')
+    // 通过部门id，查找到部门的详细数据
+    const dept = findDeptById('123')
     
     // 是否是会员
     const vip = isVip()

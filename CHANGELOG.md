@@ -1,3 +1,11 @@
+# 2020-02-19
+
+* lib/single-spa-data.js新增方法：
+
+  findUserById: 通过成员id查找成员的详细数据
+
+  findDeptById: 通过部门id查找部门的详细数据
+
 # 2020-02-08
 
 * 新增 lib/file.js文件，用于放置文件相关的方法
