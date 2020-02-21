@@ -28,19 +28,18 @@ const SingleSpaId = `${S4()}-${S4()}-${S4()}`
 // 添加 postcss-custom-properties
 // 这样在不支持css变量的浏览器可以使用默认值
 function addPostcssCustomProperties(rule) {
-  rule.tap(options => Object.assign({}, options, {
-    plugins: function plugins() {
-      return [
-        postcssCustomProperties({
-          importFrom: [
-            {
-              customProperties: Color.generateColor('#2B88FE'),
-            },
-          ],
-        }),
-      ]
-    },
-  }))
+  rule.options({
+    sourceMap: false,
+    plugins: [
+      postcssCustomProperties({
+        importFrom: [
+          {
+            customProperties: Color.generateColor('#2B88FE'),
+          },
+        ],
+      }),
+    ],
+  })
 }
 
 // 修改vue-style-loader，让style标签可以自定义属性
@@ -195,13 +194,40 @@ module.exports = (api, projectOptions) => {
     }
 
     if (pluginConfig.rishiqingSingleSpa) {
-      types.forEach(type => addPostcssCustomProperties(webpackConfig.module.rule('scss').oneOf(type).use('postcss-loader')))
       types.forEach((type) => {
         styleTypes.forEach((styleType) => {
+          addPostcssCustomProperties(
+            webpackConfig.module
+              .rule(styleType)
+              .oneOf(type)
+              .use('css-custom-properties')
+              .before('postcss-loader') // 让 css-custom-properties 可以出现在 postcss-loader前面
+              .loader('postcss-loader'),
+          )
           changeVueStyleLoader(webpackConfig.module.rule(styleType).oneOf(type).use('vue-style-loader'))
         })
       })
     }
+
+    // 兼容chrome53
+    webpackConfig.module
+      .rule('js')
+      .use('babel-loader')
+      .options({
+        presets: [
+          [
+            '@babel/preset-env',
+            {
+              targets: {
+                chrome: '53',
+                ie: '11',
+              },
+              useBuiltIns: 'usage',
+              corejs: '3',
+            },
+          ],
+        ],
+      })
   })
 
   // 如果RISHIQING_SINGLE_SPA环境变量等于true，则开启singleSpaConfig相关配置
