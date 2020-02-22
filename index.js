@@ -216,7 +216,7 @@ module.exports = (api, projectOptions) => {
       .options({
         presets: [
           [
-            '@babel/preset-env',
+            '@vue/cli-plugin-babel/preset',
             {
               targets: {
                 chrome: '53',
