@@ -265,6 +265,7 @@ import {
   getCurrentUserCompanyAuthorities,
   getDeptListByIds,
   getUserListByIds,
+  getUnDept,
   getParentIdListByDeptIdList,
   getMessageClient,
   getSystemConfig,
@@ -298,6 +299,8 @@ export default {
     const deptList = getDeptListByIds([1, 2, 3])
     // 通过成员的id列表，获取成员的详细数据列表
     const userList = getUserListByIds([1, 2, 3])
+    // 获取未分配部门
+    const undept = getUnDept()
     // 通过部门的id列表，获取对应部门的所有父级部门的id列表
     const parentIdList = getParentIdListByDeptIdList([1, 2, 3])
     // 获取rishiqing-front的消息客户端

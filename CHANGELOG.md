@@ -1,3 +1,9 @@
+# 2020-02-24
+
+* lib/single-spa-data.js新增方法：
+
+  getUnDept 获取未分配部门
+
 # 2020-02-19
 
 * lib/single-spa-data.js新增方法：
