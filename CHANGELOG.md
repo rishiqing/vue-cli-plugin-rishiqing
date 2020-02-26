@@ -1,3 +1,11 @@
+# 2020-02-26
+
+* lib/file.js新增方法:
+
+  isPreviewFile 传入文件名，判断文件是不是可预览文件
+
+  isMinderFile 传入文件名，判断文件是不是思维导图文件
+
 # 2020-02-24
 
 * lib/single-spa-data.js新增方法：
