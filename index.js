@@ -123,6 +123,15 @@ module.exports = (api, projectOptions) => {
         .use(webpack.ProvidePlugin, optArr)
     }
 
+    // 判断sortableJs这个依赖包，是否在node_modules下面
+    let isSortablejsExistInNodeModules = false
+    try {
+      fs.statSync(path.resolve(process.cwd(), 'node_modules/sortablejs'))
+      isSortablejsExistInNodeModules = true
+    } catch (e) {
+      // pass
+    }
+
     // lib 文件夹专用来放置公共基础代码
     // 把rishiqing指向vue-cli-plugin-rishiqing/lib文件夹
     // 方便在业务代码里引用
@@ -139,6 +148,14 @@ module.exports = (api, projectOptions) => {
       // https://github.com/vuejs/vue/issues/6698
       .set('vue', path.resolve(process.cwd(), 'node_modules/vue'))
       .set('vuex', path.resolve(process.cwd(), 'node_modules/vuex'))
+
+    // 如果sortablejs 在node_modules下面，则配置一个alias，防止项目里重复引入多个sortablejs
+    if (isSortablejsExistInNodeModules) {
+      webpackConfig
+        .resolve
+        .alias
+        .set('sortablejs', path.resolve(process.cwd(), 'node_modules/sortablejs'))
+    }
 
     // 把当前仓库下的node_modules也加为loader的搜寻地址
     // 这样方便直接在vue-cli-plugin-rishiqing里安装loader

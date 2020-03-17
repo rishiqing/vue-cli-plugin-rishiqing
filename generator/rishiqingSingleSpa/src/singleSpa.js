@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import {
+  createRouter,
+  getRouter,
+} from './router'
 import store from './store'
 import init from './init'
 
@@ -48,8 +51,9 @@ export async function bootstrap() {}
 export async function mount(props) {
   addStyle()
   await init()
+  createRouter(props.routerBase)
   vueContainer = new Vue({
-    router,
+    router: getRouter(),
     store,
     render: h => h(App),
   }).$mount()
