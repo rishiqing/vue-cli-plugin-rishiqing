@@ -13,7 +13,10 @@ import '@rishiqing/kite-design/lib/src/style'
 import '@rishiqing/kite-design/lib/style/utils.css'
 
 import App from './App.vue'
-import router from './router'
+import {
+  createRouter,
+  getRouter,
+} from './router'
 import store from './store'
 import systemInit from './init'
 
@@ -28,8 +31,9 @@ Vue.config.productionTip = false
 
 async function init() {
   await systemInit()
+  createRouter()
   new Vue({
-    router,
+    router: getRouter(),
     store,
     render: h => h(App),
   }).$mount('#app')

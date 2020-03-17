@@ -147,7 +147,7 @@ module.exports = (api, options, rootOptions) => {
     api.extendPackage({
       dependencies: {
         // 这个地方，引入第三方库的版本不能直接写 latest，不然无法正常添加到dependencies
-        '@rishiqing/kite-design': '^0.0.42-viii.7503',
+        '@rishiqing/kite-design': '^0.0.57-viii.11193',
         axios: '^0.19.0',
       },
       eslintConfig: {
