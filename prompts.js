@@ -19,7 +19,7 @@ module.exports = [
     // 需要预置哪些代码块
     name: 'presetCodeList',
     message: '请选择需要预置的代码块',
-    default: ['init', 'constants', 'services', 'devAccountSel',],
+    default: ['init', 'constants', 'services', 'devAccountSel'],
     choices: [
       {
         name: '初始化配置',
