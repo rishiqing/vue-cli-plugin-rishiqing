@@ -276,6 +276,8 @@ import {
   isZyVipOrMore,
   isQyVipOrMore,
   isUltimateVipOrMore,
+  
+  openPayPage,
 } from 'rishiqing/single-spa-data'
 
 export default {
@@ -320,6 +322,9 @@ export default {
     const qyVipOrMore = isQyVipOrMore()
     // 是否是旗舰或者以上会员
     const ultimateVipOrMore = isUltimateVipOrMore()
+    
+    // 打开支付页面
+    openPayPage()
   }
 }
 </script>
