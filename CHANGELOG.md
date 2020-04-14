@@ -1,3 +1,9 @@
+# 2020-04-14
+
+* lib/single-spa-data.js新增方法：
+
+  openPayPage 打开支付页面
+
 # 2020-02-26
 
 * lib/file.js新增方法:
