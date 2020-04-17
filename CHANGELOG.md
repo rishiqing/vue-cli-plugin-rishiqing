@@ -1,3 +1,9 @@
+# 2020-04-17
+
+* lib/single-spa-data.js新增方法:
+
+  openPayDetail 打开付费详情页面
+
 # 2020-04-14
 
 * lib/single-spa-data.js新增方法：

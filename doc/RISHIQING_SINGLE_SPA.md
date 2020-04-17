@@ -278,6 +278,7 @@ import {
   isUltimateVipOrMore,
   
   openPayPage,
+  openPayDetail,
 } from 'rishiqing/single-spa-data'
 
 export default {
@@ -323,8 +324,11 @@ export default {
     // 是否是旗舰或者以上会员
     const ultimateVipOrMore = isUltimateVipOrMore()
     
-    // 打开支付页面
+    // 打开版本升级页面
     openPayPage()
+    // 打开付费详情页面.
+    // buyType为想要购买的版本类型(ZY: 专业版, QY: 企业版, QJ: 旗舰版), 不区分大小写.如果不传buyType，则默认为续费操作
+    openPayDetail(buyType)
   }
 }
 </script>
