@@ -2,7 +2,9 @@
 
 * lib/single-spa-data.js新增方法：
 
-   openInviteMember 打开通讯录的邀请
+  openInviteMember 打开通讯录的邀请
+  openPayDetail 打开付费详情页面
+
 
 # 2020-04-14
 
