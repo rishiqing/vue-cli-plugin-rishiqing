@@ -117,7 +117,7 @@ webpackConfig.plugins.push(new WebpackSystemRegister({
   --kite-theme-color-9-rgb: 3, 49, 140;
   --kite-theme-color-10: #011f66;
   --kite-theme-color-10-rgb: 1, 31, 102;
-  
+
   /* 错误色变量 */
   --kite-error-color-1: #fff1f0;
   --kite-error-color-1-rgb: 255, 241, 240;
@@ -271,13 +271,14 @@ import {
   getSystemConfig,
   findUserById,
   findDeptById,
-  
+
   isVip,
   isZyVipOrMore,
   isQyVipOrMore,
   isUltimateVipOrMore,
-  
+
   openPayPage,
+  openInviteMember,
   openPayDetail,
 } from 'rishiqing/single-spa-data'
 
@@ -314,7 +315,7 @@ export default {
     const user = findUserById('123')
     // 通过部门id，查找到部门的详细数据
     const dept = findDeptById('123')
-    
+
     // 是否是会员
     const vip = isVip()
     // 是否是专业或者以上会员
@@ -323,12 +324,17 @@ export default {
     const qyVipOrMore = isQyVipOrMore()
     // 是否是旗舰或者以上会员
     const ultimateVipOrMore = isUltimateVipOrMore()
-    
+
     // 打开版本升级页面
     openPayPage()
+
     // 打开付费详情页面.
     // buyType为想要购买的版本类型(ZY: 专业版, QY: 企业版, QJ: 旗舰版), 不区分大小写.如果不传buyType，则默认为续费操作
     openPayDetail(buyType)
+
+    // 打开通讯录的直接邀请
+    openInviteMember()
+
   }
 }
 </script>
@@ -347,7 +353,7 @@ export default {
 import {
   getMessageClient,
 } from 'rishiqing/single-spa-data'
-  
+
 export default {
   mounted() {
     // 监听 message 事件
@@ -403,7 +409,7 @@ export default {
 import {
   getSystemConfig,
 } from 'rishiqing/single-spa-data'
-  
+
 export default {
   mounted() {
     if (getSystemConfig().platform === 'rishiqing') {
