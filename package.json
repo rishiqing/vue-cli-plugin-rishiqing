@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-rishiqing",
-  "version": "3.0.0-next.0",
+  "version": "3.0.0-next.1",
   "description": "vue-cli 3.0 plugin for rishiqing",
   "main": "index.js",
   "scripts": {
