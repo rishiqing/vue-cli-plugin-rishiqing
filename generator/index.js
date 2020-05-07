@@ -21,10 +21,6 @@ function makeJSOnlyValue(str) {
 
 // eslint-disable-next-line no-unused-vars
 module.exports = (api, options, rootOptions) => {
-  // 如果需要生成rishiqingSingleSpa应用，则把rootOptions里配置的router给删了
-  if (options.presetCodeList.includes('rishiqingSingleSpa')) {
-    delete rootOptions.router
-  }
   api.extendPackage({
     scripts: {
       'build-beta': 'vue-cli-service build --mode beta',
@@ -152,7 +148,6 @@ module.exports = (api, options, rootOptions) => {
       dependencies: {
         '@rishiqing/kite-design': '^1.0.1',
         axios: '^0.19.0',
-        'vue-router': '^3.1.6',
       },
       eslintConfig: {
         globals: {
