@@ -9,7 +9,8 @@
       ]
     },
     "vue-cli-plugin-rishiqing": {
-      "prompts": true
+      "prompts": true,
+      "version": "^3.0.0"
     }
   },
   "router": true,

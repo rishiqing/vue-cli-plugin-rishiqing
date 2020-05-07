@@ -1,5 +1,4 @@
 import Vue from 'vue'
-// import VurRx from 'vue-rx'
 
 // kite-basic基础组件
 import KiteBasic from '@rishiqing/kite-design/lib/src/kite-basic'
@@ -23,7 +22,6 @@ import systemInit from './init'
 
 export * from './singleSpa'
 
-// Vue.use(VurRx)
 Vue.use(KiteBasic)
 // Vue.use(Emoji)
 
