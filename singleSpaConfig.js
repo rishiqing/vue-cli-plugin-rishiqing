@@ -1,4 +1,5 @@
 const WebpackSystemRegister = require('@rishiqing/webpack-system-register')
+const ExternalsList = require('@rishiqing/vue-package/lib/externalList')
 
 module.exports = function singleSpaConfig(api) {
   api.chainWebpack((webpackChain) => {
@@ -17,22 +18,6 @@ module.exports = function singleSpaConfig(api) {
       runtimeChunk: false,
       splitChunks: false,
     }
-
-    const ExternalsList = [
-      'vue',
-      'vuex',
-      'vue-router',
-      'vue-rx',
-      'axios',
-      'vue-i18n',
-      'rxjs',
-      '@rishiqing/kite-design/dist/kite-basic',
-      '@rishiqing/kite-design/dist/kite-business',
-      '@rishiqing/kite-design/lib/src/kite-basic',
-      '@rishiqing/kite-design/lib/src/kite-business',
-      'kite-basic',
-      'kite-business',
-    ]
 
     webpackConfig.externals = [
       function externals(context, request, callback) {

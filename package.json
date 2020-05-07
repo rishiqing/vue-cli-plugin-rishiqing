@@ -12,7 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@ant-design/colors": "^3.2.2",
-    "@rishiqing/vue-package": "^0.0.2",
+    "@rishiqing/vue-package": "0.0.6",
     "@rishiqing/vue-style-loader": "^4.1.3",
     "@rishiqing/webpack-system-register": "^1.6.1",
     "eventemitter3": "4.0.0",
