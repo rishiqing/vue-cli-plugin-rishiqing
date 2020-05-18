@@ -43,12 +43,13 @@ function addPostcssCustomProperties(rule) {
 }
 
 // 修改vue-style-loader，让style标签可以自定义属性
-function changeVueStyleLoader(rule) {
+function changeVueStyleLoader(rule, singletonStyleTag = false) {
   rule
     .loader('@rishiqing/vue-style-loader')
     .options({
       sourceMap: false,
       shadowMode: false,
+      singletonStyleTag,
       attrs: {
         'data-single-spa-id': SingleSpaId,
       },
@@ -88,13 +89,22 @@ module.exports = (api, projectOptions) => {
   // 写在项目 vue.config.js 文件中, pluginOptions.rishiqing 属性下面
   const pluginConfig = (projectOptions.pluginOptions || {}).rishiqing || {}
 
+  const isDev = process.env.NODE_ENV === 'development'
+
+  // 如果RISHIQING_SINGLE_SPA环境变量等于true，则开启singleSpaConfig相关配置
+  // 注意 process.env.RISHIQING_SINGLE_SPA 和 pluginConfig.rishiqingSingleSpa 的区别
+  // process.env.RISHIQING_SINGLE_SPA 为 true，表示需要构建用于在rishiqing-front里加载的single-spa项目
+  // 而 pluginConfig.rishiqingSingleSpa 只是表示，这个项目是否需要 single-spa 的相关配置
+  // 严格来说，pluginConfig.rishiqingSingleSpa 应该取名为 pluginConfig.needConfigForKiteDesign 需要加上kite-design的相关配置
+  const isBuildingRishiqingSingleSpa = process.env.RISHIQING_SINGLE_SPA === 'true'
+
   api.chainWebpack((webpackConfig) => {
     // 配置`DefinePlugin`插件
     webpackConfig
       .plugin('define')
       .tap((options) => {
         options[0] = Object.assign(options[0], {
-          RISHIQING_SINGLE_SPA: process.env.RISHIQING_SINGLE_SPA === 'true',
+          RISHIQING_SINGLE_SPA: isBuildingRishiqingSingleSpa,
           ROUTER_BASE: `'${process.env.ROUTER_BASE}'`,
           SINGLE_SPA_ID: `'${SingleSpaId}'`,
         }, pluginConfig.define)
@@ -170,11 +180,16 @@ module.exports = (api, projectOptions) => {
       .resolve
       .set('symlinks', false)
 
+    webpackConfig
+      .resolve
+      .modules
+      .add(path.resolve(__dirname, 'node_modules'))
+
     // 处理 scss 代码
     Scss(api, webpackConfig)
 
     // 开发环境下的配置
-    if (process.env.NODE_ENV === 'development') {
+    if (isDev) {
       // `调试账户选择`功能所需的脚本
       if (pluginConfig.enableDevAccountSel) {
         webpackConfig
@@ -200,7 +215,7 @@ module.exports = (api, projectOptions) => {
     // 当为开发环境并且 pluginConfig.rishiqingSingleSpa为true 可添加kiteDesign的主题颜色变量和normalize.css
     // 获取配置 pluginConfig.forceAddKiteDesignTheme为true 也可实现强制添加主题颜色变量和normalize.css
     if (
-      (process.env.NODE_ENV === 'development' && pluginConfig.rishiqingSingleSpa)
+      (isDev && pluginConfig.rishiqingSingleSpa && !isBuildingRishiqingSingleSpa)
       || pluginConfig.forceAddKiteDesignThemeColor
     ) {
       webpackConfig
@@ -210,7 +225,18 @@ module.exports = (api, projectOptions) => {
         .end()
     }
 
+    // 当为开发环境并且 pluginConfig.rishiqingSingleSpa为true 则引入@rishiqing/vue-package里的vueGlobal.js
+    // 引入Vue.mixin等Vue的公共操作
+    if (isDev && pluginConfig.rishiqingSingleSpa && !isBuildingRishiqingSingleSpa) {
+      webpackConfig
+        .entry('app')
+        .prepend('@rishiqing/vue-package/lib/vueGlobal.js')
+        .end()
+    }
+
     if (pluginConfig.rishiqingSingleSpa) {
+      // 当构建适用于rishiqing-front的微应用的时候，开启单个style标签模式，即把所有的css样式全部插入到一个style标签
+      const singletonStyleTag = isBuildingRishiqingSingleSpa
       types.forEach((type) => {
         styleTypes.forEach((styleType) => {
           addPostcssCustomProperties(
@@ -221,38 +247,56 @@ module.exports = (api, projectOptions) => {
               .before('postcss-loader') // 让 css-custom-properties 可以出现在 postcss-loader前面
               .loader('postcss-loader'),
           )
-          changeVueStyleLoader(webpackConfig.module.rule(styleType).oneOf(type).use('vue-style-loader'))
+          changeVueStyleLoader(webpackConfig.module.rule(styleType).oneOf(type).use('vue-style-loader'), singletonStyleTag)
         })
       })
     }
 
-    // 兼容chrome53
-    webpackConfig.module
-      .rule('js')
-      .use('babel-loader')
-      .options({
-        presets: [
-          [
-            '@vue/cli-plugin-babel/preset',
-            {
-              targets: {
-                chrome: '53',
-                ie: '11',
-              },
-              useBuiltIns: 'usage',
-              corejs: '3',
+    const babelPlugins = []
+    if (isBuildingRishiqingSingleSpa) {
+      // 如果需要打包微应用，则加入自定义的vue-babel插件
+      babelPlugins.push([
+        path.resolve(__dirname, 'singleSpaBabelPlugin.js'),
+      ])
+    }
+
+    const babelOptions = {
+      presets: [
+        [
+          '@vue/cli-plugin-babel/preset',
+          {
+            targets: {
+              chrome: '53',
+              ie: '11',
             },
-          ],
+            useBuiltIns: 'usage',
+            corejs: '3',
+          },
         ],
-      })
+      ],
+      plugins: babelPlugins,
+    }
+
+    // 判断是否配置了js这个rule
+    if (webpackConfig.module.rules.has('js')) {
+      // 兼容chrome53
+      webpackConfig.module
+        .rule('js')
+        .use('babel-loader')
+        .options(babelOptions)
+    }
+
+    // 判断是否配置了ts这个rule
+    if (webpackConfig.module.rules.has('ts')) {
+      // typescript
+      webpackConfig.module
+        .rule('ts')
+        .use('babel-loader')
+        .options(babelOptions)
+    }
   })
 
-  // 如果RISHIQING_SINGLE_SPA环境变量等于true，则开启singleSpaConfig相关配置
-  // 注意 process.env.RISHIQING_SINGLE_SPA 和 pluginConfig.rishiqingSingleSpa 的区别
-  // process.env.RISHIQING_SINGLE_SPA 为 true，表示需要构建用于在rishiqing-front里加载的single-spa项目
-  // 而 pluginConfig.rishiqingSingleSpa 只是表示，这个项目是否需要 single-spa 的相关配置
-  // 严格来说，pluginConfig.rishiqingSingleSpa 应该取名为 pluginConfig.needConfigForKiteDesign 需要加上kite-design的相关配置
-  if (process.env.RISHIQING_SINGLE_SPA === 'true') {
+  if (isBuildingRishiqingSingleSpa) {
     singleSpaConfig(api, projectOptions)
   }
 

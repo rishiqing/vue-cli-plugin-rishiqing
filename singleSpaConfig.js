@@ -1,4 +1,5 @@
 const WebpackSystemRegister = require('@rishiqing/webpack-system-register')
+const ExternalsList = require('@rishiqing/vue-package/lib/externalList')
 
 module.exports = function singleSpaConfig(api) {
   api.chainWebpack((webpackChain) => {
@@ -18,30 +19,26 @@ module.exports = function singleSpaConfig(api) {
       splitChunks: false,
     }
 
-    // const ExternalsList = [
-    //   'vue',
-    //   'vuex',
-    //   'vue-router',
-    //   // 'vue-rx',
-    //   'axios',
-    //   // '@rishiqing/sdk',
-    //   '@rishiqing/kite-design/dist/kite-basic',
-    //   '@rishiqing/kite-design/dist/kite-business',
-    //   'kite-basic',
-    //   'kite-business',
-    //   '@rishiqing/kite-design/dist/kite-basic.css',
-    //   '@rishiqing/kite-design/dist/kite-business.css',
-    // ]
-
     webpackConfig.externals = [
-      // 暂时屏蔽掉提取公共包，因为会导致版本依赖的问题
-      // function externals(context, request, callback) {
-      //   if (ExternalsList.includes(request)) {
-      //     return callback(null, `var window.app.require('${request}')`)
-      //   }
-      //   callback()
-      // },
+      function externals(context, request, callback) {
+        if (ExternalsList.includes(request)) {
+          return callback(null, `var window.__rsq_common_package__.require('${request}')`)
+        }
+        callback()
+      },
     ]
+
+    // 打包的时候，忽略掉一些包
+    webpackConfig.module.rules.push({
+      test: [
+        // 忽略kite-design里的css
+        /@rishiqing\/kite-design\/.*\.css$/,
+        // 忽略systemjs，打包成微应用，不能再引入systemjs
+        /systemjs/,
+      ],
+      use: 'null-loader',
+    })
+
     webpackConfig.plugins.push(new WebpackSystemRegister({
       systemjsDeps: [
         /^share-data/,

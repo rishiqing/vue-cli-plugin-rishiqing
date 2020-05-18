@@ -146,8 +146,7 @@ module.exports = (api, options, rootOptions) => {
   if (options.presetCodeList.includes('rishiqingSingleSpa')) {
     api.extendPackage({
       dependencies: {
-        // 这个地方，引入第三方库的版本不能直接写 latest，不然无法正常添加到dependencies
-        '@rishiqing/kite-design': '^0.0.57-viii.11193',
+        '@rishiqing/kite-design': '^1.0.1',
         axios: '^0.19.0',
       },
       eslintConfig: {
@@ -195,6 +194,10 @@ module.exports = (api, options, rootOptions) => {
         'no-console': 'error',
         'no-debugger': 'error',
         'consistent-return': 'off',
+        'no-underscore-dangle': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'arrow-body-style': 'off',
+        'object-curly-newline': 'off',
         'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['error'] }],
         // 不写分号，但如果下一行是 [, (, /, +, or - 开头，则上一行必须写分号
         semi: ['error', 'never', { beforeStatementContinuationChars: 'always' }],
