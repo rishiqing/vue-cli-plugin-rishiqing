@@ -227,7 +227,7 @@ module.exports = (api, projectOptions) => {
 
     // 当为开发环境并且 pluginConfig.rishiqingSingleSpa为true 则引入@rishiqing/vue-package里的vueGlobal.js
     // 引入Vue.mixin等Vue的公共操作
-    if (isDev && pluginConfig.rishiqingSingleSpa && !isBuildingRishiqingSingleSpa) {
+    if (isDev && pluginConfig.rishiqingSingleSpa) {
       webpackConfig
         .entry('app')
         .prepend('@rishiqing/vue-package/lib/vueGlobal.js')
@@ -253,7 +253,8 @@ module.exports = (api, projectOptions) => {
     }
 
     const babelPlugins = []
-    if (isBuildingRishiqingSingleSpa) {
+    // 只有构建线上环境的时候，才引入 singleSpaBabelPlugin.js，方便本地调试
+    if (isBuildingRishiqingSingleSpa && !isDev) {
       // 如果需要打包微应用，则加入自定义的vue-babel插件
       babelPlugins.push([
         path.resolve(__dirname, 'singleSpaBabelPlugin.js'),
@@ -294,6 +295,15 @@ module.exports = (api, projectOptions) => {
         .use('babel-loader')
         .options(babelOptions)
     }
+
+    // 往 html-webpack-plugin里注入 systemjsCode，方便在html里插入systemjs代码
+    // 可直接在html文件里 <%= htmlWebpackPlugin.options.systemjsCode %> 这种方式插入systemjs代码
+    webpackConfig.plugin('html').tap((options) => {
+      Object.assign(options[0], {
+        systemjsCode: fs.readFileSync(path.resolve(__dirname, './assets/systemjs.js')),
+      })
+      return options
+    })
   })
 
   if (isBuildingRishiqingSingleSpa) {
