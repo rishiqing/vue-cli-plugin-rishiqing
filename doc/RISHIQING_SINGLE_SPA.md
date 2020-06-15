@@ -280,6 +280,8 @@ import {
   openPayPage,
   openInviteMember,
   openPayDetail,
+
+  getNodeEnv,
 } from 'rishiqing/single-spa-data'
 
 export default {
@@ -335,6 +337,8 @@ export default {
     // 打开通讯录的直接邀请
     openInviteMember()
 
+    // 获取环境信息
+    getNodeEnv()
   }
 }
 </script>

@@ -1,3 +1,9 @@
+# 2020-06-15
+
+* lib/single-spa-data.js新增方法：
+
+  getNodeEnv 获取环境信息
+
 # 2020-04-17
 
 * lib/single-spa-data.js新增方法：
