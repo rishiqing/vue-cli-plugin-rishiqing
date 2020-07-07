@@ -41,8 +41,11 @@ class AccountServeSelector {
   constructor() {
     this.isOpen = false
 
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(theContainerHtml, 'text/html')
+
     // 插入选择界面
-    document.body.innerHTML += theContainerHtml
+    document.body.appendChild(doc.body.firstChild)
     // 最外层容器DOM
     this.dMainContainer = document.getElementById('accout-serve-sel-container')
     // 关闭按钮DOM
