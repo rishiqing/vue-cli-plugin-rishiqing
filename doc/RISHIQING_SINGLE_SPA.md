@@ -332,8 +332,9 @@ export default {
     // buyType为想要购买的版本类型(ZY: 专业版, QY: 企业版, QJ: 旗舰版), 不区分大小写.如果不传buyType，则默认为续费操作
     openPayDetail(buyType)
 
-    // 打开通讯录的直接邀请
-    openInviteMember()
+    // 打开通讯录的添加成员/邀请成员弹窗
+    // type为打开的邀请类型，(add: 添加成员弹窗，包含直接和批量邀请; invite: 邀请成员弹窗，包含链接邀请,团队码邀请以及二维码邀请)不传type则默认为add，即默认打开添加成员弹窗
+    openInviteMember(type)
 
   }
 }
